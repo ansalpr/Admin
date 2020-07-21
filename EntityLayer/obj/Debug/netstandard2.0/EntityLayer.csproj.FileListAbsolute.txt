@@ -1,0 +1,18 @@
+D:\Project\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.deps.json
+D:\Project\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.dll
+D:\Project\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.pdb
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.csprojAssemblyReference.cache
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.csproj.CoreCompileInputs.cache
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.AssemblyInfoInputs.cache
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.AssemblyInfo.cs
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.dll
+D:\Project\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.pdb
+D:\Live Project\School Product\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.deps.json
+D:\Live Project\School Product\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.dll
+D:\Live Project\School Product\Admin\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.pdb
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.csprojAssemblyReference.cache
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.AssemblyInfoInputs.cache
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.AssemblyInfo.cs
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.csproj.CoreCompileInputs.cache
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.dll
+D:\Live Project\School Product\Admin\EntityLayer\obj\Debug\netstandard2.0\EntityLayer.pdb

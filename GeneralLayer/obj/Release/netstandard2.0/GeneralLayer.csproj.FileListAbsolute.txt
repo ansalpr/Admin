@@ -1,0 +1,12 @@
+D:\Project\WebAPIDemo\GeneralLayer\bin\Release\netstandard2.0\GeneralLayer.deps.json
+D:\Project\WebAPIDemo\GeneralLayer\bin\Release\netstandard2.0\GeneralLayer.dll
+D:\Project\WebAPIDemo\GeneralLayer\bin\Release\netstandard2.0\GeneralLayer.pdb
+D:\Project\WebAPIDemo\GeneralLayer\bin\Release\netstandard2.0\EntityLayer.dll
+D:\Project\WebAPIDemo\GeneralLayer\bin\Release\netstandard2.0\EntityLayer.pdb
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.csprojAssemblyReference.cache
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.csproj.CoreCompileInputs.cache
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.AssemblyInfoInputs.cache
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.AssemblyInfo.cs
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.csproj.CopyComplete
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.dll
+D:\Project\WebAPIDemo\GeneralLayer\obj\Release\netstandard2.0\GeneralLayer.pdb

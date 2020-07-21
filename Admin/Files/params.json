@@ -1,0 +1,32 @@
+{
+  "DataBase": [
+    {
+      "type": "generaldb",
+      "name": "generaldb",
+      "id": "root",
+      "pwd": "ansal",
+      "server": "localhost"
+    },
+    {
+      "type": "generalhistory",
+      "name": "generalhistory",
+      "id": "root",
+      "pwd": "ansal",
+      "server": "localhost"
+    },
+    {
+      "type": "generallog",
+      "name": "generallog",
+      "id": "root",
+      "pwd": "ansal",
+      "server": "localhost"
+    }
+
+  ],
+  "key": [
+    {
+      "signature": "cdso38zBg3/H3Kcnl0iNZw==",
+      "primary": "cdso38zBg3/H3Kcnl0iNZw=="
+    }
+  ]
+}
