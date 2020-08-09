@@ -11,37 +11,53 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+
 namespace Admin.Helper.Admin
 {
-    public class CurriculumHelper : BaseHelper
+    public class CurrencyHelper : BaseHelper
     {
-        public CurriculumResponse ValidateRequest(CurriculumRequest reqObjects)
+        public CurrencyResponse ValidateRequest(CurrencyRequest reqObjects)
         {
-            CurriculumResponse response = new CurriculumResponse();
-            response.curriculums = new Curriculum[reqObjects.curriculums.Length];
+            CurrencyResponse response = new CurrencyResponse();
+            response.Currencies = new Currency[reqObjects.Currencies.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.curriculums.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Currencies.Length; idx++)
             {
-                if (reqObjects.curriculums == null)
+                if (reqObjects.Currencies == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.curriculums[idx].Code == null || reqObjects.curriculums[idx].Code == "") && (reqObjects.curriculums[idx].action.ToUpper() == "A" || reqObjects.curriculums[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Currencies[idx].action.ToUpper() == "A" || reqObjects.Currencies[idx].action.ToUpper() == "E"))
                 {
-                    message = "Code " + ResponseConstants.Mandatory;
-                }
-                else if ((reqObjects.curriculums[idx].Name == null || reqObjects.curriculums[idx].Name == "") && (reqObjects.curriculums[idx].action.ToUpper() == "A" || reqObjects.curriculums[idx].action.ToUpper() == "E"))
-                {
-                    message = "Name " + ResponseConstants.Mandatory;
-                }
-                else if ((reqObjects.curriculums[idx].Id == null || reqObjects.curriculums[idx].Id == "") && (reqObjects.curriculums[idx].action.ToUpper() == "E" || reqObjects.curriculums[idx].action.ToUpper() == "D"))
+                    if((reqObjects.Currencies[idx].Code == null || reqObjects.Currencies[idx].Code == ""))
+                    {
+                        message = "Code " + ResponseConstants.Mandatory;
+                    }
+                    else if((reqObjects.Currencies[idx].Name == null || reqObjects.Currencies[idx].Name == "") )
+                    {
+                        message = "Name " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.Currencies[idx].BaseCurrency == null || reqObjects.Currencies[idx].BaseCurrency == ""))
+                    {
+                        message = "Base Currency " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.Currencies[idx].Precisions == null || reqObjects.Currencies[idx].Precisions == ""))
+                    {
+                        message = "Precisions " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.Currencies[idx].Stats == null || reqObjects.Currencies[idx].Stats == ""))
+                    {
+                        message = "Stats " + ResponseConstants.Mandatory;
+                    }
+                }                
+                else if ((reqObjects.Currencies[idx].Id == null || reqObjects.Currencies[idx].Id == "") && (reqObjects.Currencies[idx].action.ToUpper() == "E" || reqObjects.Currencies[idx].action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
-                Curriculum proxyResponse = new Curriculum();
-                proxyResponse = reqObjects.curriculums[idx];
+                Currency proxyResponse = new Currency();
+                proxyResponse = reqObjects.Currencies[idx];
                 proxyResponse.message = message;
-                response.curriculums[idx] = proxyResponse;
+                response.Currencies[idx] = proxyResponse;
                 if (message != "")
                 {
                     response.message = "Invalid Request";
@@ -58,21 +74,24 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        public curriculum[] ProcessProxyToEntity(CurriculumRequest reqObjects, int UserId)
+        public currency[] ProcessProxyToEntity(CurrencyRequest reqObjects, int UserId)
         {
-            curriculum[] entityObects = new curriculum[reqObjects.curriculums.Length];
+            currency[] entityObects = new currency[reqObjects.Currencies.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.curriculums.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Currencies.Length; idx++)
                 {
-                    curriculum entityObect = new curriculum();
-                    entityObect.CurriculumCode = reqObjects.curriculums[idx].Code == null ? "" : reqObjects.curriculums[idx].Code.Trim();
-                    entityObect.CurriculumName = reqObjects.curriculums[idx].Name == null ? "" : reqObjects.curriculums[idx].Name.Trim();
-                    entityObect.CurriculumId = reqObjects.curriculums[idx].Id == null ? 0 : reqObjects.curriculums[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.curriculums[idx].Id, DBConstants.PrimaryKey));
+                    currency entityObect = new currency();
+                    entityObect.CurrencyCode = reqObjects.Currencies[idx].Code == null ? "" : reqObjects.Currencies[idx].Code.Trim();
+                    entityObect.CurrencyName = reqObjects.Currencies[idx].Name == null ? "" : reqObjects.Currencies[idx].Name.Trim();
+                    entityObect.BaseCurrency = reqObjects.Currencies[idx].BaseCurrency == null ? "" : reqObjects.Currencies[idx].BaseCurrency.Trim();
+                    entityObect.Precisions = reqObjects.Currencies[idx].Precisions == null ? "" : reqObjects.Currencies[idx].Precisions.Trim();
+                    entityObect.Stats = reqObjects.Currencies[idx].Stats == null ? "" : reqObjects.Currencies[idx].Stats.Trim();
+                    entityObect.CurrencyId = reqObjects.Currencies[idx].Id == null ? 0 : reqObjects.Currencies[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Currencies[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.curriculums[idx].action == "D")
+                    if (reqObjects.Currencies[idx].action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -94,7 +113,7 @@ namespace Admin.Helper.Admin
             }
             return entityObects;
         }
-        public bool CheckTheDataExistance(curriculum entityObject)
+        public bool CheckTheDataExistance(currency entityObject)
         {
             bool result = false;
             DataSet ds = new DataSet();
@@ -103,14 +122,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCurriculum spParams = new sp_manageCurriculum();
-                spParams.CurName = entityObject.CurriculumName;
-                spParams.CurCode = entityObject.CurriculumCode;
-                spParams.CurId = 0;
+                sp_manageCurrency spParams = new sp_manageCurrency();
+                spParams.curName = entityObject.CurrencyName;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curPrecision = entityObject.Precisions;
+                spParams.baseCur = entityObject.BaseCurrency;
+                spParams.curStatus = entityObject.Stats;
+                spParams.curId = 0;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurriculum");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrency");
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     result = true;
@@ -134,7 +156,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DataSet GetTheData(curriculum entityObject)
+        public DataSet GetTheData(currency entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -142,14 +164,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCurriculum spParams = new sp_manageCurriculum();
-                spParams.CurName = entityObject.CurriculumName;
-                spParams.CurCode = entityObject.CurriculumCode;
-                spParams.CurId = entityObject.CurriculumId;
+                sp_manageCurrency spParams = new sp_manageCurrency();
+                spParams.curName = entityObject.CurrencyName;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curPrecision = entityObject.Precisions;
+                spParams.baseCur = entityObject.BaseCurrency;
+                spParams.curStatus = entityObject.Stats;
+                spParams.curId = 0;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurriculum");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrency");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -166,7 +191,7 @@ namespace Admin.Helper.Admin
             }
             return ds;
         }
-        public int UpdateTheData(curriculum entityObject)
+        public int UpdateTheData(currency entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -174,15 +199,18 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCurriculum spParams = new sp_manageCurriculum();
-                spParams.CurName = entityObject.CurriculumName;
-                spParams.CurCode = entityObject.CurriculumCode;
-                spParams.CurId = entityObject.CurriculumId;
+                sp_manageCurrency spParams = new sp_manageCurrency();
+                spParams.curName = entityObject.CurrencyName;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curPrecision = entityObject.Precisions;
+                spParams.baseCur = entityObject.BaseCurrency;
+                spParams.curStatus = entityObject.Stats;
+                spParams.curId = 0;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Edit";
                 spParams.operation = "E";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurriculum");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrency");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -199,7 +227,7 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int DeleteTheData(curriculum entityObject)
+        public int DeleteTheData(currency entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -207,15 +235,18 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCurriculum spParams = new sp_manageCurriculum();
-                spParams.CurName = entityObject.CurriculumName;
-                spParams.CurCode = entityObject.CurriculumCode;
-                spParams.CurId = entityObject.CurriculumId;
+                sp_manageCurrency spParams = new sp_manageCurrency();
+                spParams.curName = entityObject.CurrencyName;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curPrecision = entityObject.Precisions;
+                spParams.baseCur = entityObject.BaseCurrency;
+                spParams.curStatus = entityObject.Stats;
+                spParams.curId = 0;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Delete";
                 spParams.operation = "D";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurriculum");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrency");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -232,11 +263,11 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int ProcessInsertEntity(curriculum entityObject)
+        public int ProcessInsertEntity(currency entityObject)
         {
             int result = 0;
-            string TableName = "curriculum";
-            string skipAttributes = "CurriculumId,CreatedDate,ModifiedDate,";
+            string TableName = "currency";
+            string skipAttributes = "CurrencyId,CreatedDate,ModifiedDate,";
             paramFile PF = new paramFile(ParamsPath);
             try
             {
@@ -262,7 +293,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public CurriculumResponse processResponseToProxy(CurriculumResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string tui, string signature, string message, string action)
         {
             try
             {
@@ -285,12 +316,12 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CurriculumResponse processResponseToProxy(CurriculumResponse response, string tui, string signature, string message, string action)
+        private CurrencyResponse processResponseToProxy(CurrencyResponse response, string tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Curriculum dept in response.curriculums)
+                foreach (Currency dept in response.Currencies)
                 {
                     if (dept.message != "")
                     {
@@ -318,21 +349,21 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CurriculumResponse processResponseToProxy(CurriculumResponse response, DataSet ds, string tui, string signature, string message)
+        private CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.curriculums = new Curriculum[ds.Tables[0].Rows.Count];
+                    response.Currencies = new Currency[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        Curriculum DD = new Curriculum();
-                        DD.Name = dr[CnstCurriculum.CurriculumName].ToString();
-                        DD.Code = dr[CnstCurriculum.CurriculumCode].ToString();
-                        DD.Id = getEncryptData(dr[CnstCurriculum.CurriculumId].ToString(), DBConstants.PrimaryKey);
-                        response.curriculums[idx] = DD;
+                        Currency DD = new Currency();
+                        DD.Name = dr[CnstCurrency.CurrencyName].ToString();
+                        DD.Code = dr[CnstCurrency.CurrencyCode].ToString();
+                        DD.Id = getEncryptData(dr[CnstCurrency.CurrencyId].ToString(), DBConstants.PrimaryKey);
+                        response.Currencies[idx] = DD;
                         idx++;
                     }
                     response.code = ResponseConstants.OK.ToString();
@@ -345,7 +376,7 @@ namespace Admin.Helper.Admin
                     response.code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Curriculum has " + ResponseConstants.Fail;
+                        response.message = "Getting Currency has " + ResponseConstants.Fail;
                     }
                     else
                     {

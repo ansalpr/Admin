@@ -6,8 +6,8 @@ using API.Base;
 
 namespace Admin.Models.Admin
 {
-    public class CurriculumResponse : BaseResponse
+    public class CurrencyResponse : BaseResponse
     {
-        public Curriculum[] curriculums = new Curriculum[] { };
+        public Currency[] Currencies = new Currency[] { };
     }
 }
