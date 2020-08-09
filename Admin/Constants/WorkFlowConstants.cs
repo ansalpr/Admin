@@ -16,6 +16,11 @@ namespace API.Base
         public const string DDepartment = "DELETE-DEPARTMENT";
         public const string VDepartment = "VIEW-DEPARTMENT";
 
+        public const string NCurriculum = "NEW-CURRICULUM";
+        public const string ECurriculum = "EDIT-CURRICULUM";
+        public const string DCurriculum = "DELETE-CURRICULUM";
+        public const string VCurriculum = "VIEW-CURRICULUM";
+
         public const string NDesignation = "NEW-DESIGNATION";
         public const string EDesignation = "EDIT-DESIGNATION";
         public const string DDesignation = "DELETE-DESIGNATION";
