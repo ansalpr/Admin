@@ -4,51 +4,67 @@ using Admin.Models.Admin;
 using API.Base;
 using DataLayer;
 using EntityLayer.StoredProcedures.Admin;
-using EntityLayer.Tables;
 using EntityLayer.Tables.Admin;
 using GeneralLayer;
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+
 namespace Admin.Helper.Admin
 {
-    public class CountryHelper : BaseHelper
+    public class CurrencyRateHelper : BaseHelper
     {
-        public CountryResponse ValidateRequest(CountryRequest reqObjects)
+        public CurrencyRateResponse ValidateRequest(CurrencyRateRequest reqObjects)
         {
-            CountryResponse response = new CountryResponse();
-            response.Countries = new Country[reqObjects.Countries.Length];
+            CurrencyRateResponse response = new CurrencyRateResponse();
+            response.CurrencyRate = new CurrencyRate[reqObjects.CurrencyRate.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.Countries.Length; idx++)
+            for (int idx = 0; idx < reqObjects.CurrencyRate.Length; idx++)
             {
-                if (reqObjects.Countries == null)
+                if (reqObjects.CurrencyRate == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ( (reqObjects.Countries[idx].action.ToUpper() == "A" || reqObjects.Countries[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.CurrencyRate[idx].action.ToUpper() == "A" || reqObjects.CurrencyRate[idx].action.ToUpper() == "E"))
                 {
-                    if((reqObjects.Countries[idx].Code == null || reqObjects.Countries[idx].Code == "") )
+                    if ((reqObjects.CurrencyRate[idx].CurrencyCode == null || reqObjects.CurrencyRate[idx].CurrencyCode == ""))
                     {
-                        message = "Code " + ResponseConstants.Mandatory;
+                        message = "CurrencyCode " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.Countries[idx].Name == null || reqObjects.Countries[idx].Name == "") )
+                    else if ((reqObjects.CurrencyRate[idx].ExchangeRate == null || reqObjects.CurrencyRate[idx].ExchangeRate == "" ))
                     {
-                        message = "Code " + ResponseConstants.Mandatory;
+                        message = "ExchangeRate " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.Countries[idx].Nationality == null || reqObjects.Countries[idx].Nationality == ""))
+                    else if ((reqObjects.CurrencyRate[idx].BaseCurrency == null || reqObjects.CurrencyRate[idx].BaseCurrency == ""))
                     {
-                        message = "Nationality " + ResponseConstants.Mandatory;
+                        message = "BaseCurrency " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.CurrencyRate[idx].EffectDate == null || reqObjects.CurrencyRate[idx].EffectDate == ""))
+                    {
+                        message = "EffectDate " + ResponseConstants.Mandatory;
+                    }
+                    else
+                    {
+                        if (!validateDateFormat(reqObjects.CurrencyRate[idx].EffectDate))
+                        {
+                            message = ResponseConstants.InValid + " " + CnstCurrencyRate.EffectDate;
+                        }
+                        else if(reqObjects.CurrencyRate[idx].ExchangeRate == "0")
+                        {
+                            message = CnstCurrencyRate.ExchangeRate + " Must be greater than Zero";
+                        }
                     }
                 }
-                else if ((reqObjects.Countries[idx].Id == null || reqObjects.Countries[idx].Id == "") && (reqObjects.Countries[idx].action.ToUpper() == "E" || reqObjects.Countries[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.CurrencyRate[idx].Id == null || reqObjects.CurrencyRate[idx].Id == "") && (reqObjects.CurrencyRate[idx].action.ToUpper() == "E" || reqObjects.CurrencyRate[idx].action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
-                Country proxyResponse = new Country();
-                proxyResponse = reqObjects.Countries[idx];
+                CurrencyRate proxyResponse = new CurrencyRate();
+                proxyResponse = reqObjects.CurrencyRate[idx];
                 proxyResponse.message = message;
-                response.Countries[idx] = proxyResponse;
+                response.CurrencyRate[idx] = proxyResponse;
                 if (message != "")
                 {
                     response.message = "Invalid Request";
@@ -65,22 +81,23 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        public country[] ProcessProxyToEntity(CountryRequest reqObjects, int UserId)
+        public currencyrate[] ProcessProxyToEntity(CurrencyRateRequest reqObjects, int UserId)
         {
-            country[] entityObects = new country[reqObjects.Countries.Length];
+            currencyrate[] entityObects = new currencyrate[reqObjects.CurrencyRate.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.Countries.Length; idx++)
+                for (int idx = 0; idx < reqObjects.CurrencyRate.Length; idx++)
                 {
-                    country entityObect = new country();
-                    entityObect.CountryCode = reqObjects.Countries[idx].Code == null ? "" : reqObjects.Countries[idx].Code.Trim();
-                    entityObect.CountryName = reqObjects.Countries[idx].Name == null ? "" : reqObjects.Countries[idx].Name.Trim();
-                    entityObect.Nationality = reqObjects.Countries[idx].Nationality == null ? "" : reqObjects.Countries[idx].Nationality.Trim();
-                    entityObect.CountryId = reqObjects.Countries[idx].Id == null ? 0 : reqObjects.Countries[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Countries[idx].Id, DBConstants.PrimaryKey));
+                    currencyrate entityObect = new currencyrate();
+                    entityObect.CurrencyCode = reqObjects.CurrencyRate[idx].CurrencyCode == null ? "" : reqObjects.CurrencyRate[idx].CurrencyCode.Trim();
+                    entityObect.BaseCurrency = reqObjects.CurrencyRate[idx].BaseCurrency == null ? "" : reqObjects.CurrencyRate[idx].BaseCurrency.Trim();
+                    entityObect.EffectDate =  Convert.ToDateTime(reqObjects.CurrencyRate[idx].EffectDate.Trim());
+                    entityObect.ExchangeRate = Convert.ToDecimal(reqObjects.CurrencyRate[idx].ExchangeRate.Trim());
+                    entityObect.CurrencyRateId = reqObjects.CurrencyRate[idx].Id == null ? 0 : reqObjects.CurrencyRate[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.CurrencyRate[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.Countries[idx].action == "D")
+                    if (reqObjects.CurrencyRate[idx].action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -102,7 +119,7 @@ namespace Admin.Helper.Admin
             }
             return entityObects;
         }
-        public bool CheckTheDataExistance(country entityObject)
+        public bool CheckTheDataExistance(currencyrate entityObject)
         {
             bool result = false;
             DataSet ds = new DataSet();
@@ -111,15 +128,16 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = 0;
+                sp_manageCurrencyRate spParams = new sp_manageCurrencyRate();
+                spParams.curBaseCurrency = entityObject.BaseCurrency;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curEffectDate = entityObject.EffectDate.ToString();
+                spParams.curExchangeRate = entityObject.ExchangeRate.ToString();
+                spParams.curRateId = 0;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrencyRate");
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     result = true;
@@ -143,7 +161,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DataSet GetTheData(country entityObject)
+        public DataSet GetTheData(currencyrate entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -151,15 +169,16 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageCurrencyRate spParams = new sp_manageCurrencyRate();
+                spParams.curBaseCurrency = entityObject.BaseCurrency;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curEffectDate = entityObject.EffectDate.ToString();
+                spParams.curExchangeRate = entityObject.ExchangeRate.ToString();
+                spParams.curRateId = entityObject.CurrencyRateId;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrencyRate");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -176,7 +195,7 @@ namespace Admin.Helper.Admin
             }
             return ds;
         }
-        public int UpdateTheData(country entityObject)
+        public int UpdateTheData(currencyrate entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -184,16 +203,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageCurrencyRate spParams = new sp_manageCurrencyRate();
+                spParams.curBaseCurrency = entityObject.BaseCurrency;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curEffectDate = entityObject.EffectDate.ToString();
+                spParams.curExchangeRate = entityObject.ExchangeRate.ToString();
+                spParams.curRateId = entityObject.CurrencyRateId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Edit";
                 spParams.operation = "E";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrencyRate");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -210,7 +230,7 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int DeleteTheData(country entityObject)
+        public int DeleteTheData(currencyrate entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -218,16 +238,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageCurrencyRate spParams = new sp_manageCurrencyRate();
+                spParams.curBaseCurrency = entityObject.BaseCurrency;
+                spParams.curCode = entityObject.CurrencyCode;
+                spParams.curEffectDate = entityObject.EffectDate.ToString();
+                spParams.curExchangeRate = entityObject.ExchangeRate.ToString();
+                spParams.curRateId = entityObject.CurrencyRateId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Delete";
                 spParams.operation = "D";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCurrencyRate");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -244,11 +265,11 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int ProcessInsertEntity(country entityObject)
+        public int ProcessInsertEntity(currencyrate entityObject)
         {
             int result = 0;
-            string TableName = "country";
-            string skipAttributes = "CountryId,CreatedDate,ModifiedDate,";
+            string TableName = "currencyrate";
+            string skipAttributes = "CurrencyRateId,CreatedDate,ModifiedDate,";
             paramFile PF = new paramFile(ParamsPath);
             try
             {
@@ -274,7 +295,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public CountryResponse processResponseToProxy(CountryResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public CurrencyRateResponse processResponseToProxy(CurrencyRateResponse response, DataSet ds, string tui, string signature, string message, string action)
         {
             try
             {
@@ -297,12 +318,12 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CountryResponse processResponseToProxy(CountryResponse response, string tui, string signature, string message, string action)
+        private CurrencyRateResponse processResponseToProxy(CurrencyRateResponse response, string tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Country dept in response.Countries)
+                foreach (CurrencyRate dept in response.CurrencyRate)
                 {
                     if (dept.message != "")
                     {
@@ -330,22 +351,23 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CountryResponse processResponseToProxy(CountryResponse response, DataSet ds, string tui, string signature, string message)
+        private CurrencyRateResponse processResponseToProxy(CurrencyRateResponse response, DataSet ds, string tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.Countries = new Country[ds.Tables[0].Rows.Count];
+                    response.CurrencyRate = new CurrencyRate[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        Country DD = new Country();
-                        DD.Name = dr[CnstCountry.CountryName].ToString();
-                        DD.Code = dr[CnstCountry.CountryCode].ToString();
-                        DD.Nationality = dr[CnstCountry.Nationality].ToString();
-                        DD.Id = getEncryptData(dr[CnstCountry.CountryId].ToString(), DBConstants.PrimaryKey);
-                        response.Countries[idx] = DD;
+                        CurrencyRate DD = new CurrencyRate();
+                        DD.BaseCurrency = dr[CnstCurrencyRate.BaseCurrency].ToString();
+                        DD.CurrencyCode = dr[CnstCurrencyRate.CurrencyCode].ToString();
+                        DD.EffectDate = dr[CnstCurrencyRate.EffectDate].ToString();
+                        DD.ExchangeRate = dr[CnstCurrencyRate.ExchangeRate].ToString();
+                        DD.Id = getEncryptData(dr[CnstCurrencyRate.CurrencyRateId].ToString(), DBConstants.PrimaryKey);
+                        response.CurrencyRate[idx] = DD;
                         idx++;
                     }
                     response.code = ResponseConstants.OK.ToString();
@@ -358,7 +380,7 @@ namespace Admin.Helper.Admin
                     response.code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Country has " + ResponseConstants.Fail;
+                        response.message = "Getting CurrencyRate has " + ResponseConstants.Fail;
                     }
                     else
                     {

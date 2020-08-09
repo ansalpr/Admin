@@ -19,5 +19,6 @@ namespace API.Base
         public const string Mandatory = "Cannot Be Empty";
         public const string InvalidRequest = "Invalid Request";
         public const string Exist = "Data Already There";
+        public const string InValid = "Invalid";
     }
 }

@@ -26,6 +26,11 @@ namespace API.Base
         public const string DCurrency = "DELETE-CURRENCY";
         public const string VCurrency = "VIEW-CURRENCY";
 
+        public const string NCurrencyRate = "NEW-CURRENCYRATE";
+        public const string ECurrencyRate = "EDIT-CURRENCYRATE";
+        public const string DCurrencyRate = "DELETE-CURRENCYRATE";
+        public const string VCurrencyRate = "VIEW-CURRENCYRATE";
+
         public const string NCountry = "NEW-COUNTRY";
         public const string ECountry = "EDIT-COUNTRY";
         public const string DCountry = "DELETE-COUNTRY";

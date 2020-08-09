@@ -111,6 +111,7 @@
     <Compile Include="Constants\ResponseConstants.cs" />
     <Compile Include="Constants\Table\CnstCountry.cs" />
     <Compile Include="Constants\Table\CnstCurrency.cs" />
+    <Compile Include="Constants\Table\CnstCurrencyRate.cs" />
     <Compile Include="Constants\Table\CnstCurriculum.cs" />
     <Compile Include="Constants\Table\CnstDepartment.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
@@ -122,6 +123,7 @@
     </Compile>
     <Compile Include="Helper\Admin\CountryHelper.cs" />
     <Compile Include="Helper\Admin\CurrencyHelper.cs" />
+    <Compile Include="Helper\Admin\CurrencyRateHelper.cs" />
     <Compile Include="Helper\Admin\CurriculumHelper.cs" />
     <Compile Include="Helper\Admin\DepartmentHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
@@ -129,6 +131,9 @@
     <Compile Include="Models\Admin\Country\Country.cs" />
     <Compile Include="Models\Admin\Country\CountryRequest.cs" />
     <Compile Include="Models\Admin\Country\CountryResponse.cs" />
+    <Compile Include="Models\Admin\CurrencyRate\CurrencyRate.cs" />
+    <Compile Include="Models\Admin\CurrencyRate\CurrencyRateRequest.cs" />
+    <Compile Include="Models\Admin\CurrencyRate\CurrencyRateResponse.cs" />
     <Compile Include="Models\Admin\Currency\Currency.cs" />
     <Compile Include="Models\Admin\Currency\CurrencyRequest.cs" />
     <Compile Include="Models\Admin\Currency\CurrencyResponse.cs" />
