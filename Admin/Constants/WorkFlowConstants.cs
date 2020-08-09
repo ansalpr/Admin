@@ -26,6 +26,11 @@ namespace API.Base
         public const string DCurrency = "DELETE-CURRENCY";
         public const string VCurrency = "VIEW-CURRENCY";
 
+        public const string NCountry = "NEW-COUNTRY";
+        public const string ECountry = "EDIT-COUNTRY";
+        public const string DCountry = "DELETE-COUNTRY";
+        public const string VCountry = "VIEW-COUNTRY";
+
         public const string NDesignation = "NEW-DESIGNATION";
         public const string EDesignation = "EDIT-DESIGNATION";
         public const string DDesignation = "DELETE-DESIGNATION";
