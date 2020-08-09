@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -54,6 +55,19 @@ namespace Admin.Base
 
             return encData;
         }
-
+        public bool validateDateFormat(string dt)
+        {
+            string format = "yyyy-MM-dd";
+            DateTime dateTime;
+            if (DateTime.TryParseExact(dt, format, CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out dateTime))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

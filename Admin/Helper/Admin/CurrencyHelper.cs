@@ -16,6 +16,32 @@ namespace Admin.Helper.Admin
 {
     public class CurrencyHelper : BaseHelper
     {
+        public currency CreateCurrencyObject(string CurrencyCode)
+        {
+            currency retObj = new currency();
+            try
+            {
+                retObj.CurrencyCode = CurrencyCode;
+                retObj.BaseCurrency = "";
+                retObj.CurrencyId = 0;
+                retObj.CurrencyName = "";
+                retObj.Precisions = "";
+                retObj.Stats = "";
+            }
+            catch (Exception ex)
+            {
+                var st = new StackTrace();
+                var sf = st.GetFrame(0);
+                string currentMethodName = sf.GetMethod().Name;
+
+                currentMethodName = ex.Message.ToString().Split('|').Count() > 0 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                string currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+
+                Exception customex = new Exception(currentMethodName + " | " + currentControllerName + " | " + ex.Message + " : " + ex.StackTrace);
+                throw customex;
+            }
+            return retObj;
+        }
         public CurrencyResponse ValidateRequest(CurrencyRequest reqObjects)
         {
             CurrencyResponse response = new CurrencyResponse();
@@ -362,6 +388,9 @@ namespace Admin.Helper.Admin
                         Currency DD = new Currency();
                         DD.Name = dr[CnstCurrency.CurrencyName].ToString();
                         DD.Code = dr[CnstCurrency.CurrencyCode].ToString();
+                        DD.BaseCurrency = dr[CnstCurrency.BaseCurrency].ToString();
+                        DD.Precisions = dr[CnstCurrency.Precisions].ToString();
+                        DD.Stats = dr[CnstCurrency.Stats].ToString();
                         DD.Id = getEncryptData(dr[CnstCurrency.CurrencyId].ToString(), DBConstants.PrimaryKey);
                         response.Currencies[idx] = DD;
                         idx++;
