@@ -21,6 +21,11 @@ namespace API.Base
         public const string DCurriculum = "DELETE-CURRICULUM";
         public const string VCurriculum = "VIEW-CURRICULUM";
 
+        public const string NCurrency = "NEW-CURRENCY";
+        public const string ECurrency = "EDIT-CURRENCY";
+        public const string DCurrency = "DELETE-CURRENCY";
+        public const string VCurrency = "VIEW-CURRENCY";
+
         public const string NDesignation = "NEW-DESIGNATION";
         public const string EDesignation = "EDIT-DESIGNATION";
         public const string DDesignation = "DELETE-DESIGNATION";

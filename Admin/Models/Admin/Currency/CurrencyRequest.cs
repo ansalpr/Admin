@@ -6,10 +6,10 @@ using Admin.Base;
 
 namespace Admin.Models.Admin
 { 
-    public class CurriculumRequest : BaseRequest
+    public class CurrencyRequest : BaseRequest
     {
 
-        public Curriculum[] curriculums = new Curriculum[] { };
+        public Currency[] Currencies = new Currency[] { };
 
     }
 }
