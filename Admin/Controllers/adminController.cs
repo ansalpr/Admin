@@ -492,15 +492,12 @@ namespace Admin.Controllers
             #region objects
             //Helper Classes
             GeneralHelper GH = new GeneralHelper();
+            AdminHelper ADMH = new AdminHelper();
             CurrencyRateHelper helperObj = new CurrencyRateHelper();
-            //Forign Helpers
-            CurrencyHelper helperCurrency = new CurrencyHelper();
             //DataOperation
             DataSet ds = new DataSet();
             //Entity Objects
-            currencyrate[] entityObjects = new currencyrate[] { };
-            // Foriegn Entity
-            currency currencyObj;
+            currencyrate[] entityObjects = new currencyrate[] { };            
             //Proxy Objects
             CurrencyRateResponse response = new CurrencyRateResponse();
             #endregion
@@ -525,9 +522,8 @@ namespace Admin.Controllers
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
-                                //Check the CurrencyCode Existance
-                                currencyObj = helperCurrency.CreateCurrencyObject(reqObj.CurrencyRate[idx].CurrencyCode);
-                                if (helperCurrency.CheckTheDataExistance(currencyObj))
+                                //Check the CurrencyCode Existance                               
+                                if (ADMH.getTheCurrencyData(reqObj.CurrencyRate[idx].CurrencyCode,0).Tables[0].Rows.Count > 0)
                                 {
                                     //Insert Entity Details
                                     result = helperObj.ProcessInsertEntity(entityObjects[idx]);
@@ -542,7 +538,7 @@ namespace Admin.Controllers
                                 }
                                 else
                                 {
-                                    response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " doesnot Exist ";
+                                    response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
@@ -666,7 +662,7 @@ namespace Admin.Controllers
                                 }
                                 else
                                 {
-                                    response.states[idx].message = entityObjects[idx].CountryCode + " Invalid " ;
+                                    response.states[idx].message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
                                 }
                                 
                             }
@@ -711,6 +707,130 @@ namespace Admin.Controllers
                 response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.states[0].action);
                 //Log Response
                 LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NState, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageClass([FromBody] ClassRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            AdminHelper ADMH = new AdminHelper();
+            ClassHelper helperObj = new ClassHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            classe[] entityObjects = new classe[] { };
+            //Proxy Objects
+            ClassResponse response = new ClassResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NClass, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.classes.Length; idx++)
+                    {
+                        if (reqObj.classes[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Check the Country Code Existance
+                                if (ADMH.getTheCurriculumData(reqObj.classes[idx].CurriculumCode, 0).Tables[0].Rows.Count > 0)
+                                {
+                                    //Insert Entity Details
+                                    result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                    if (result > 0)
+                                    {
+                                        response.classes[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    }
+                                    else
+                                    {
+                                        response.classes[idx].message = entityObjects[idx].ClassName + " Insertion " + ResponseConstants.Fail;
+                                    }
+                                }
+                                else
+                                {
+                                    response.classes[idx].message = entityObjects[idx].CurriculumCode + " " + ResponseConstants.InValid;
+                                }
+
+                            }
+                            else
+                            {
+                                response.classes[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.classes[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.classes[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.classes[idx].message = entityObjects[idx].ClassName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.classes[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.classes[idx].message = entityObjects[idx].ClassName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.classes[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NClass, response.tui);
             }
             catch (Exception ex)
             {

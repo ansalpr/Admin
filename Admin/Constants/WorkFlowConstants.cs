@@ -31,6 +31,11 @@ namespace API.Base
         public const string DState = "DELETE-STATE";
         public const string VState = "VIEW-STATE";
 
+        public const string NClass = "NEW-CLASS";
+        public const string EClass = "EDIT-CLASS";
+        public const string DClass = "DELETE-CLASS";
+        public const string VClass = "VIEW-CLASS";
+
         public const string NCurrencyRate = "NEW-CURRENCYRATE";
         public const string ECurrencyRate = "EDIT-CURRENCYRATE";
         public const string DCurrencyRate = "DELETE-CURRENCYRATE";

@@ -10,44 +10,49 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+
 namespace Admin.Helper.Admin
 {
-    public class CountryHelper : BaseHelper
+    public class ClassHelper : BaseHelper
     {
-        public CountryResponse ValidateRequest(CountryRequest reqObjects)
+        public ClassResponse ValidateRequest(ClassRequest reqObjects)
         {
-            CountryResponse response = new CountryResponse();
-            response.Countries = new Country[reqObjects.Countries.Length];
+            ClassResponse response = new ClassResponse();
+            response.classes = new Classe[reqObjects.classes.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.Countries.Length; idx++)
+            for (int idx = 0; idx < reqObjects.classes.Length; idx++)
             {
-                if (reqObjects.Countries == null)
+                if (reqObjects.classes == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ( (reqObjects.Countries[idx].action.ToUpper() == "A" || reqObjects.Countries[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.classes[idx].action.ToUpper() == "A" || reqObjects.classes[idx].action.ToUpper() == "E"))
                 {
-                    if((reqObjects.Countries[idx].Code == null || reqObjects.Countries[idx].Code == "") )
+                    if ((reqObjects.classes[idx].Code == null || reqObjects.classes[idx].Code == ""))
                     {
-                        message = "Code " + ResponseConstants.Mandatory;
+                        message = CnstClass.ClassCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.Countries[idx].Name == null || reqObjects.Countries[idx].Name == "") )
+                    else if ((reqObjects.classes[idx].Name == null || reqObjects.classes[idx].Name == ""))
                     {
-                        message = "Code " + ResponseConstants.Mandatory;
+                        message = CnstClass.ClassName + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.Countries[idx].Nationality == null || reqObjects.Countries[idx].Nationality == ""))
+                    else if ((reqObjects.classes[idx].Sort == null || reqObjects.classes[idx].Sort == ""))
                     {
-                        message = "Nationality " + ResponseConstants.Mandatory;
+                        message = CnstClass.Sort + " " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.classes[idx].CurriculumCode == null || reqObjects.classes[idx].CurriculumCode == ""))
+                    {
+                        message = CnstClass.CurriculumCode + " " + ResponseConstants.Mandatory;
                     }
                 }
-                else if ((reqObjects.Countries[idx].Id == null || reqObjects.Countries[idx].Id == "") && (reqObjects.Countries[idx].action.ToUpper() == "E" || reqObjects.Countries[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.classes[idx].Id == null || reqObjects.classes[idx].Id == "") && (reqObjects.classes[idx].action.ToUpper() == "E" || reqObjects.classes[idx].action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
-                Country proxyResponse = new Country();
-                proxyResponse = reqObjects.Countries[idx];
+                Classe proxyResponse = new Classe();
+                proxyResponse = reqObjects.classes[idx];
                 proxyResponse.message = message;
-                response.Countries[idx] = proxyResponse;
+                response.classes[idx] = proxyResponse;
                 if (message != "")
                 {
                     response.message = "Invalid Request";
@@ -64,22 +69,23 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        public country[] ProcessProxyToEntity(CountryRequest reqObjects, int UserId)
+        public classe[] ProcessProxyToEntity(ClassRequest reqObjects, int UserId)
         {
-            country[] entityObects = new country[reqObjects.Countries.Length];
+            classe[] entityObects = new classe[reqObjects.classes.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.Countries.Length; idx++)
+                for (int idx = 0; idx < reqObjects.classes.Length; idx++)
                 {
-                    country entityObect = new country();
-                    entityObect.CountryCode = reqObjects.Countries[idx].Code == null ? "" : reqObjects.Countries[idx].Code.Trim();
-                    entityObect.CountryName = reqObjects.Countries[idx].Name == null ? "" : reqObjects.Countries[idx].Name.Trim();
-                    entityObect.Nationality = reqObjects.Countries[idx].Nationality == null ? "" : reqObjects.Countries[idx].Nationality.Trim();
-                    entityObect.CountryId = reqObjects.Countries[idx].Id == null ? 0 : reqObjects.Countries[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Countries[idx].Id, DBConstants.PrimaryKey));
+                    classe entityObect = new classe();
+                    entityObect.ClassCode = reqObjects.classes[idx].Code == null ? "" : reqObjects.classes[idx].Code.Trim();
+                    entityObect.ClassName = reqObjects.classes[idx].Name == null ? "" : reqObjects.classes[idx].Name.Trim();
+                    entityObect.Sort = reqObjects.classes[idx].Sort == null ? "" : reqObjects.classes[idx].Sort.Trim();
+                    entityObect.CurriculumCode = reqObjects.classes[idx].CurriculumCode == null ? "" : reqObjects.classes[idx].CurriculumCode.Trim();
+                    entityObect.ClassId = reqObjects.classes[idx].Id == null ? 0 : reqObjects.classes[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.classes[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.Countries[idx].action == "D")
+                    if (reqObjects.classes[idx].action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -101,7 +107,7 @@ namespace Admin.Helper.Admin
             }
             return entityObects;
         }
-        public bool CheckTheDataExistance(country entityObject)
+        public bool CheckTheDataExistance(classe entityObject)
         {
             bool result = false;
             DataSet ds = new DataSet();
@@ -110,15 +116,16 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = 0;
+                sp_manageClass spParams = new sp_manageClass();
+                spParams.clsName = entityObject.ClassName;
+                spParams.clsCode = entityObject.ClassCode;
+                spParams.clsSort = entityObject.Sort;
+                spParams.clsCurriculumCode = entityObject.CurriculumCode;
+                spParams.clsId = 0;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageClass");
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     result = true;
@@ -142,7 +149,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DataSet GetTheData(country entityObject)
+        public DataSet GetTheData(classe entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -150,15 +157,16 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageClass spParams = new sp_manageClass();
+                spParams.clsName = entityObject.ClassName;
+                spParams.clsCode = entityObject.ClassCode;
+                spParams.clsSort = entityObject.Sort;
+                spParams.clsCurriculumCode = entityObject.CurriculumCode;
+                spParams.clsId = entityObject.ClassId;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageClass");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -175,7 +183,7 @@ namespace Admin.Helper.Admin
             }
             return ds;
         }
-        public int UpdateTheData(country entityObject)
+        public int UpdateTheData(classe entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -183,16 +191,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageClass spParams = new sp_manageClass();
+                spParams.clsName = entityObject.ClassName;
+                spParams.clsCode = entityObject.ClassCode;
+                spParams.clsSort = entityObject.Sort;
+                spParams.clsCurriculumCode = entityObject.CurriculumCode;
+                spParams.clsId = entityObject.ClassId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Edit";
                 spParams.operation = "E";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageClass");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -209,7 +218,7 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int DeleteTheData(country entityObject)
+        public int DeleteTheData(classe entityObject)
         {
             DataSet ds = new DataSet();
             paramFile PF = new paramFile(ParamsPath);
@@ -217,16 +226,17 @@ namespace Admin.Helper.Admin
             {
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
-                sp_manageCountry spParams = new sp_manageCountry();
-                spParams.cntName = entityObject.CountryName;
-                spParams.cntCode = entityObject.CountryCode;
-                spParams.cntNationality = entityObject.Nationality;
-                spParams.cntId = entityObject.CountryId;
+                sp_manageClass spParams = new sp_manageClass();
+                spParams.clsName = entityObject.ClassName;
+                spParams.clsCode = entityObject.ClassCode;
+                spParams.clsSort = entityObject.Sort;
+                spParams.clsCurriculumCode = entityObject.CurriculumCode;
+                spParams.clsId = entityObject.ClassId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Delete";
                 spParams.operation = "D";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageCountry");
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageClass");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
@@ -243,11 +253,11 @@ namespace Admin.Helper.Admin
             }
             return Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
         }
-        public int ProcessInsertEntity(country entityObject)
+        public int ProcessInsertEntity(classe entityObject)
         {
             int result = 0;
-            string TableName = "country";
-            string skipAttributes = "CountryId,CreatedDate,ModifiedDate,";
+            string TableName = "class";
+            string skipAttributes = "ClassId,CreatedDate,ModifiedDate,";
             paramFile PF = new paramFile(ParamsPath);
             try
             {
@@ -273,7 +283,7 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public CountryResponse processResponseToProxy(CountryResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string tui, string signature, string message, string action)
         {
             try
             {
@@ -296,12 +306,12 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CountryResponse processResponseToProxy(CountryResponse response, string tui, string signature, string message, string action)
+        private ClassResponse processResponseToProxy(ClassResponse response, string tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Country dept in response.Countries)
+                foreach (Classe dept in response.classes)
                 {
                     if (dept.message != "")
                     {
@@ -329,22 +339,23 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CountryResponse processResponseToProxy(CountryResponse response, DataSet ds, string tui, string signature, string message)
+        private ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.Countries = new Country[ds.Tables[0].Rows.Count];
+                    response.classes = new Classe[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        Country DD = new Country();
-                        DD.Name = dr[CnstCountry.CountryName].ToString();
-                        DD.Code = dr[CnstCountry.CountryCode].ToString();
-                        DD.Nationality = dr[CnstCountry.Nationality].ToString();
-                        DD.Id = getEncryptData(dr[CnstCountry.CountryId].ToString(), DBConstants.PrimaryKey);
-                        response.Countries[idx] = DD;
+                        Classe DD = new Classe();
+                        DD.Name = dr[CnstClass.ClassName].ToString();
+                        DD.Code = dr[CnstClass.ClassCode].ToString();
+                        DD.Sort = dr[CnstClass.Sort].ToString();
+                        DD.CurriculumCode = dr[CnstClass.CurriculumCode].ToString();
+                        DD.Id = getEncryptData(dr[CnstClass.ClassId].ToString(), DBConstants.PrimaryKey);
+                        response.classes[idx] = DD;
                         idx++;
                     }
                     response.code = ResponseConstants.OK.ToString();
@@ -357,7 +368,7 @@ namespace Admin.Helper.Admin
                     response.code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Country has " + ResponseConstants.Fail;
+                        response.message = "Getting Class has " + ResponseConstants.Fail;
                     }
                     else
                     {
