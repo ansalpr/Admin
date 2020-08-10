@@ -114,6 +114,7 @@
     <Compile Include="Constants\Table\CnstCurrencyRate.cs" />
     <Compile Include="Constants\Table\CnstCurriculum.cs" />
     <Compile Include="Constants\Table\CnstDepartment.cs" />
+    <Compile Include="Constants\Table\CnstState.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
     <Compile Include="Controllers\adminController.cs" />
     <Compile Include="Controllers\utilsController.cs" />
@@ -126,6 +127,8 @@
     <Compile Include="Helper\Admin\CurrencyRateHelper.cs" />
     <Compile Include="Helper\Admin\CurriculumHelper.cs" />
     <Compile Include="Helper\Admin\DepartmentHelper.cs" />
+    <Compile Include="Helper\Admin\StateHelper.cs" />
+    <Compile Include="Helper\General\AdminHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
     <Compile Include="Helper\Utility\Authentication\AuthHelper.cs" />
     <Compile Include="Models\Admin\Country\Country.cs" />
@@ -143,6 +146,9 @@
     <Compile Include="Models\Admin\Department\Department.cs" />
     <Compile Include="Models\Admin\Department\DepartmentRequest.cs" />
     <Compile Include="Models\Admin\Department\DepartmentResponse.cs" />
+    <Compile Include="Models\Admin\State\State.cs" />
+    <Compile Include="Models\Admin\State\StateRequest.cs" />
+    <Compile Include="Models\Admin\State\StateResponse.cs" />
     <Compile Include="Models\Authentication\authRequest.cs" />
     <Compile Include="Models\Authentication\authResponse.cs" />
     <Compile Include="Models\Other\DataProxy.cs" />
