@@ -4,11 +4,9 @@ using DataLayer;
 using EntityLayer.StoredProcedures;
 using GeneralLayer;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 
 namespace Admin.Helper.General
 {
