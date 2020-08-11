@@ -31,6 +31,16 @@ namespace API.Base
         public const string DState = "DELETE-STATE";
         public const string VState = "VIEW-STATE";
 
+        public const string NSection = "NEW-SECTION";
+        public const string ESection = "EDIT-SECTION";
+        public const string DSection = "DELETE-SECTION";
+        public const string VSection = "VIEW-SECTION";
+
+        public const string NDivision = "NEW-DIVISION";
+        public const string EDivision = "EDIT-DIVISION";
+        public const string DDivision = "DELETE-DIVISION";
+        public const string VDivision = "VIEW-DIVISION";
+
         public const string NClass = "NEW-CLASS";
         public const string EClass = "EDIT-CLASS";
         public const string DClass = "DELETE-CLASS";
