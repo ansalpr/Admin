@@ -115,6 +115,9 @@
     <Compile Include="Constants\Table\CnstCurrencyRate.cs" />
     <Compile Include="Constants\Table\CnstCurriculum.cs" />
     <Compile Include="Constants\Table\CnstDepartment.cs" />
+    <Compile Include="Constants\Table\CnstDesignation.cs" />
+    <Compile Include="Constants\Table\CnstDivision.cs" />
+    <Compile Include="Constants\Table\CnstSection.cs" />
     <Compile Include="Constants\Table\CnstState.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
     <Compile Include="Controllers\adminController.cs" />
@@ -129,6 +132,9 @@
     <Compile Include="Helper\Admin\CurrencyRateHelper.cs" />
     <Compile Include="Helper\Admin\CurriculumHelper.cs" />
     <Compile Include="Helper\Admin\DepartmentHelper.cs" />
+    <Compile Include="Helper\Admin\DesignationHelper.cs" />
+    <Compile Include="Helper\Admin\DivisionHelper.cs" />
+    <Compile Include="Helper\Admin\SectionHelper.cs" />
     <Compile Include="Helper\Admin\StateHelper.cs" />
     <Compile Include="Helper\General\AdminHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
@@ -151,6 +157,15 @@
     <Compile Include="Models\Admin\Department\Department.cs" />
     <Compile Include="Models\Admin\Department\DepartmentRequest.cs" />
     <Compile Include="Models\Admin\Department\DepartmentResponse.cs" />
+    <Compile Include="Models\Admin\Designation\Designation.cs" />
+    <Compile Include="Models\Admin\Designation\DesignationRequest.cs" />
+    <Compile Include="Models\Admin\Designation\DesignationResponse.cs" />
+    <Compile Include="Models\Admin\Division\Division.cs" />
+    <Compile Include="Models\Admin\Division\DivisionRequest.cs" />
+    <Compile Include="Models\Admin\Division\DivisionResponse.cs" />
+    <Compile Include="Models\Admin\Section\Section.cs" />
+    <Compile Include="Models\Admin\Section\SectionRequest.cs" />
+    <Compile Include="Models\Admin\Section\SectionResponse.cs" />
     <Compile Include="Models\Admin\State\State.cs" />
     <Compile Include="Models\Admin\State\StateRequest.cs" />
     <Compile Include="Models\Admin\State\StateResponse.cs" />
