@@ -16,6 +16,16 @@ namespace API.Base
         public const string DDepartment = "DELETE-DEPARTMENT";
         public const string VDepartment = "VIEW-DEPARTMENT";
 
+        public const string NModuleControl = "NEW-MODULECONTROL";
+        public const string EModuleControl = "EDIT-MODULECONTROL";
+        public const string DModuleControl = "DELETE-MODULECONTROL";
+        public const string VModuleControl = "VIEW-MODULECONTROL";
+
+        public const string NModule = "NEW-MODULE";
+        public const string EModule = "EDIT-MODULE";
+        public const string DModule = "DELETE-MODULE";
+        public const string VModule = "VIEW-MODULE";
+
         public const string NCurriculum = "NEW-CURRICULUM";
         public const string ECurriculum = "EDIT-CURRICULUM";
         public const string DCurriculum = "DELETE-CURRICULUM";

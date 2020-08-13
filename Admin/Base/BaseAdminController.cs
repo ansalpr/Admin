@@ -9,6 +9,7 @@ using GeneralLayer;
 using AdminAPI.Models.Log;
 using Admin.Base;
 using System.Diagnostics;
+using EntityLayer.Tables.Log;
 
 namespace AdminAPI.Base
 {
@@ -92,6 +93,29 @@ namespace AdminAPI.Base
                 log.IP = IP;
                 DO.BeginTRansaction();
                 int result = DO.iteratePropertyObjectsAndInsert(log, "errorlog", false);
+                DO.EndTRansaction();
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "fail";
+            }
+        }
+        public string LogEvent(string className, string methodName, string remarks, string tui)
+        {
+            paramFile PF = new paramFile(ParamsPath);
+            try
+            {
+                string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDBLog);
+                DataOperation DO = new DataOperation(dbCon);
+                eventlogs log = new eventlogs();
+                log.ClassName = className; // this.GetType().Name;
+                log.MethodName = methodName;
+                log.Remarks = remarks;
+                log.TUI = tui;
+                log.IP = IP;
+                DO.BeginTRansaction();
+                int result = DO.iteratePropertyObjectsAndInsert(log, "eventlog", false);
                 DO.EndTRansaction();
                 return "success";
             }

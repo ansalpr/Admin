@@ -14,6 +14,9 @@ using Admin.Helper.General;
 using EntityLayer.Tables;
 using AdminAPI;
 using Admin.Models.Other;
+using Admin.Models.Utils;
+using Admin.Helper.Utility;
+using EntityLayer.Tables.Log;
 
 namespace Admin.Controllers
 {
@@ -52,6 +55,69 @@ namespace Admin.Controllers
                     }
                     //Response Processing
                     response = helperObj.processResponseToProxy(ds, reqObj.tui, encCredentials);
+                }
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 0 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
+        public HttpResponseMessage LogEvent([FromBody] EventLogRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+           
+            //Entity Objects
+            eventlogs entityObjects = new eventlogs { };
+            EventLogHelper helperObj = new EventLogHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            EventLogResponse response = new EventLogResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.Login, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+                    //Insert Entity Details
+                    result = helperObj.ProcessInsertEntity(entityObjects);
+                    if (result > 0)
+                    {                       
+                    }
+                    else
+                    {
+                        response.eventlogs[0].message = entityObjects.ClassName + " Insertion " + ResponseConstants.Fail;
+                    }
+                    //Response Processing
+                    response = helperObj.processResponseToProxy(response, ds, reqObj.tui, "", response.message, reqObj.eventlogs[0].action);
                 }
                 //Log Response
                 LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.tui);

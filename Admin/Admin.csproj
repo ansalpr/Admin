@@ -117,6 +117,8 @@
     <Compile Include="Constants\Table\CnstDepartment.cs" />
     <Compile Include="Constants\Table\CnstDesignation.cs" />
     <Compile Include="Constants\Table\CnstDivision.cs" />
+    <Compile Include="Constants\Table\CnstModule.cs" />
+    <Compile Include="Constants\Table\CnstModuleControl.cs" />
     <Compile Include="Constants\Table\CnstSection.cs" />
     <Compile Include="Constants\Table\CnstState.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
@@ -134,11 +136,14 @@
     <Compile Include="Helper\Admin\DepartmentHelper.cs" />
     <Compile Include="Helper\Admin\DesignationHelper.cs" />
     <Compile Include="Helper\Admin\DivisionHelper.cs" />
+    <Compile Include="Helper\Admin\ModuleControlHelper.cs" />
+    <Compile Include="Helper\Admin\ModuleHelper.cs" />
     <Compile Include="Helper\Admin\SectionHelper.cs" />
     <Compile Include="Helper\Admin\StateHelper.cs" />
     <Compile Include="Helper\General\AdminHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
     <Compile Include="Helper\Utility\Authentication\AuthHelper.cs" />
+    <Compile Include="Helper\Utility\EventLogHelper.cs" />
     <Compile Include="Models\Admin\Class\Class.cs" />
     <Compile Include="Models\Admin\Class\ClassRequest.cs" />
     <Compile Include="Models\Admin\Class\ClassResponse.cs" />
@@ -163,6 +168,12 @@
     <Compile Include="Models\Admin\Division\Division.cs" />
     <Compile Include="Models\Admin\Division\DivisionRequest.cs" />
     <Compile Include="Models\Admin\Division\DivisionResponse.cs" />
+    <Compile Include="Models\Admin\ModuleControl\ModuleControl.cs" />
+    <Compile Include="Models\Admin\ModuleControl\ModuleControlRequest.cs" />
+    <Compile Include="Models\Admin\ModuleControl\ModuleControlResponse.cs" />
+    <Compile Include="Models\Admin\Module\Module.cs" />
+    <Compile Include="Models\Admin\Module\ModuleRequest.cs" />
+    <Compile Include="Models\Admin\Module\ModuleResponse.cs" />
     <Compile Include="Models\Admin\Section\Section.cs" />
     <Compile Include="Models\Admin\Section\SectionRequest.cs" />
     <Compile Include="Models\Admin\Section\SectionResponse.cs" />
@@ -172,6 +183,9 @@
     <Compile Include="Models\Authentication\authRequest.cs" />
     <Compile Include="Models\Authentication\authResponse.cs" />
     <Compile Include="Models\Other\DataProxy.cs" />
+    <Compile Include="Models\Utils\EventLog.cs" />
+    <Compile Include="Models\Utils\EventLogRequest.cs" />
+    <Compile Include="Models\Utils\EventLogResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
