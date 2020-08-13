@@ -145,5 +145,37 @@ namespace Admin.Helper.General
             }
             return ds;
         }
+        public DataSet getTheModuleData(string ModuleCode, int ModuleControlId)
+        {
+            DataSet ds = new DataSet();
+            paramFile PF = new paramFile(ParamsPath);
+            try
+            {
+                string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
+                DataOperation DO = new DataOperation(dbCon);
+                sp_manageModule spParams = new sp_manageModule();
+                spParams.modName = "";
+                spParams.modCode = ModuleCode;
+                spParams.modId = ModuleControlId;
+                spParams.action = "select";
+                spParams.operation = "S";
+                DO.BeginTRansaction();
+                ds = DO.iteratePropertyObjectsSP(spParams, "sp_manageModule");
+                DO.EndTRansaction();
+            }
+            catch (Exception ex)
+            {
+                var st = new StackTrace();
+                var sf = st.GetFrame(0);
+                string currentMethodName = sf.GetMethod().Name;
+
+                currentMethodName = ex.Message.ToString().Split('|').Count() > 0 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                string currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+
+                Exception customex = new Exception(currentMethodName + " | " + currentControllerName + " | " + ex.Message + " : " + ex.StackTrace);
+                throw customex;
+            }
+            return ds;
+        }
     }
 }

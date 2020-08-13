@@ -1202,5 +1202,242 @@ namespace Admin.Controllers
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
         }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageModule([FromBody] ModuleRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            ModuleHelper helperObj = new ModuleHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            module[] entityObjects = new module[] { };
+            //Proxy Objects
+            ModuleResponse response = new ModuleResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModule, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.modules.Length; idx++)
+                    {
+                        if (reqObj.modules[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Insert Entity Details
+                                result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                if (result > 0)
+                                {
+                                    response.modules[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                }
+                                else
+                                {
+                                    response.modules[idx].message = entityObjects[idx].ModuleName + " Insertion " + ResponseConstants.Fail;
+                                }
+                            }
+                            else
+                            {
+                                response.modules[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.modules[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.modules[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.modules[idx].message = entityObjects[idx].ModuleName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.modules[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.modules[idx].message = entityObjects[idx].ModuleName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.modules[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModule, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageModuleControlControl([FromBody] ModuleControlRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            AdminHelper ADMH = new AdminHelper();
+            ModuleControlHelper helperObj = new ModuleControlHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            modulecontrol[] entityObjects = new modulecontrol[] { };
+            //Proxy Objects
+            ModuleControlResponse response = new ModuleControlResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModuleControl, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.modulecontrols.Length; idx++)
+                    {
+                        if (reqObj.modulecontrols[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                if (ADMH.getTheModuleData(reqObj.modulecontrols[idx].ModuleCode, 0).Tables[0].Rows.Count > 0)
+                                {
+                                    //Insert Entity Details
+                                    result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                    if (result > 0)
+                                    {
+                                        response.modulecontrols[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    }
+                                    else
+                                    {
+                                        response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Insertion " + ResponseConstants.Fail;
+                                    }
+                                }
+                                else
+                                {
+                                    response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " " + ResponseConstants.InValid;
+                                }
+                               
+                            }
+                            else
+                            {
+                                response.modulecontrols[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.modulecontrols[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModuleControl, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
     }
 }
