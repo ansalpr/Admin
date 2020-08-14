@@ -109,6 +109,7 @@
     <Compile Include="Constants\DBConstants.cs" />
     <Compile Include="Base\BaseResponse.cs" />
     <Compile Include="Constants\ResponseConstants.cs" />
+    <Compile Include="Constants\Table\CnstBloodGroup.cs" />
     <Compile Include="Constants\Table\CnstClass.cs" />
     <Compile Include="Constants\Table\CnstCountry.cs" />
     <Compile Include="Constants\Table\CnstCurrency.cs" />
@@ -119,6 +120,8 @@
     <Compile Include="Constants\Table\CnstDivision.cs" />
     <Compile Include="Constants\Table\CnstModule.cs" />
     <Compile Include="Constants\Table\CnstModuleControl.cs" />
+    <Compile Include="Constants\Table\CnstParent.cs" />
+    <Compile Include="Constants\Table\CnstRelation.cs" />
     <Compile Include="Constants\Table\CnstSection.cs" />
     <Compile Include="Constants\Table\CnstState.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Admin\BloodGroupHelper.cs" />
     <Compile Include="Helper\Admin\ClassHelper.cs" />
     <Compile Include="Helper\Admin\CountryHelper.cs" />
     <Compile Include="Helper\Admin\CurrencyHelper.cs" />
@@ -138,12 +142,17 @@
     <Compile Include="Helper\Admin\DivisionHelper.cs" />
     <Compile Include="Helper\Admin\ModuleControlHelper.cs" />
     <Compile Include="Helper\Admin\ModuleHelper.cs" />
+    <Compile Include="Helper\Admin\ParentHelper.cs" />
+    <Compile Include="Helper\Admin\RelationHelper.cs" />
     <Compile Include="Helper\Admin\SectionHelper.cs" />
     <Compile Include="Helper\Admin\StateHelper.cs" />
     <Compile Include="Helper\General\AdminHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
     <Compile Include="Helper\Utility\Authentication\AuthHelper.cs" />
     <Compile Include="Helper\Utility\EventLogHelper.cs" />
+    <Compile Include="Models\Admin\BloodGroup\BloodGroup.cs" />
+    <Compile Include="Models\Admin\BloodGroup\BloodGroupRequest.cs" />
+    <Compile Include="Models\Admin\BloodGroup\BloodGroupResponse.cs" />
     <Compile Include="Models\Admin\Class\Class.cs" />
     <Compile Include="Models\Admin\Class\ClassRequest.cs" />
     <Compile Include="Models\Admin\Class\ClassResponse.cs" />
@@ -174,6 +183,12 @@
     <Compile Include="Models\Admin\Module\Module.cs" />
     <Compile Include="Models\Admin\Module\ModuleRequest.cs" />
     <Compile Include="Models\Admin\Module\ModuleResponse.cs" />
+    <Compile Include="Models\Admin\Parent\ParentRequest.cs" />
+    <Compile Include="Models\Admin\Parent\ParentResponse.cs" />
+    <Compile Include="Models\Admin\Parent\Parent.cs" />
+    <Compile Include="Models\Admin\Relation\Relation.cs" />
+    <Compile Include="Models\Admin\Relation\RelationRequest.cs" />
+    <Compile Include="Models\Admin\Relation\RelationResponse.cs" />
     <Compile Include="Models\Admin\Section\Section.cs" />
     <Compile Include="Models\Admin\Section\SectionRequest.cs" />
     <Compile Include="Models\Admin\Section\SectionResponse.cs" />

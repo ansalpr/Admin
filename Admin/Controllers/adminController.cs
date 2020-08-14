@@ -1439,5 +1439,365 @@ namespace Admin.Controllers
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
         }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageRelation([FromBody] RelationRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            RelationHelper helperObj = new RelationHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            relation[] entityObjects = new relation[] { };
+            //Proxy Objects
+            RelationResponse response = new RelationResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NRelation, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.relations.Length; idx++)
+                    {
+                        if (reqObj.relations[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Insert Entity Details
+                                result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                if (result > 0)
+                                {
+                                    response.relations[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                }
+                                else
+                                {
+                                    response.relations[idx].message = entityObjects[idx].RelationName + " Insertion " + ResponseConstants.Fail;
+                                }
+                            }
+                            else
+                            {
+                                response.relations[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.relations[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.relations[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.relations[idx].message = entityObjects[idx].RelationName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.relations[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.relations[idx].message = entityObjects[idx].RelationName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.relations[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NRelation, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageParent([FromBody] ParentRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            AdminHelper ADMH = new AdminHelper();
+            ParentHelper helperObj = new ParentHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            parent[] entityObjects = new parent[] { };
+            //Proxy Objects
+            ParentResponse response = new ParentResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NParent, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.parents.Length; idx++)
+                    {
+                        if (reqObj.parents[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Check the Country Code Existance
+                                if (ADMH.getTheCountryData(reqObj.parents[idx].Country, 0).Tables[0].Rows.Count > 0)
+                                {
+                                    //Check the BloodGroup Code Existance
+                                    if (ADMH.getTheBloodGroupData(reqObj.parents[idx].BloodGroup, 0).Tables[0].Rows.Count > 0)
+                                    {
+                                        //Insert Entity Details
+                                        result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                        if (result > 0)
+                                        {
+                                            response.parents[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                        }
+                                        else
+                                        {
+                                            response.parents[idx].message = entityObjects[idx].ParentName + " Insertion " + ResponseConstants.Fail;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        response.parents[idx].message = entityObjects[idx].Country + " " + ResponseConstants.InValid;
+                                    }                                   
+                                }
+                                else
+                                {
+                                    response.parents[idx].message = entityObjects[idx].Country + " " + ResponseConstants.InValid;
+                                }
+
+                            }
+                            else
+                            {
+                                response.parents[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.parents[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.parents[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.parents[idx].message = entityObjects[idx].ParentName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.parents[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.parents[idx].message = entityObjects[idx].ParentName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.parents[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NParent, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
+        [AuthentificationFilter]
+        public HttpResponseMessage ManageBloodGroup([FromBody] BloodGroupRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            BloodGroupHelper helperObj = new BloodGroupHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            bloodgroup[] entityObjects = new bloodgroup[] { };
+            //Proxy Objects
+            BloodGroupResponse response = new BloodGroupResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NBloodGroup, reqObj.tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.bloodgroups.Length; idx++)
+                    {
+                        if (reqObj.bloodgroups[idx].action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Insert Entity Details
+                                result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                if (result > 0)
+                                {
+                                    response.bloodgroups[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                }
+                                else
+                                {
+                                    response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Insertion " + ResponseConstants.Fail;
+                                }
+                            }
+                            else
+                            {
+                                response.bloodgroups[idx].message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.bloodgroups[0].action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NBloodGroup, response.tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.code = ResponseConstants.Exception.ToString();
+                response.message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
     }
 }

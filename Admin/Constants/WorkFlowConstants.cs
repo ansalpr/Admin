@@ -16,6 +16,21 @@ namespace API.Base
         public const string DDepartment = "DELETE-DEPARTMENT";
         public const string VDepartment = "VIEW-DEPARTMENT";
 
+        public const string NBloodGroup = "NEW-BLOODGROUP";
+        public const string EBloodGroup = "EDIT-BLOODGROUP";
+        public const string DBloodGroup = "DELETE-BLOODGROUP";
+        public const string VBloodGroup = "VIEW-BLOODGROUP";
+
+        public const string NParent = "NEW-PARENT";
+        public const string EParent = "EDIT-PARENT";
+        public const string DParent = "DELETE-PARENT";
+        public const string VParent = "VIEW-PARENT";
+
+        public const string NRelation = "NEW-RELATION";
+        public const string ERelation = "EDIT-RELATION";
+        public const string DRelation = "DELETE-RELATION";
+        public const string VRelation = "VIEW-RELATION";
+
         public const string NModuleControl = "NEW-MODULECONTROL";
         public const string EModuleControl = "EDIT-MODULECONTROL";
         public const string DModuleControl = "DELETE-MODULECONTROL";
