@@ -106,7 +106,7 @@ namespace Admin.Controllers
                 if (response != null && response.code == ResponseConstants.OK.ToString())
                 {
                     //Process Proxy to Entity
-                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId,IP);
                     //Insert Entity Details
                     result = helperObj.ProcessInsertEntity(entityObjects);
                     if (result > 0)

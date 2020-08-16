@@ -34,11 +34,7 @@ namespace Admin.Helper.Utility
                     if ((reqObjects.eventlogs[idx].ClassName == null || reqObjects.eventlogs[idx].ClassName == ""))
                     {
                         message = "ClassName " + ResponseConstants.Mandatory;
-                    }
-                    else if ((reqObjects.eventlogs[idx].IP == null || reqObjects.eventlogs[idx].IP == ""))
-                    {
-                        message = "IP " + ResponseConstants.Mandatory;
-                    }
+                    }                   
                     else if ((reqObjects.eventlogs[idx].MethodName == null || reqObjects.eventlogs[idx].MethodName == ""))
                     {
                         message = "MethodName " + ResponseConstants.Mandatory;
@@ -68,7 +64,7 @@ namespace Admin.Helper.Utility
             }
             return response;
         }
-        public eventlogs ProcessProxyToEntity(EventLogRequest reqObjects, int UserId)
+        public eventlogs ProcessProxyToEntity(EventLogRequest reqObjects, int UserId,string IP)
         {
             eventlogs entityObects = new eventlogs();
             try            {
@@ -76,7 +72,7 @@ namespace Admin.Helper.Utility
                 {
                     eventlogs entityObect = new eventlogs();
                     entityObect.ClassName = reqObjects.eventlogs[idx].ClassName == null ? "" : reqObjects.eventlogs[idx].ClassName.Trim();
-                    entityObect.IP = reqObjects.eventlogs[idx].IP == null ? "" : reqObjects.eventlogs[idx].IP.Trim();
+                    entityObect.IP = IP;
                     entityObect.MethodName = reqObjects.eventlogs[idx].MethodName == null ? "" : reqObjects.eventlogs[idx].MethodName.Trim();
                     entityObect.Remarks = reqObjects.eventlogs[idx].Remarks == null ? "" : reqObjects.eventlogs[idx].Remarks.Trim();
                     entityObect.TUI = reqObjects.eventlogs[idx].TUI == null ? "" : reqObjects.eventlogs[idx].TUI.Trim();                                                            
