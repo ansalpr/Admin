@@ -246,7 +246,6 @@ namespace Admin.Helper.Admin
                 entityObject.RecordStatus = 0;
                 result = DO.iteratePropertyObjectsAndInsert(entityObject, TableName, true, skipAttributes);
                 DO.EndTRansaction();
-                result = 1;
             }
             catch (Exception ex)
             {
