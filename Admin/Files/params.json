@@ -3,9 +3,9 @@
     {
       "type": "generaldb",
       "name": "generaldb",
-      "id": "root",
-      "pwd": "ansal",
-      "server": "localhost"
+      "id": "",
+      "pwd": "",
+      "server": "DESKTOP-LGCPVGL"
     },
     {
       "type": "generalhistory",
@@ -28,5 +28,6 @@
       "signature": "cdso38zBg3/H3Kcnl0iNZw==",
       "primary": "cdso38zBg3/H3Kcnl0iNZw=="
     }
-  ]
+  ],
+  "DBProvider": "SQL"
 }
