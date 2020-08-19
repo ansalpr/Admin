@@ -13,7 +13,7 @@ namespace Admin.Base
         public string ParamsPath = "";
         public BaseHelper()
         {
-            ParamsPath = @System.Configuration.ConfigurationManager.AppSettings["params"];
+            ParamsPath = @System.Configuration.ConfigurationManager.AppSettings["params"] ;
         }
         public string getDecryptData(string encString,string decType)
         {

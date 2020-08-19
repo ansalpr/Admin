@@ -45,14 +45,14 @@
   <ItemGroup>
     <Reference Include="DataLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\DataLayer.dll</HintPath>
+      <HintPath>..\..\..\DataLayer\bin\Debug\net48\DataLayer.dll</HintPath>
     </Reference>
     <Reference Include="EntityLayer">
       <HintPath>..\EntityLayer\bin\Debug\netstandard2.0\EntityLayer.dll</HintPath>
     </Reference>
     <Reference Include="GeneralLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\GeneralLayer.dll</HintPath>
+      <HintPath>..\..\..\GeneralLayer\bin\Debug\GeneralLayer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
