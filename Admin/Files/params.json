@@ -29,5 +29,5 @@
       "primary": "cdso38zBg3/H3Kcnl0iNZw=="
     }
   ],
-  "DBProvider": "SQL"
+  "DBProvider": "MYSQL"
 }

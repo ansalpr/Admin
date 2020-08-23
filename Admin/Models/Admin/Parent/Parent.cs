@@ -13,12 +13,20 @@ namespace Admin.Models.Admin
         private string _POB;
         private string _Address1;
         private string _Address2;
-        private string _Country;
+        private string _CountryCode;
+        private string _StateCode;
+        private string _RelationCode;
         private string _MotherTongue;
-        private string _BloodGroup;
+        private string _BloodGroupCode;
         private string _action;
         private string _status;
         private string _message;
+        private string _StudentRef;
+        public string StudentRef
+        {
+            get { return _StudentRef; }
+            set { _StudentRef = value; }
+        }
         public string Id
         {
             get { return _ParentId; }
@@ -49,20 +57,30 @@ namespace Admin.Models.Admin
             get { return _Address2; }
             set { _Address2 = value; }
         }
-        public string Country
+        public string CountryCode
         {
-            get { return _Country; }
-            set { _Country = value; }
+            get { return _CountryCode; }
+            set { _CountryCode = value; }
+        }
+        public string RelationCode
+        {
+            get { return _RelationCode; }
+            set { _RelationCode = value; }
+        }
+        public string StateCode
+        {
+            get { return _StateCode; }
+            set { _StateCode = value; }
         }
         public string MotherTongue
         {
             get { return _MotherTongue; }
             set { _MotherTongue = value; }
         }
-        public string BloodGroup
+        public string BloodGroupCode
         {
-            get { return _BloodGroup; }
-            set { _BloodGroup = value; }
+            get { return _BloodGroupCode; }
+            set { _BloodGroupCode = value; }
         }
         public string action
         {

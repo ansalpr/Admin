@@ -91,6 +91,11 @@ namespace API.Base
         public const string DPermission = "DELETE-PERMISSION";
         public const string VPermission = "VIEW-PERMISSION";
         #endregion
-
+        #region STUDENT
+        public const string NStudent = "NEW-STUDENT";
+        public const string EStudent = "EDIT-STUDENT";
+        public const string DStudent = "DELETE-STUDENT";
+        public const string VStudent = "VIEW-STUDENT";
+        #endregion
     }
 }

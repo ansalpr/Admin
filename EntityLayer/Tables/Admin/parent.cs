@@ -8,13 +8,15 @@ namespace EntityLayer.Tables.Admin
     {
         private int _ParentId;
         private string _ParentName;
-        private DateTime _DOB;
+        private string _Stats;
+        private string _DOB;
         private string _POB;
         private string _Address1;
         private string _Address2;
-        private string _Country;
+        private string _CountryCode;
         private string _MotherTongue;
-        private string _BloodGroup;
+        private string _BloodGroupCode;
+        private string _StateCode;
         private string _CreatedDate;
         private int _CreatedUser;
         private int _ModifiedDate;
@@ -31,7 +33,12 @@ namespace EntityLayer.Tables.Admin
             get { return _ParentName; }
             set { _ParentName = value; }
         }
-        public DateTime DOB
+        public string Stats
+        {
+            get { return _Stats; }
+            set { _Stats = value; }
+        }
+        public string DOB
         {
             get { return _DOB; }
             set { _DOB = value; }
@@ -51,20 +58,25 @@ namespace EntityLayer.Tables.Admin
             get { return _Address2; }
             set { _Address2 = value; }
         }
-        public string Country
+        public string CountryCode
         {
-            get { return _Country; }
-            set { _Country = value; }
+            get { return _CountryCode; }
+            set { _CountryCode = value; }
+        }
+        public string StateCode
+        {
+            get { return _StateCode; }
+            set { _StateCode = value; }
         }
         public string MotherTongue
         {
             get { return _MotherTongue; }
             set { _MotherTongue = value; }
         }
-        public string BloodGroup
+        public string BloodGroupCode
         {
-            get { return _BloodGroup; }
-            set { _BloodGroup = value; }
+            get { return _BloodGroupCode; }
+            set { _BloodGroupCode = value; }
         }
         public string CreatedDate
         {

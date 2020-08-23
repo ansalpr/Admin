@@ -8,13 +8,11 @@ using API.Base;
 using EntityLayer.Tables;
 using EntityLayer.Tables.Admin;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Web.Http;
 
 namespace Admin.Controllers
@@ -1377,7 +1375,7 @@ namespace Admin.Controllers
                                 {
                                     response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " " + ResponseConstants.InValid;
                                 }
-                               
+
                             }
                             else
                             {
@@ -1598,30 +1596,38 @@ namespace Admin.Controllers
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
                                 //Check the Country Code Existance
-                                if (ADMH.getTheCountryData(reqObj.parents[idx].Country, 0).Tables[0].Rows.Count > 0)
-                                {
-                                    //Check the BloodGroup Code Existance
-                                    if (ADMH.getTheBloodGroupData(reqObj.parents[idx].BloodGroup, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheCountryData(reqObj.parents[idx].CountryCode, 0).Tables[0].Rows.Count > 0)
+                                { 
+                                    //Check the State Code Existance
+                                    if (ADMH.getTheStateData(reqObj.parents[idx].StateCode, 0).Tables[0].Rows.Count > 0)
                                     {
-                                        //Insert Entity Details
-                                        result = helperObj.ProcessInsertEntity(entityObjects[idx]);
-                                        if (result > 0)
+                                        //Check the BloodGroup Code Existance
+                                        if (ADMH.getTheBloodGroupData(reqObj.parents[idx].BloodGroupCode, 0).Tables[0].Rows.Count > 0)
                                         {
-                                            response.parents[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                            //Insert Entity Details
+                                            result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                            if (result > 0)
+                                            {
+                                                response.parents[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                            }
+                                            else
+                                            {
+                                                response.parents[idx].message = entityObjects[idx].ParentName + " Insertion " + ResponseConstants.Fail;
+                                            }
                                         }
                                         else
                                         {
-                                            response.parents[idx].message = entityObjects[idx].ParentName + " Insertion " + ResponseConstants.Fail;
+                                            response.parents[idx].message = entityObjects[idx].BloodGroupCode + " " + ResponseConstants.InValid;
                                         }
                                     }
                                     else
                                     {
-                                        response.parents[idx].message = entityObjects[idx].Country + " " + ResponseConstants.InValid;
-                                    }                                   
+                                        response.parents[idx].message = entityObjects[idx].StateCode + " " + ResponseConstants.InValid;
+                                    }
                                 }
                                 else
                                 {
-                                    response.parents[idx].message = entityObjects[idx].Country + " " + ResponseConstants.InValid;
+                                    response.parents[idx].message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
