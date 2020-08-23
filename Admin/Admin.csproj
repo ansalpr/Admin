@@ -118,6 +118,7 @@
     <Compile Include="Constants\Table\CnstDepartment.cs" />
     <Compile Include="Constants\Table\CnstDesignation.cs" />
     <Compile Include="Constants\Table\CnstDivision.cs" />
+    <Compile Include="Constants\Table\CnstMenu.cs" />
     <Compile Include="Constants\Table\CnstModule.cs" />
     <Compile Include="Constants\Table\CnstModuleControl.cs" />
     <Compile Include="Constants\Table\CnstParent.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Helper\Admin\DepartmentHelper.cs" />
     <Compile Include="Helper\Admin\DesignationHelper.cs" />
     <Compile Include="Helper\Admin\DivisionHelper.cs" />
+    <Compile Include="Helper\Admin\MenuHelper.cs" />
     <Compile Include="Helper\Admin\ModuleControlHelper.cs" />
     <Compile Include="Helper\Admin\ModuleHelper.cs" />
     <Compile Include="Helper\Admin\ParentHelper.cs" />
@@ -180,6 +182,9 @@
     <Compile Include="Models\Admin\Division\Division.cs" />
     <Compile Include="Models\Admin\Division\DivisionRequest.cs" />
     <Compile Include="Models\Admin\Division\DivisionResponse.cs" />
+    <Compile Include="Models\Admin\Menu\Menu.cs" />
+    <Compile Include="Models\Admin\Menu\MenuRequest.cs" />
+    <Compile Include="Models\Admin\Menu\MenuResponse.cs" />
     <Compile Include="Models\Admin\ModuleControl\ModuleControl.cs" />
     <Compile Include="Models\Admin\ModuleControl\ModuleControlRequest.cs" />
     <Compile Include="Models\Admin\ModuleControl\ModuleControlResponse.cs" />

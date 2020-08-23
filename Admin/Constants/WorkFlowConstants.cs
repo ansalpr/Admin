@@ -16,6 +16,11 @@ namespace API.Base
         public const string DDepartment = "DELETE-DEPARTMENT";
         public const string VDepartment = "VIEW-DEPARTMENT";
 
+        public const string NMenu = "NEW-MENU";
+        public const string EMenu = "EDIT-MENU";
+        public const string DMenu = "DELETE-MENU";
+        public const string VMenu = "VIEW-MENU";
+
         public const string NBloodGroup = "NEW-BLOODGROUP";
         public const string EBloodGroup = "EDIT-BLOODGROUP";
         public const string DBloodGroup = "DELETE-BLOODGROUP";

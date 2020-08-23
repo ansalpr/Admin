@@ -464,7 +464,7 @@ namespace Admin.Helper
                 spObject.action = "Add";
                 spObject.operation = "A";
                 DO.BeginTRansaction();
-                ds = DO.iteratePropertyObjectsSP(spObject, "sp_ManageStudentEntry");
+                ds = DO.iteratePropertyObjectsSP(spObject, "sp_manageStudent");
                 DO.EndTRansaction();
             }
             catch (Exception ex)
