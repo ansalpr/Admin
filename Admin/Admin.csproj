@@ -124,8 +124,10 @@
     <Compile Include="Constants\Table\CnstRelation.cs" />
     <Compile Include="Constants\Table\CnstSection.cs" />
     <Compile Include="Constants\Table\CnstState.cs" />
+    <Compile Include="Constants\Table\Student\CnstStudent.cs" />
     <Compile Include="Constants\WorkFlowConstants.cs" />
     <Compile Include="Controllers\adminController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\utilsController.cs" />
     <Compile Include="Filter\AuthentificationFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -148,6 +150,7 @@
     <Compile Include="Helper\Admin\StateHelper.cs" />
     <Compile Include="Helper\General\AdminHelper.cs" />
     <Compile Include="Helper\General\GeneralHelper.cs" />
+    <Compile Include="Helper\Student\StudentHelper.cs" />
     <Compile Include="Helper\Utility\Authentication\AuthHelper.cs" />
     <Compile Include="Helper\Utility\EventLogHelper.cs" />
     <Compile Include="Models\Admin\BloodGroup\BloodGroup.cs" />
@@ -198,6 +201,9 @@
     <Compile Include="Models\Authentication\authRequest.cs" />
     <Compile Include="Models\Authentication\authResponse.cs" />
     <Compile Include="Models\Other\DataProxy.cs" />
+    <Compile Include="Models\Student\Student\Student.cs" />
+    <Compile Include="Models\Student\Student\StudentRequest.cs" />
+    <Compile Include="Models\Student\Student\StudentResponse.cs" />
     <Compile Include="Models\Utils\EventLog.cs" />
     <Compile Include="Models\Utils\EventLogRequest.cs" />
     <Compile Include="Models\Utils\EventLogResponse.cs" />

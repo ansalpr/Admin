@@ -27,9 +27,17 @@ namespace Admin.Helper.Admin
                 }
                 else if ((reqObjects.parents[idx].action.ToUpper() == "A" || reqObjects.parents[idx].action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.parents[idx].Country == null || reqObjects.parents[idx].Country == ""))
+                    if ((reqObjects.parents[idx].CountryCode == null || reqObjects.parents[idx].CountryCode == ""))
                     {
-                        message = CnstParent.Country + " " + ResponseConstants.Mandatory;
+                        message = CnstParent.CountryCode + " " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.parents[idx].BloodGroupCode == null || reqObjects.parents[idx].BloodGroupCode == ""))
+                    {
+                        message = CnstParent.BloodGroupCode + " " + ResponseConstants.Mandatory;
+                    }
+                    else if ((reqObjects.parents[idx].StateCode == null || reqObjects.parents[idx].StateCode == ""))
+                    {
+                        message = CnstParent.StateCode + " " + ResponseConstants.Mandatory;
                     }
                     else if ((reqObjects.parents[idx].DOB == null || reqObjects.parents[idx].DOB == ""))
                     {
@@ -93,9 +101,10 @@ namespace Admin.Helper.Admin
                     parent entityObect = new parent();
                     entityObect.Address1 = reqObjects.parents[idx].Address1 == null ? "" : reqObjects.parents[idx].Address1.Trim();
                     entityObect.Address2 = reqObjects.parents[idx].Address2 == null ? "" : reqObjects.parents[idx].Address2.Trim();
-                    entityObect.BloodGroup = reqObjects.parents[idx].BloodGroup == null ? "" : reqObjects.parents[idx].BloodGroup.Trim();
-                    entityObect.Country = reqObjects.parents[idx].Country == null ? "" : reqObjects.parents[idx].Country.Trim();
-                    entityObect.DOB = reqObjects.parents[idx].DOB == null ? DateTime.Now :  Convert.ToDateTime(reqObjects.parents[idx].DOB.Trim());
+                    entityObect.BloodGroupCode = reqObjects.parents[idx].BloodGroupCode == null ? "" : reqObjects.parents[idx].BloodGroupCode.Trim();
+                    entityObect.CountryCode = reqObjects.parents[idx].CountryCode == null ? "" : reqObjects.parents[idx].CountryCode.Trim();
+                    entityObect.StateCode = reqObjects.parents[idx].StateCode == null ? "" : reqObjects.parents[idx].StateCode.Trim();
+                    entityObect.DOB = reqObjects.parents[idx].DOB == null ? "" : (reqObjects.parents[idx].DOB.Trim());
                     entityObect.ParentName = reqObjects.parents[idx].Name == null ? "" : reqObjects.parents[idx].Name.Trim();
                     entityObect.POB = reqObjects.parents[idx].POB == null ? "" : reqObjects.parents[idx].POB.Trim();                   
                     entityObect.ParentId = reqObjects.parents[idx].Id == null ? 0 : reqObjects.parents[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.parents[idx].Id, DBConstants.PrimaryKey));
@@ -136,9 +145,10 @@ namespace Admin.Helper.Admin
                 sp_manageParent spParams = new sp_manageParent();
                 spParams.parAddress1 = entityObject.Address1;
                 spParams.parAddress2 = entityObject.Address2;
-                spParams.parBloodGroup = entityObject.BloodGroup;
-                spParams.parCountry = entityObject.Country;
-                spParams.parDOB = entityObject.DOB;
+                spParams.parBloodGroup = entityObject.BloodGroupCode;
+                spParams.parCountry = entityObject.CountryCode;
+                spParams.parState = entityObject.StateCode;
+                spParams.parDOB = Convert.ToDateTime(entityObject.DOB).Date;
                 spParams.parMotherTongue = entityObject.MotherTongue;
                 spParams.parName = entityObject.ParentName;
                 spParams.parPOB = entityObject.POB;
@@ -181,9 +191,10 @@ namespace Admin.Helper.Admin
                 sp_manageParent spParams = new sp_manageParent();
                 spParams.parAddress1 = entityObject.Address1;
                 spParams.parAddress2 = entityObject.Address2;
-                spParams.parBloodGroup = entityObject.BloodGroup;
-                spParams.parCountry = entityObject.Country;
-                spParams.parDOB = entityObject.DOB;
+                spParams.parBloodGroup = entityObject.BloodGroupCode;
+                spParams.parCountry = entityObject.CountryCode;
+                spParams.parState = entityObject.StateCode;
+                spParams.parDOB = Convert.ToDateTime(entityObject.DOB).Date;
                 spParams.parMotherTongue = entityObject.MotherTongue;
                 spParams.parName = entityObject.ParentName;
                 spParams.parPOB = entityObject.POB;
@@ -219,9 +230,10 @@ namespace Admin.Helper.Admin
                 sp_manageParent spParams = new sp_manageParent();
                 spParams.parAddress1 = entityObject.Address1;
                 spParams.parAddress2 = entityObject.Address2;
-                spParams.parBloodGroup = entityObject.BloodGroup;
-                spParams.parCountry = entityObject.Country;
-                spParams.parDOB = entityObject.DOB;
+                spParams.parBloodGroup = entityObject.BloodGroupCode;
+                spParams.parCountry = entityObject.CountryCode;
+                spParams.parState = entityObject.StateCode;
+                spParams.parDOB = Convert.ToDateTime(entityObject.DOB).Date;
                 spParams.parMotherTongue = entityObject.MotherTongue;
                 spParams.parName = entityObject.ParentName;
                 spParams.parPOB = entityObject.POB;
@@ -258,9 +270,10 @@ namespace Admin.Helper.Admin
                 sp_manageParent spParams = new sp_manageParent();
                 spParams.parAddress1 = entityObject.Address1;
                 spParams.parAddress2 = entityObject.Address2;
-                spParams.parBloodGroup = entityObject.BloodGroup;
-                spParams.parCountry = entityObject.Country;
-                spParams.parDOB = entityObject.DOB;
+                spParams.parBloodGroup = entityObject.BloodGroupCode;
+                spParams.parCountry = entityObject.CountryCode;
+                spParams.parState = entityObject.StateCode;
+                spParams.parDOB = Convert.ToDateTime(entityObject.DOB).Date;
                 spParams.parMotherTongue = entityObject.MotherTongue;
                 spParams.parName = entityObject.ParentName;
                 spParams.parPOB = entityObject.POB;
@@ -385,8 +398,9 @@ namespace Admin.Helper.Admin
                         DD.Name = dr[CnstParent.ParentName].ToString();
                         DD.Address1 = dr[CnstParent.Address1].ToString();
                         DD.Address2 = dr[CnstParent.Address2].ToString();
-                        DD.BloodGroup = dr[CnstParent.BloodGroup].ToString();
-                        DD.Country = dr[CnstParent.Country].ToString();
+                        DD.BloodGroupCode = dr[CnstParent.BloodGroupCode].ToString();
+                        DD.CountryCode = dr[CnstParent.CountryCode].ToString();
+                        DD.StateCode = dr[CnstParent.StateCode].ToString();
                         DD.DOB = dr[CnstParent.DOB].ToString();
                         DD.MotherTongue = dr[CnstParent.MotherTongue].ToString();
                         DD.Name = dr[CnstParent.ParentName].ToString();

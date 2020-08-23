@@ -13,6 +13,7 @@ namespace EntityLayer.StoredProcedures.Admin
         private string _parAddress1;
         private string _parAddress2;
         private string _parCountry;
+        private string _parState;
         private string _parMotherTongue;
         private string _parBloodGroup;
         private string _operation;
@@ -57,6 +58,11 @@ namespace EntityLayer.StoredProcedures.Admin
         {
             get { return _parCountry; }
             set { _parCountry = value; }
+        }
+        public string parState
+        {
+            get { return _parState; }
+            set { _parState = value; }
         }
         public string parMotherTongue
         {
