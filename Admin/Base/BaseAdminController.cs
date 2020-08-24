@@ -28,7 +28,7 @@ namespace AdminAPI.Base
             IP = GetIPDetails();
             ParamsPath = @System.Configuration.ConfigurationManager.AppSettings["params"];
         }
-        public string LogRequest(string className, string methodName, string request, string workflow, string tui)
+        public string LogRequest(string className, string methodName, string request, string workflow, string Tui)
         {
             paramFile PF = new paramFile(ParamsPath);
             try
@@ -40,7 +40,7 @@ namespace AdminAPI.Base
                 log.MethodName = methodName;
                 log.Request = request;
                 log.Response = "";
-                log.TUI = tui;
+                log.TUI = Tui;
                 log.IP = IP;
                 log.WorkFlow = workflow;
                 DO.BeginTRansaction();
@@ -53,7 +53,7 @@ namespace AdminAPI.Base
                 return "fail";
             }
         }
-        public string LogResponse(string className, string methodName, string response, string workflow, string tui)
+        public string LogResponse(string className, string methodName, string response, string workflow, string Tui)
         {
             paramFile PF = new paramFile(ParamsPath);
             try
@@ -65,7 +65,7 @@ namespace AdminAPI.Base
                 log.MethodName = methodName;
                 log.Request = "";
                 log.Response = response;
-                log.TUI = tui;
+                log.TUI = Tui;
                 log.IP = IP;
                 log.WorkFlow = workflow;
                 DO.BeginTRansaction();
@@ -78,7 +78,7 @@ namespace AdminAPI.Base
                 return "fail";
             }
         }
-        public string LogError(string className, string methodName, string remarks, string tui)
+        public string LogError(string className, string methodName, string remarks, string Tui)
         {
             paramFile PF = new paramFile(ParamsPath);
             try
@@ -89,7 +89,7 @@ namespace AdminAPI.Base
                 log.ClassName = className; // this.GetType().Name;
                 log.MethodName = methodName;
                 log.Remarks = remarks;
-                log.TUI = tui;
+                log.TUI = Tui;
                 log.IP = IP;
                 DO.BeginTRansaction();
                 int result = DO.iteratePropertyObjectsAndInsert(log, "errorlog", false);
@@ -101,7 +101,7 @@ namespace AdminAPI.Base
                 return "fail";
             }
         }
-        public string LogEvent(string className, string methodName, string remarks, string tui)
+        public string LogEvent(string className, string methodName, string remarks, string Tui)
         {
             paramFile PF = new paramFile(ParamsPath);
             try
@@ -112,7 +112,7 @@ namespace AdminAPI.Base
                 log.ClassName = className; // this.GetType().Name;
                 log.MethodName = methodName;
                 log.Remarks = remarks;
-                log.TUI = tui;
+                log.TUI = Tui;
                 log.IP = IP;
                 DO.BeginTRansaction();
                 int result = DO.iteratePropertyObjectsAndInsert(log, "eventlog", false);

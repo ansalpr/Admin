@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class BloodGroupResponse :BaseResponse
     {
-        public BloodGroup[] bloodgroups = new BloodGroup[] { };
+        public BloodGroup[] BloodGroups = new BloodGroup[] { };
     }   
 }

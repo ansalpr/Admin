@@ -3,6 +3,6 @@ namespace Admin.Models.Admin
 {
     public class SectionResponse :BaseResponse
     {
-        public Section[] sections = new Section[] { };
+        public Section[] Sections = new Section[] { };
     }   
 }

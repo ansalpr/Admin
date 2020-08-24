@@ -19,61 +19,61 @@ namespace Admin.Helper.Admin
         public SectionResponse ValidateRequest(SectionRequest reqObjects)
         {
             SectionResponse response = new SectionResponse();
-            response.sections = new Section[reqObjects.sections.Length];
+            response.Sections = new Section[reqObjects.Sections.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.sections.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Sections.Length; idx++)
             {
-                if (reqObjects.sections == null)
+                if (reqObjects.Sections == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.sections[idx].Code == null || reqObjects.sections[idx].Code == "") && (reqObjects.sections[idx].action.ToUpper() == "A" || reqObjects.sections[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Sections[idx].Code == null || reqObjects.Sections[idx].Code == "") && (reqObjects.Sections[idx].Action.ToUpper() == "A" || reqObjects.Sections[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstSection.SectionCode + " "  + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.sections[idx].Name == null || reqObjects.sections[idx].Name == "") && (reqObjects.sections[idx].action.ToUpper() == "A" || reqObjects.sections[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Sections[idx].Name == null || reqObjects.Sections[idx].Name == "") && (reqObjects.Sections[idx].Action.ToUpper() == "A" || reqObjects.Sections[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstSection.SectionName + " " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.sections[idx].Id == null || reqObjects.sections[idx].Id == "") && (reqObjects.sections[idx].action.ToUpper() == "E" || reqObjects.sections[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Sections[idx].Id == null || reqObjects.Sections[idx].Id == "") && (reqObjects.Sections[idx].Action.ToUpper() == "E" || reqObjects.Sections[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Section proxyResponse = new Section();
-                proxyResponse = reqObjects.sections[idx];
-                proxyResponse.message = message;
-                response.sections[idx] = proxyResponse;
+                proxyResponse = reqObjects.Sections[idx];
+                proxyResponse.Message = message;
+                response.Sections[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public section[] ProcessProxyToEntity(SectionRequest reqObjects, int UserId)
         {
-            section[] entityObects = new section[reqObjects.sections.Length];
+            section[] entityObects = new section[reqObjects.Sections.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.sections.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Sections.Length; idx++)
                 {
                     section entityObect = new section();
-                    entityObect.SectionCode = reqObjects.sections[idx].Code == null ? "" : reqObjects.sections[idx].Code.Trim();
-                    entityObect.SectionName = reqObjects.sections[idx].Name == null ? "" : reqObjects.sections[idx].Name.Trim();
-                    entityObect.SectionId = reqObjects.sections[idx].Id == null ? 0 : reqObjects.sections[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.sections[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.SectionCode = reqObjects.Sections[idx].Code == null ? "" : reqObjects.Sections[idx].Code.Trim();
+                    entityObect.SectionName = reqObjects.Sections[idx].Name == null ? "" : reqObjects.Sections[idx].Name.Trim();
+                    entityObect.SectionId = reqObjects.Sections[idx].Id == null ? 0 : reqObjects.Sections[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Sections[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.sections[idx].action == "D")
+                    if (reqObjects.Sections[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -262,17 +262,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public SectionResponse processResponseToProxy(SectionResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public SectionResponse processResponseToProxy(SectionResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -285,27 +285,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private SectionResponse processResponseToProxy(SectionResponse response, string tui, string signature, string message, string action)
+        private SectionResponse processResponseToProxy(SectionResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Section sect in response.sections)
+                foreach (Section sect in response.Sections)
                 {
-                    if (sect.message != "")
+                    if (sect.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -318,41 +318,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private SectionResponse processResponseToProxy(SectionResponse response, DataSet ds, string tui, string signature, string message)
+        private SectionResponse processResponseToProxy(SectionResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.sections = new Section[ds.Tables[0].Rows.Count];
+                    response.Sections = new Section[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Section DD = new Section();
                         DD.Name = dr[CnstSection.SectionName].ToString();
                         DD.Code = dr[CnstSection.SectionCode].ToString();
                         DD.Id = getEncryptData(dr[CnstSection.SectionId].ToString(), DBConstants.PrimaryKey);
-                        response.sections[idx] = DD;
+                        response.Sections[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Section has " + ResponseConstants.Fail;
+                        response.Message = "Getting Section has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

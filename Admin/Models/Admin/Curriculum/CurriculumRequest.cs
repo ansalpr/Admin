@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class CurriculumRequest : BaseRequest
     {
 
-        public Curriculum[] curriculums = new Curriculum[] { };
+        public Curriculum[] Curriculums = new Curriculum[] { };
 
     }
 }

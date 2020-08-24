@@ -17,75 +17,75 @@ namespace Admin.Helper.Admin
         public DivisionResponse ValidateRequest(DivisionRequest reqObjects)
         {
             DivisionResponse response = new DivisionResponse();
-            response.divisions = new Division[reqObjects.divisions.Length];
+            response.Divisions = new Division[reqObjects.Divisions.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.divisions.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Divisions.Length; idx++)
             {
-                if (reqObjects.divisions == null)
+                if (reqObjects.Divisions == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.divisions[idx].action.ToUpper() == "A" || reqObjects.divisions[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Divisions[idx].Action.ToUpper() == "A" || reqObjects.Divisions[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.divisions[idx].Code == null || reqObjects.divisions[idx].Code == ""))
+                    if ((reqObjects.Divisions[idx].Code == null || reqObjects.Divisions[idx].Code == ""))
                     {
                         message = CnstDivision.DivisionCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.divisions[idx].Name == null || reqObjects.divisions[idx].Name == ""))
+                    else if ((reqObjects.Divisions[idx].Name == null || reqObjects.Divisions[idx].Name == ""))
                     {
                         message = CnstDivision.DivisionName + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.divisions[idx].ClassCode == null || reqObjects.divisions[idx].ClassCode == ""))
+                    else if ((reqObjects.Divisions[idx].ClassCode == null || reqObjects.Divisions[idx].ClassCode == ""))
                     {
                         message = CnstDivision.ClassCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.divisions[idx].Stats == null || reqObjects.divisions[idx].Stats == ""))
+                    else if ((reqObjects.Divisions[idx].Stats == null || reqObjects.Divisions[idx].Stats == ""))
                     {
                         message = CnstDivision.Stats + " " + ResponseConstants.Mandatory;
                     }
 
                 }
-                else if ((reqObjects.divisions[idx].Id == null || reqObjects.divisions[idx].Id == "") && (reqObjects.divisions[idx].action.ToUpper() == "E" || reqObjects.divisions[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Divisions[idx].Id == null || reqObjects.Divisions[idx].Id == "") && (reqObjects.Divisions[idx].Action.ToUpper() == "E" || reqObjects.Divisions[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Division proxyResponse = new Division();
-                proxyResponse = reqObjects.divisions[idx];
-                proxyResponse.message = message;
-                response.divisions[idx] = proxyResponse;
+                proxyResponse = reqObjects.Divisions[idx];
+                proxyResponse.Message = message;
+                response.Divisions[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public division[] ProcessProxyToEntity(DivisionRequest reqObjects, int UserId)
         {
-            division[] entityObects = new division[reqObjects.divisions.Length];
+            division[] entityObects = new division[reqObjects.Divisions.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.divisions.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Divisions.Length; idx++)
                 {
                     division entityObect = new division();
-                    entityObect.DivisionCode = reqObjects.divisions[idx].Code == null ? "" : reqObjects.divisions[idx].Code.Trim();
-                    entityObect.DivisionName = reqObjects.divisions[idx].Name == null ? "" : reqObjects.divisions[idx].Name.Trim();
-                    entityObect.ClassCode = reqObjects.divisions[idx].ClassCode == null ? "" : reqObjects.divisions[idx].ClassCode.Trim();
-                    entityObect.Stats = reqObjects.divisions[idx].Stats == null ? "" : reqObjects.divisions[idx].Stats.Trim();
-                    entityObect.DivisionId = reqObjects.divisions[idx].Id == null ? 0 : reqObjects.divisions[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.divisions[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.DivisionCode = reqObjects.Divisions[idx].Code == null ? "" : reqObjects.Divisions[idx].Code.Trim();
+                    entityObect.DivisionName = reqObjects.Divisions[idx].Name == null ? "" : reqObjects.Divisions[idx].Name.Trim();
+                    entityObect.ClassCode = reqObjects.Divisions[idx].ClassCode == null ? "" : reqObjects.Divisions[idx].ClassCode.Trim();
+                    entityObect.Stats = reqObjects.Divisions[idx].Stats == null ? "" : reqObjects.Divisions[idx].Stats.Trim();
+                    entityObect.DivisionId = reqObjects.Divisions[idx].Id == null ? 0 : reqObjects.Divisions[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Divisions[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.divisions[idx].action == "D")
+                    if (reqObjects.Divisions[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -281,17 +281,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DivisionResponse processResponseToProxy(DivisionResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public DivisionResponse processResponseToProxy(DivisionResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -304,27 +304,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DivisionResponse processResponseToProxy(DivisionResponse response, string tui, string signature, string message, string action)
+        private DivisionResponse processResponseToProxy(DivisionResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Division dept in response.divisions)
+                foreach (Division dept in response.Divisions)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -337,14 +337,14 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DivisionResponse processResponseToProxy(DivisionResponse response, DataSet ds, string tui, string signature, string message)
+        private DivisionResponse processResponseToProxy(DivisionResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.divisions = new Division[ds.Tables[0].Rows.Count];
+                    response.Divisions = new Division[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Division DD = new Division();
@@ -353,27 +353,27 @@ namespace Admin.Helper.Admin
                         DD.Name = dr[CnstDivision.DivisionName].ToString();
                         DD.Stats = dr[CnstDivision.Stats].ToString();
                         DD.Id = getEncryptData(dr[CnstDivision.DivisionId].ToString(), DBConstants.PrimaryKey);
-                        response.divisions[idx] = DD;
+                        response.Divisions[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Division has " + ResponseConstants.Fail;
+                        response.Message = "Getting Division has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

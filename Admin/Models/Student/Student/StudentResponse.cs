@@ -8,6 +8,6 @@ namespace Admin.Models.Student
 {
     public class StudentResponse:BaseResponse
     {
-       public Student[] students = new Student[] { };
+       public Student[] Students = new Student[] { };
     }
 }

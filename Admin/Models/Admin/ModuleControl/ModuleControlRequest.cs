@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class ModuleControlRequest : BaseRequest
     {
 
-        public ModuleControl[] modulecontrols = new ModuleControl[] { };
+        public ModuleControl[] ModuleControls = new ModuleControl[] { };
 
     }
 }

@@ -20,61 +20,61 @@ namespace Admin.Helper.Admin
         public RelationResponse ValidateRequest(RelationRequest reqObjects)
         {
             RelationResponse response = new RelationResponse();
-            response.relations = new Relation[reqObjects.relations.Length];
+            response.Relations = new Relation[reqObjects.Relations.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.relations.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Relations.Length; idx++)
             {
-                if (reqObjects.relations == null)
+                if (reqObjects.Relations == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.relations[idx].Code == null || reqObjects.relations[idx].Code == "") && (reqObjects.relations[idx].action.ToUpper() == "A" || reqObjects.relations[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Relations[idx].Code == null || reqObjects.Relations[idx].Code == "") && (reqObjects.Relations[idx].Action.ToUpper() == "A" || reqObjects.Relations[idx].Action.ToUpper() == "E"))
                 {
                     message = "Code " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.relations[idx].Name == null || reqObjects.relations[idx].Name == "") && (reqObjects.relations[idx].action.ToUpper() == "A" || reqObjects.relations[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Relations[idx].Name == null || reqObjects.Relations[idx].Name == "") && (reqObjects.Relations[idx].Action.ToUpper() == "A" || reqObjects.Relations[idx].Action.ToUpper() == "E"))
                 {
                     message = "Name " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.relations[idx].Id == null || reqObjects.relations[idx].Id == "") && (reqObjects.relations[idx].action.ToUpper() == "E" || reqObjects.relations[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Relations[idx].Id == null || reqObjects.Relations[idx].Id == "") && (reqObjects.Relations[idx].Action.ToUpper() == "E" || reqObjects.Relations[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Relation proxyResponse = new Relation();
-                proxyResponse = reqObjects.relations[idx];
-                proxyResponse.message = message;
-                response.relations[idx] = proxyResponse;
+                proxyResponse = reqObjects.Relations[idx];
+                proxyResponse.Message = message;
+                response.Relations[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public relation[] ProcessProxyToEntity(RelationRequest reqObjects, int UserId)
         {
-            relation[] entityObects = new relation[reqObjects.relations.Length];
+            relation[] entityObects = new relation[reqObjects.Relations.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.relations.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Relations.Length; idx++)
                 {
                     relation entityObect = new relation();
-                    entityObect.RelationCode = reqObjects.relations[idx].Code == null ? "" : reqObjects.relations[idx].Code.Trim();
-                    entityObect.RelationName = reqObjects.relations[idx].Name == null ? "" : reqObjects.relations[idx].Name.Trim();
-                    entityObect.RelationId = reqObjects.relations[idx].Id == null ? 0 : reqObjects.relations[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.relations[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.RelationCode = reqObjects.Relations[idx].Code == null ? "" : reqObjects.Relations[idx].Code.Trim();
+                    entityObect.RelationName = reqObjects.Relations[idx].Name == null ? "" : reqObjects.Relations[idx].Name.Trim();
+                    entityObect.RelationId = reqObjects.Relations[idx].Id == null ? 0 : reqObjects.Relations[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Relations[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.relations[idx].action == "D")
+                    if (reqObjects.Relations[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -263,17 +263,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public RelationResponse processResponseToProxy(RelationResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public RelationResponse processResponseToProxy(RelationResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -286,27 +286,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private RelationResponse processResponseToProxy(RelationResponse response, string tui, string signature, string message, string action)
+        private RelationResponse processResponseToProxy(RelationResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Relation relt in response.relations)
+                foreach (Relation relt in response.Relations)
                 {
-                    if (relt.message != "")
+                    if (relt.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -319,41 +319,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private RelationResponse processResponseToProxy(RelationResponse response, DataSet ds, string tui, string signature, string message)
+        private RelationResponse processResponseToProxy(RelationResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.relations = new Relation[ds.Tables[0].Rows.Count];
+                    response.Relations = new Relation[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Relation DD = new Relation();
                         DD.Name = dr[CnstRelation.RelationName].ToString();
                         DD.Code = dr[CnstRelation.RelationCode].ToString();
                         DD.Id = getEncryptData(dr[CnstRelation.RelationId].ToString(), DBConstants.PrimaryKey);
-                        response.relations[idx] = DD;
+                        response.Relations[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Relation has " + ResponseConstants.Fail;
+                        response.Message = "Getting Relation has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

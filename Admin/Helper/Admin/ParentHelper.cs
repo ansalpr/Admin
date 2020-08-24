@@ -17,101 +17,101 @@ namespace Admin.Helper.Admin
         public ParentResponse ValidateRequest(ParentRequest reqObjects)
         {
             ParentResponse response = new ParentResponse();
-            response.parents = new Parent[reqObjects.parents.Length];
+            response.Parents = new Parent[reqObjects.Parents.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.parents.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Parents.Length; idx++)
             {
-                if (reqObjects.parents == null)
+                if (reqObjects.Parents == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.parents[idx].action.ToUpper() == "A" || reqObjects.parents[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Parents[idx].Action.ToUpper() == "A" || reqObjects.Parents[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.parents[idx].CountryCode == null || reqObjects.parents[idx].CountryCode == ""))
+                    if ((reqObjects.Parents[idx].CountryCode == null || reqObjects.Parents[idx].CountryCode == ""))
                     {
                         message = CnstParent.CountryCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].BloodGroupCode == null || reqObjects.parents[idx].BloodGroupCode == ""))
+                    else if ((reqObjects.Parents[idx].BloodGroupCode == null || reqObjects.Parents[idx].BloodGroupCode == ""))
                     {
                         message = CnstParent.BloodGroupCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].StateCode == null || reqObjects.parents[idx].StateCode == ""))
+                    else if ((reqObjects.Parents[idx].StateCode == null || reqObjects.Parents[idx].StateCode == ""))
                     {
                         message = CnstParent.StateCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].DOB == null || reqObjects.parents[idx].DOB == ""))
+                    else if ((reqObjects.Parents[idx].DOB == null || reqObjects.Parents[idx].DOB == ""))
                     {
                         message = CnstParent.DOB + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].MotherTongue == null || reqObjects.parents[idx].MotherTongue == ""))
+                    else if ((reqObjects.Parents[idx].MotherTongue == null || reqObjects.Parents[idx].MotherTongue == ""))
                     {
                         message = CnstParent.MotherTongue + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].Name == null || reqObjects.parents[idx].Name == ""))
+                    else if ((reqObjects.Parents[idx].Name == null || reqObjects.Parents[idx].Name == ""))
                     {
                         message = CnstParent.ParentName + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].POB == null || reqObjects.parents[idx].POB == ""))
+                    else if ((reqObjects.Parents[idx].POB == null || reqObjects.Parents[idx].POB == ""))
                     {
                         message = CnstParent.POB + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.parents[idx].Address1 == null || reqObjects.parents[idx].Address1 == ""))
+                    else if ((reqObjects.Parents[idx].Address1 == null || reqObjects.Parents[idx].Address1 == ""))
                     {
                         message = CnstParent.Address1 + " " + ResponseConstants.Mandatory;
                     }
                     else
                     {
-                        if (!validateDateFormat(reqObjects.parents[idx].DOB))
+                        if (!validateDateFormat(reqObjects.Parents[idx].DOB))
                         {
                             message = ResponseConstants.InValid + " " + CnstParent.DOB;
                         }
                     }
                 }
-                else if ((reqObjects.parents[idx].Id == null || reqObjects.parents[idx].Id == "") && (reqObjects.parents[idx].action.ToUpper() == "E" || reqObjects.parents[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Parents[idx].Id == null || reqObjects.Parents[idx].Id == "") && (reqObjects.Parents[idx].Action.ToUpper() == "E" || reqObjects.Parents[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Parent proxyResponse = new Parent();
-                proxyResponse = reqObjects.parents[idx];
-                proxyResponse.message = message;
-                response.parents[idx] = proxyResponse;
+                proxyResponse = reqObjects.Parents[idx];
+                proxyResponse.Message = message;
+                response.Parents[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public parent[] ProcessProxyToEntity(ParentRequest reqObjects, int UserId)
         {
-            parent[] entityObects = new parent[reqObjects.parents.Length];
+            parent[] entityObects = new parent[reqObjects.Parents.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.parents.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Parents.Length; idx++)
                 {
                     parent entityObect = new parent();
-                    entityObect.Address1 = reqObjects.parents[idx].Address1 == null ? "" : reqObjects.parents[idx].Address1.Trim();
-                    entityObect.Address2 = reqObjects.parents[idx].Address2 == null ? "" : reqObjects.parents[idx].Address2.Trim();
-                    entityObect.BloodGroupCode = reqObjects.parents[idx].BloodGroupCode == null ? "" : reqObjects.parents[idx].BloodGroupCode.Trim();
-                    entityObect.CountryCode = reqObjects.parents[idx].CountryCode == null ? "" : reqObjects.parents[idx].CountryCode.Trim();
-                    entityObect.StateCode = reqObjects.parents[idx].StateCode == null ? "" : reqObjects.parents[idx].StateCode.Trim();
-                    entityObect.DOB = reqObjects.parents[idx].DOB == null ? "" : (reqObjects.parents[idx].DOB.Trim());
-                    entityObect.ParentName = reqObjects.parents[idx].Name == null ? "" : reqObjects.parents[idx].Name.Trim();
-                    entityObect.POB = reqObjects.parents[idx].POB == null ? "" : reqObjects.parents[idx].POB.Trim();                   
-                    entityObect.ParentId = reqObjects.parents[idx].Id == null ? 0 : reqObjects.parents[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.parents[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.Address1 = reqObjects.Parents[idx].Address1 == null ? "" : reqObjects.Parents[idx].Address1.Trim();
+                    entityObect.Address2 = reqObjects.Parents[idx].Address2 == null ? "" : reqObjects.Parents[idx].Address2.Trim();
+                    entityObect.BloodGroupCode = reqObjects.Parents[idx].BloodGroupCode == null ? "" : reqObjects.Parents[idx].BloodGroupCode.Trim();
+                    entityObect.CountryCode = reqObjects.Parents[idx].CountryCode == null ? "" : reqObjects.Parents[idx].CountryCode.Trim();
+                    entityObect.StateCode = reqObjects.Parents[idx].StateCode == null ? "" : reqObjects.Parents[idx].StateCode.Trim();
+                    entityObect.DOB = reqObjects.Parents[idx].DOB == null ? "" : (reqObjects.Parents[idx].DOB.Trim());
+                    entityObect.ParentName = reqObjects.Parents[idx].Name == null ? "" : reqObjects.Parents[idx].Name.Trim();
+                    entityObect.POB = reqObjects.Parents[idx].POB == null ? "" : reqObjects.Parents[idx].POB.Trim();                   
+                    entityObect.ParentId = reqObjects.Parents[idx].Id == null ? 0 : reqObjects.Parents[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Parents[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.parents[idx].action == "D")
+                    if (reqObjects.Parents[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -328,17 +328,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public ParentResponse processResponseToProxy(ParentResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public ParentResponse processResponseToProxy(ParentResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -351,27 +351,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ParentResponse processResponseToProxy(ParentResponse response, string tui, string signature, string message, string action)
+        private ParentResponse processResponseToProxy(ParentResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Parent dept in response.parents)
+                foreach (Parent dept in response.Parents)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -384,14 +384,14 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ParentResponse processResponseToProxy(ParentResponse response, DataSet ds, string tui, string signature, string message)
+        private ParentResponse processResponseToProxy(ParentResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.parents = new Parent[ds.Tables[0].Rows.Count];
+                    response.Parents = new Parent[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Parent DD = new Parent();
@@ -406,27 +406,27 @@ namespace Admin.Helper.Admin
                         DD.Name = dr[CnstParent.ParentName].ToString();
                         DD.POB = dr[CnstParent.POB].ToString();
                         DD.Id = getEncryptData(dr[CnstParent.ParentId].ToString(), DBConstants.PrimaryKey);
-                        response.parents[idx] = DD;
+                        response.Parents[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Parent has " + ResponseConstants.Fail;
+                        response.Message = "Getting Parent has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

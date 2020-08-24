@@ -53,7 +53,7 @@ namespace Admin.Helper.Admin
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.Currencies[idx].action.ToUpper() == "A" || reqObjects.Currencies[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Currencies[idx].Action.ToUpper() == "A" || reqObjects.Currencies[idx].Action.ToUpper() == "E"))
                 {
                     if((reqObjects.Currencies[idx].Code == null || reqObjects.Currencies[idx].Code == ""))
                     {
@@ -76,27 +76,27 @@ namespace Admin.Helper.Admin
                         message = "Stats " + ResponseConstants.Mandatory;
                     }
                 }                
-                else if ((reqObjects.Currencies[idx].Id == null || reqObjects.Currencies[idx].Id == "") && (reqObjects.Currencies[idx].action.ToUpper() == "E" || reqObjects.Currencies[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Currencies[idx].Id == null || reqObjects.Currencies[idx].Id == "") && (reqObjects.Currencies[idx].Action.ToUpper() == "E" || reqObjects.Currencies[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Currency proxyResponse = new Currency();
                 proxyResponse = reqObjects.Currencies[idx];
-                proxyResponse.message = message;
+                proxyResponse.Message = message;
                 response.Currencies[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
@@ -117,7 +117,7 @@ namespace Admin.Helper.Admin
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.Currencies[idx].action == "D")
+                    if (reqObjects.Currencies[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -318,17 +318,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -341,27 +341,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CurrencyResponse processResponseToProxy(CurrencyResponse response, string tui, string signature, string message, string action)
+        private CurrencyResponse processResponseToProxy(CurrencyResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
                 foreach (Currency dept in response.Currencies)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -374,7 +374,7 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string tui, string signature, string message)
+        private CurrencyResponse processResponseToProxy(CurrencyResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
@@ -394,24 +394,24 @@ namespace Admin.Helper.Admin
                         response.Currencies[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Currency has " + ResponseConstants.Fail;
+                        response.Message = "Getting Currency has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

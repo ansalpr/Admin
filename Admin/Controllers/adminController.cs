@@ -46,19 +46,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDepartment, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDepartment, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.departments.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Departments.Length; idx++)
                     {
-                        if (reqObj.departments[idx].action.ToUpper() == "A")
+                        if (reqObj.Departments[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -67,24 +67,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.departments[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Departments[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.departments[idx].message = entityObjects[idx].DepartmentName + " Insertion " + ResponseConstants.Fail;
+                                    response.Departments[idx].Message = entityObjects[idx].DepartmentName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.departments[idx].message = ResponseConstants.Exist;
+                                response.Departments[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.departments[idx].action.ToUpper() == "S")
+                        else if (reqObj.Departments[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.departments[idx].action.ToUpper() == "E")
+                        else if (reqObj.Departments[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -93,10 +93,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.departments[idx].message = entityObjects[idx].DepartmentName + " Update " + ResponseConstants.Fail;
+                                response.Departments[idx].Message = entityObjects[idx].DepartmentName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.departments[idx].action.ToUpper() == "D")
+                        else if (reqObj.Departments[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -105,16 +105,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.departments[idx].message = entityObjects[idx].DepartmentName + " Deletion " + ResponseConstants.Fail;
+                                response.Departments[idx].Message = entityObjects[idx].DepartmentName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.departments[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Departments[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDepartment, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDepartment, response.Tui);
             }
             catch (Exception ex)
             {
@@ -122,14 +122,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -160,19 +160,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurriculum, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurriculum, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.curriculums.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Curriculums.Length; idx++)
                     {
-                        if (reqObj.curriculums[idx].action.ToUpper() == "A")
+                        if (reqObj.Curriculums[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -181,24 +181,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.curriculums[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Curriculums[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.curriculums[idx].message = entityObjects[idx].CurriculumName + " Insertion " + ResponseConstants.Fail;
+                                    response.Curriculums[idx].Message = entityObjects[idx].CurriculumName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.curriculums[idx].message = ResponseConstants.Exist;
+                                response.Curriculums[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.curriculums[idx].action.ToUpper() == "S")
+                        else if (reqObj.Curriculums[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.curriculums[idx].action.ToUpper() == "E")
+                        else if (reqObj.Curriculums[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -207,10 +207,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.curriculums[idx].message = entityObjects[idx].CurriculumName + " Update " + ResponseConstants.Fail;
+                                response.Curriculums[idx].Message = entityObjects[idx].CurriculumName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.curriculums[idx].action.ToUpper() == "D")
+                        else if (reqObj.Curriculums[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -219,16 +219,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.curriculums[idx].message = entityObjects[idx].CurriculumName + " Deletion " + ResponseConstants.Fail;
+                                response.Curriculums[idx].Message = entityObjects[idx].CurriculumName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.curriculums[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Curriculums[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurriculum, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurriculum, response.Tui);
             }
             catch (Exception ex)
             {
@@ -236,14 +236,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -274,10 +274,10 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurrency, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurrency, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
@@ -286,7 +286,7 @@ namespace Admin.Controllers
 
                     for (int idx = 0; idx < reqObj.Currencies.Length; idx++)
                     {
-                        if (reqObj.Currencies[idx].action.ToUpper() == "A")
+                        if (reqObj.Currencies[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -299,20 +299,20 @@ namespace Admin.Controllers
                                 }
                                 else
                                 {
-                                    response.Currencies[idx].message = entityObjects[idx].CurrencyName + " Insertion " + ResponseConstants.Fail;
+                                    response.Currencies[idx].Message = entityObjects[idx].CurrencyName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.Currencies[idx].message = ResponseConstants.Exist;
+                                response.Currencies[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.Currencies[idx].action.ToUpper() == "S")
+                        else if (reqObj.Currencies[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.Currencies[idx].action.ToUpper() == "E")
+                        else if (reqObj.Currencies[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -321,10 +321,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.Currencies[idx].message = entityObjects[idx].CurrencyName + " Update " + ResponseConstants.Fail;
+                                response.Currencies[idx].Message = entityObjects[idx].CurrencyName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.Currencies[idx].action.ToUpper() == "D")
+                        else if (reqObj.Currencies[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -333,16 +333,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.Currencies[idx].message = entityObjects[idx].CurrencyName + " Deletion " + ResponseConstants.Fail;
+                                response.Currencies[idx].Message = entityObjects[idx].CurrencyName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.Currencies[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Currencies[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurrency, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurrency, response.Tui);
             }
             catch (Exception ex)
             {
@@ -350,14 +350,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -388,10 +388,10 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCountry, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCountry, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
@@ -400,7 +400,7 @@ namespace Admin.Controllers
 
                     for (int idx = 0; idx < reqObj.Countries.Length; idx++)
                     {
-                        if (reqObj.Countries[idx].action.ToUpper() == "A")
+                        if (reqObj.Countries[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -413,20 +413,20 @@ namespace Admin.Controllers
                                 }
                                 else
                                 {
-                                    response.Countries[idx].message = entityObjects[idx].CountryName + " Insertion " + ResponseConstants.Fail;
+                                    response.Countries[idx].Message = entityObjects[idx].CountryName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.Countries[idx].message = ResponseConstants.Exist;
+                                response.Countries[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.Countries[idx].action.ToUpper() == "S")
+                        else if (reqObj.Countries[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.Countries[idx].action.ToUpper() == "E")
+                        else if (reqObj.Countries[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -435,10 +435,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.Countries[idx].message = entityObjects[idx].CountryName + " Update " + ResponseConstants.Fail;
+                                response.Countries[idx].Message = entityObjects[idx].CountryName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.Countries[idx].action.ToUpper() == "D")
+                        else if (reqObj.Countries[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -447,16 +447,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.Countries[idx].message = entityObjects[idx].CountryName + " Deletion " + ResponseConstants.Fail;
+                                response.Countries[idx].Message = entityObjects[idx].CountryName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.Countries[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Countries[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCountry, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCountry, response.Tui);
             }
             catch (Exception ex)
             {
@@ -464,14 +464,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -503,10 +503,10 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurrencyRate, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NCurrencyRate, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
@@ -515,7 +515,7 @@ namespace Admin.Controllers
 
                     for (int idx = 0; idx < reqObj.CurrencyRate.Length; idx++)
                     {
-                        if (reqObj.CurrencyRate[idx].action.ToUpper() == "A")
+                        if (reqObj.CurrencyRate[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -531,26 +531,26 @@ namespace Admin.Controllers
                                     }
                                     else
                                     {
-                                        response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " Rate Insertion " + ResponseConstants.Fail;
+                                        response.CurrencyRate[idx].Message = entityObjects[idx].CurrencyCode + " Rate Insertion " + ResponseConstants.Fail;
                                     }
                                 }
                                 else
                                 {
-                                    response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " " + ResponseConstants.InValid;
+                                    response.CurrencyRate[idx].Message = entityObjects[idx].CurrencyCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.CurrencyRate[idx].message = ResponseConstants.Exist;
+                                response.CurrencyRate[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.CurrencyRate[idx].action.ToUpper() == "S")
+                        else if (reqObj.CurrencyRate[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.CurrencyRate[idx].action.ToUpper() == "E")
+                        else if (reqObj.CurrencyRate[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -559,10 +559,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " Rate Update " + ResponseConstants.Fail;
+                                response.CurrencyRate[idx].Message = entityObjects[idx].CurrencyCode + " Rate Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.CurrencyRate[idx].action.ToUpper() == "D")
+                        else if (reqObj.CurrencyRate[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -571,16 +571,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.CurrencyRate[idx].message = entityObjects[idx].CurrencyCode + " Rate Deletion " + ResponseConstants.Fail;
+                                response.CurrencyRate[idx].Message = entityObjects[idx].CurrencyCode + " Rate Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.CurrencyRate[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.CurrencyRate[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurrencyRate, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NCurrencyRate, response.Tui);
             }
             catch (Exception ex)
             {
@@ -588,14 +588,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -627,54 +627,54 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NState, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NState, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.states.Length; idx++)
+                    for (int idx = 0; idx < reqObj.States.Length; idx++)
                     {
-                        if (reqObj.states[idx].action.ToUpper() == "A")
+                        if (reqObj.States[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
                                 //Check the Country Code Existance
-                                if (ADMH.getTheCountryData(reqObj.states[idx].CountryCode, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheCountryData(reqObj.States[idx].CountryCode, 0).Tables[0].Rows.Count > 0)
                                 {
                                     //Insert Entity Details
                                     result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                     if (result > 0)
                                     {
-                                        response.states[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                        response.States[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                     }
                                     else
                                     {
-                                        response.states[idx].message = entityObjects[idx].StateName + " Insertion " + ResponseConstants.Fail;
+                                        response.States[idx].Message = entityObjects[idx].StateName + " Insertion " + ResponseConstants.Fail;
                                     }
                                 }
                                 else
                                 {
-                                    response.states[idx].message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
+                                    response.States[idx].Message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.states[idx].message = ResponseConstants.Exist;
+                                response.States[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.states[idx].action.ToUpper() == "S")
+                        else if (reqObj.States[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.states[idx].action.ToUpper() == "E")
+                        else if (reqObj.States[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -683,10 +683,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.states[idx].message = entityObjects[idx].StateName + " Update " + ResponseConstants.Fail;
+                                response.States[idx].Message = entityObjects[idx].StateName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.states[idx].action.ToUpper() == "D")
+                        else if (reqObj.States[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -695,16 +695,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.states[idx].message = entityObjects[idx].StateName + " Deletion " + ResponseConstants.Fail;
+                                response.States[idx].Message = entityObjects[idx].StateName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.states[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.States[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NState, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NState, response.Tui);
             }
             catch (Exception ex)
             {
@@ -712,14 +712,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -751,54 +751,54 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NClass, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NClass, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.classes.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Classes.Length; idx++)
                     {
-                        if (reqObj.classes[idx].action.ToUpper() == "A")
+                        if (reqObj.Classes[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
                                 //Check the Country Code Existance
-                                if (ADMH.getTheCurriculumData(reqObj.classes[idx].CurriculumCode, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheCurriculumData(reqObj.Classes[idx].CurriculumCode, 0).Tables[0].Rows.Count > 0)
                                 {
                                     //Insert Entity Details
                                     result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                     if (result > 0)
                                     {
-                                        response.classes[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                        response.Classes[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                     }
                                     else
                                     {
-                                        response.classes[idx].message = entityObjects[idx].ClassName + " Insertion " + ResponseConstants.Fail;
+                                        response.Classes[idx].Message = entityObjects[idx].ClassName + " Insertion " + ResponseConstants.Fail;
                                     }
                                 }
                                 else
                                 {
-                                    response.classes[idx].message = entityObjects[idx].CurriculumCode + " " + ResponseConstants.InValid;
+                                    response.Classes[idx].Message = entityObjects[idx].CurriculumCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.classes[idx].message = ResponseConstants.Exist;
+                                response.Classes[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.classes[idx].action.ToUpper() == "S")
+                        else if (reqObj.Classes[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.classes[idx].action.ToUpper() == "E")
+                        else if (reqObj.Classes[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -807,10 +807,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.classes[idx].message = entityObjects[idx].ClassName + " Update " + ResponseConstants.Fail;
+                                response.Classes[idx].Message = entityObjects[idx].ClassName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.classes[idx].action.ToUpper() == "D")
+                        else if (reqObj.Classes[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -819,16 +819,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.classes[idx].message = entityObjects[idx].ClassName + " Deletion " + ResponseConstants.Fail;
+                                response.Classes[idx].Message = entityObjects[idx].ClassName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.classes[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Classes[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NClass, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NClass, response.Tui);
             }
             catch (Exception ex)
             {
@@ -836,14 +836,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -875,54 +875,54 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDivision, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDivision, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.divisions.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Divisions.Length; idx++)
                     {
-                        if (reqObj.divisions[idx].action.ToUpper() == "A")
+                        if (reqObj.Divisions[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
                                 //Check the Class Code Existance
-                                if (ADMH.getTheCurriculumData(reqObj.divisions[idx].ClassCode, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheCurriculumData(reqObj.Divisions[idx].ClassCode, 0).Tables[0].Rows.Count > 0)
                                 {
                                     //Insert Entity Details
                                     result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                     if (result > 0)
                                     {
-                                        response.divisions[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                        response.Divisions[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                     }
                                     else
                                     {
-                                        response.divisions[idx].message = entityObjects[idx].DivisionName + " Insertion " + ResponseConstants.Fail;
+                                        response.Divisions[idx].Message = entityObjects[idx].DivisionName + " Insertion " + ResponseConstants.Fail;
                                     }
                                 }
                                 else
                                 {
-                                    response.divisions[idx].message = entityObjects[idx].ClassCode + " " + ResponseConstants.InValid;
+                                    response.Divisions[idx].Message = entityObjects[idx].ClassCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.divisions[idx].message = ResponseConstants.Exist;
+                                response.Divisions[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.divisions[idx].action.ToUpper() == "S")
+                        else if (reqObj.Divisions[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.divisions[idx].action.ToUpper() == "E")
+                        else if (reqObj.Divisions[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -931,10 +931,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.divisions[idx].message = entityObjects[idx].DivisionName + " Update " + ResponseConstants.Fail;
+                                response.Divisions[idx].Message = entityObjects[idx].DivisionName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.divisions[idx].action.ToUpper() == "D")
+                        else if (reqObj.Divisions[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -943,16 +943,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.divisions[idx].message = entityObjects[idx].DivisionName + " Deletion " + ResponseConstants.Fail;
+                                response.Divisions[idx].Message = entityObjects[idx].DivisionName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.divisions[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Divisions[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDivision, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDivision, response.Tui);
             }
             catch (Exception ex)
             {
@@ -960,14 +960,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -998,19 +998,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NSection, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NSection, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.sections.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Sections.Length; idx++)
                     {
-                        if (reqObj.sections[idx].action.ToUpper() == "A")
+                        if (reqObj.Sections[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1019,24 +1019,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.sections[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Sections[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.sections[idx].message = entityObjects[idx].SectionName + " Insertion " + ResponseConstants.Fail;
+                                    response.Sections[idx].Message = entityObjects[idx].SectionName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.sections[idx].message = ResponseConstants.Exist;
+                                response.Sections[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.sections[idx].action.ToUpper() == "S")
+                        else if (reqObj.Sections[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.sections[idx].action.ToUpper() == "E")
+                        else if (reqObj.Sections[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1045,10 +1045,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.sections[idx].message = entityObjects[idx].SectionName + " Update " + ResponseConstants.Fail;
+                                response.Sections[idx].Message = entityObjects[idx].SectionName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.sections[idx].action.ToUpper() == "D")
+                        else if (reqObj.Sections[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1057,16 +1057,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.sections[idx].message = entityObjects[idx].SectionName + " Deletion " + ResponseConstants.Fail;
+                                response.Sections[idx].Message = entityObjects[idx].SectionName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.sections[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Sections[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NSection, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NSection, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1074,14 +1074,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1112,19 +1112,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDesignation, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NDesignation, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.designations.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Designations.Length; idx++)
                     {
-                        if (reqObj.designations[idx].action.ToUpper() == "A")
+                        if (reqObj.Designations[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1133,24 +1133,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.designations[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Designations[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.designations[idx].message = entityObjects[idx].DesignationName + " Insertion " + ResponseConstants.Fail;
+                                    response.Designations[idx].Message = entityObjects[idx].DesignationName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.designations[idx].message = ResponseConstants.Exist;
+                                response.Designations[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.designations[idx].action.ToUpper() == "S")
+                        else if (reqObj.Designations[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.designations[idx].action.ToUpper() == "E")
+                        else if (reqObj.Designations[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1159,10 +1159,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.designations[idx].message = entityObjects[idx].DesignationName + " Update " + ResponseConstants.Fail;
+                                response.Designations[idx].Message = entityObjects[idx].DesignationName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.designations[idx].action.ToUpper() == "D")
+                        else if (reqObj.Designations[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1171,16 +1171,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.designations[idx].message = entityObjects[idx].DesignationName + " Deletion " + ResponseConstants.Fail;
+                                response.Designations[idx].Message = entityObjects[idx].DesignationName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.designations[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Designations[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDesignation, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NDesignation, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1188,14 +1188,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1226,19 +1226,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModule, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModule, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.modules.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Modules.Length; idx++)
                     {
-                        if (reqObj.modules[idx].action.ToUpper() == "A")
+                        if (reqObj.Modules[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1247,24 +1247,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.modules[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Modules[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.modules[idx].message = entityObjects[idx].ModuleName + " Insertion " + ResponseConstants.Fail;
+                                    response.Modules[idx].Message = entityObjects[idx].ModuleName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.modules[idx].message = ResponseConstants.Exist;
+                                response.Modules[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.modules[idx].action.ToUpper() == "S")
+                        else if (reqObj.Modules[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.modules[idx].action.ToUpper() == "E")
+                        else if (reqObj.Modules[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1273,10 +1273,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.modules[idx].message = entityObjects[idx].ModuleName + " Update " + ResponseConstants.Fail;
+                                response.Modules[idx].Message = entityObjects[idx].ModuleName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.modules[idx].action.ToUpper() == "D")
+                        else if (reqObj.Modules[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1285,16 +1285,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.modules[idx].message = entityObjects[idx].ModuleName + " Deletion " + ResponseConstants.Fail;
+                                response.Modules[idx].Message = entityObjects[idx].ModuleName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.modules[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Modules[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModule, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModule, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1302,14 +1302,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1341,53 +1341,53 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModuleControl, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NModuleControl, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.modulecontrols.Length; idx++)
+                    for (int idx = 0; idx < reqObj.ModuleControls.Length; idx++)
                     {
-                        if (reqObj.modulecontrols[idx].action.ToUpper() == "A")
+                        if (reqObj.ModuleControls[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
-                                if (ADMH.getTheModuleData(reqObj.modulecontrols[idx].ModuleCode, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheModuleData(reqObj.ModuleControls[idx].ModuleCode, 0).Tables[0].Rows.Count > 0)
                                 {
                                     //Insert Entity Details
                                     result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                     if (result > 0)
                                     {
-                                        response.modulecontrols[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                        response.ModuleControls[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                     }
                                     else
                                     {
-                                        response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Insertion " + ResponseConstants.Fail;
+                                        response.ModuleControls[idx].Message = entityObjects[idx].ModuleCode + " Insertion " + ResponseConstants.Fail;
                                     }
                                 }
                                 else
                                 {
-                                    response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " " + ResponseConstants.InValid;
+                                    response.ModuleControls[idx].Message = entityObjects[idx].ModuleCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.modulecontrols[idx].message = ResponseConstants.Exist;
+                                response.ModuleControls[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "S")
+                        else if (reqObj.ModuleControls[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "E")
+                        else if (reqObj.ModuleControls[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1396,10 +1396,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Update " + ResponseConstants.Fail;
+                                response.ModuleControls[idx].Message = entityObjects[idx].ModuleCode + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.modulecontrols[idx].action.ToUpper() == "D")
+                        else if (reqObj.ModuleControls[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1408,16 +1408,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.modulecontrols[idx].message = entityObjects[idx].ModuleCode + " Deletion " + ResponseConstants.Fail;
+                                response.ModuleControls[idx].Message = entityObjects[idx].ModuleCode + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.modulecontrols[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.ModuleControls[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModuleControl, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NModuleControl, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1425,14 +1425,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1463,19 +1463,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NRelation, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NRelation, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.relations.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Relations.Length; idx++)
                     {
-                        if (reqObj.relations[idx].action.ToUpper() == "A")
+                        if (reqObj.Relations[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1484,24 +1484,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.relations[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Relations[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.relations[idx].message = entityObjects[idx].RelationName + " Insertion " + ResponseConstants.Fail;
+                                    response.Relations[idx].Message = entityObjects[idx].RelationName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.relations[idx].message = ResponseConstants.Exist;
+                                response.Relations[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.relations[idx].action.ToUpper() == "S")
+                        else if (reqObj.Relations[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.relations[idx].action.ToUpper() == "E")
+                        else if (reqObj.Relations[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1510,10 +1510,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.relations[idx].message = entityObjects[idx].RelationName + " Update " + ResponseConstants.Fail;
+                                response.Relations[idx].Message = entityObjects[idx].RelationName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.relations[idx].action.ToUpper() == "D")
+                        else if (reqObj.Relations[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1522,16 +1522,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.relations[idx].message = entityObjects[idx].RelationName + " Deletion " + ResponseConstants.Fail;
+                                response.Relations[idx].Message = entityObjects[idx].RelationName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.relations[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Relations[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NRelation, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NRelation, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1539,14 +1539,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1578,70 +1578,70 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NParent, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NParent, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.parents.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Parents.Length; idx++)
                     {
-                        if (reqObj.parents[idx].action.ToUpper() == "A")
+                        if (reqObj.Parents[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
                             {
                                 //Check the Country Code Existance
-                                if (ADMH.getTheCountryData(reqObj.parents[idx].CountryCode, 0).Tables[0].Rows.Count > 0)
+                                if (ADMH.getTheCountryData(reqObj.Parents[idx].CountryCode, 0).Tables[0].Rows.Count > 0)
                                 { 
                                     //Check the State Code Existance
-                                    if (ADMH.getTheStateData(reqObj.parents[idx].StateCode, 0).Tables[0].Rows.Count > 0)
+                                    if (ADMH.getTheStateData(reqObj.Parents[idx].StateCode, 0).Tables[0].Rows.Count > 0)
                                     {
                                         //Check the BloodGroup Code Existance
-                                        if (ADMH.getTheBloodGroupData(reqObj.parents[idx].BloodGroupCode, 0).Tables[0].Rows.Count > 0)
+                                        if (ADMH.getTheBloodGroupData(reqObj.Parents[idx].BloodGroupCode, 0).Tables[0].Rows.Count > 0)
                                         {
                                             //Insert Entity Details
                                             result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                             if (result > 0)
                                             {
-                                                response.parents[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                                response.Parents[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                             }
                                             else
                                             {
-                                                response.parents[idx].message = entityObjects[idx].ParentName + " Insertion " + ResponseConstants.Fail;
+                                                response.Parents[idx].Message = entityObjects[idx].ParentName + " Insertion " + ResponseConstants.Fail;
                                             }
                                         }
                                         else
                                         {
-                                            response.parents[idx].message = entityObjects[idx].BloodGroupCode + " " + ResponseConstants.InValid;
+                                            response.Parents[idx].Message = entityObjects[idx].BloodGroupCode + " " + ResponseConstants.InValid;
                                         }
                                     }
                                     else
                                     {
-                                        response.parents[idx].message = entityObjects[idx].StateCode + " " + ResponseConstants.InValid;
+                                        response.Parents[idx].Message = entityObjects[idx].StateCode + " " + ResponseConstants.InValid;
                                     }
                                 }
                                 else
                                 {
-                                    response.parents[idx].message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
+                                    response.Parents[idx].Message = entityObjects[idx].CountryCode + " " + ResponseConstants.InValid;
                                 }
 
                             }
                             else
                             {
-                                response.parents[idx].message = ResponseConstants.Exist;
+                                response.Parents[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.parents[idx].action.ToUpper() == "S")
+                        else if (reqObj.Parents[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.parents[idx].action.ToUpper() == "E")
+                        else if (reqObj.Parents[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1650,10 +1650,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.parents[idx].message = entityObjects[idx].ParentName + " Update " + ResponseConstants.Fail;
+                                response.Parents[idx].Message = entityObjects[idx].ParentName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.parents[idx].action.ToUpper() == "D")
+                        else if (reqObj.Parents[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1662,16 +1662,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.parents[idx].message = entityObjects[idx].ParentName + " Deletion " + ResponseConstants.Fail;
+                                response.Parents[idx].Message = entityObjects[idx].ParentName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.parents[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Parents[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NParent, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NParent, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1679,14 +1679,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1717,19 +1717,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NBloodGroup, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NBloodGroup, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.bloodgroups.Length; idx++)
+                    for (int idx = 0; idx < reqObj.BloodGroups.Length; idx++)
                     {
-                        if (reqObj.bloodgroups[idx].action.ToUpper() == "A")
+                        if (reqObj.BloodGroups[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1738,24 +1738,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.bloodgroups[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.BloodGroups[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Insertion " + ResponseConstants.Fail;
+                                    response.BloodGroups[idx].Message = entityObjects[idx].BloodGroupName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.bloodgroups[idx].message = ResponseConstants.Exist;
+                                response.BloodGroups[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "S")
+                        else if (reqObj.BloodGroups[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "E")
+                        else if (reqObj.BloodGroups[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1764,10 +1764,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Update " + ResponseConstants.Fail;
+                                response.BloodGroups[idx].Message = entityObjects[idx].BloodGroupName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.bloodgroups[idx].action.ToUpper() == "D")
+                        else if (reqObj.BloodGroups[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1776,16 +1776,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.bloodgroups[idx].message = entityObjects[idx].BloodGroupName + " Deletion " + ResponseConstants.Fail;
+                                response.BloodGroups[idx].Message = entityObjects[idx].BloodGroupName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.bloodgroups[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.BloodGroups[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NBloodGroup, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NBloodGroup, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1793,14 +1793,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -1831,19 +1831,19 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NMenu, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NMenu, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
 
-                    for (int idx = 0; idx < reqObj.menus.Length; idx++)
+                    for (int idx = 0; idx < reqObj.Menus.Length; idx++)
                     {
-                        if (reqObj.menus[idx].action.ToUpper() == "A")
+                        if (reqObj.Menus[idx].Action.ToUpper() == "A")
                         {
                             //Check The Existance Of New Request
                             if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
@@ -1852,24 +1852,24 @@ namespace Admin.Controllers
                                 result = helperObj.ProcessInsertEntity(entityObjects[idx]);
                                 if (result > 0)
                                 {
-                                    response.menus[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                    response.Menus[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
                                 }
                                 else
                                 {
-                                    response.menus[idx].message = entityObjects[idx].MenuName + " Insertion " + ResponseConstants.Fail;
+                                    response.Menus[idx].Message = entityObjects[idx].MenuName + " Insertion " + ResponseConstants.Fail;
                                 }
                             }
                             else
                             {
-                                response.menus[idx].message = ResponseConstants.Exist;
+                                response.Menus[idx].Message = ResponseConstants.Exist;
                             }
                         }
-                        else if (reqObj.menus[idx].action.ToUpper() == "S")
+                        else if (reqObj.Menus[idx].Action.ToUpper() == "S")
                         {
                             //Get The Data
                             ds = helperObj.GetTheData(entityObjects[idx]);
                         }
-                        else if (reqObj.menus[idx].action.ToUpper() == "E")
+                        else if (reqObj.Menus[idx].Action.ToUpper() == "E")
                         {
                             //Update The Data
                             result = helperObj.UpdateTheData(entityObjects[idx]);
@@ -1878,10 +1878,10 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.menus[idx].message = entityObjects[idx].MenuName + " Update " + ResponseConstants.Fail;
+                                response.Menus[idx].Message = entityObjects[idx].MenuName + " Update " + ResponseConstants.Fail;
                             }
                         }
-                        else if (reqObj.menus[idx].action.ToUpper() == "D")
+                        else if (reqObj.Menus[idx].Action.ToUpper() == "D")
                         {
                             //Delete The Data
                             result = helperObj.DeleteTheData(entityObjects[idx]);
@@ -1890,16 +1890,16 @@ namespace Admin.Controllers
                             }
                             else
                             {
-                                response.menus[idx].message = entityObjects[idx].MenuName + " Deletion " + ResponseConstants.Fail;
+                                response.Menus[idx].Message = entityObjects[idx].MenuName + " Deletion " + ResponseConstants.Fail;
                             }
                         }
 
                     }
                 }
                 //Response Processing
-                response = helperObj.processResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.menus[0].action);
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Menus[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NMenu, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NMenu, response.Tui);
             }
             catch (Exception ex)
             {
@@ -1907,14 +1907,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;

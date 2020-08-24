@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class ParentRequest :BaseRequest
     {
 
-        public Parent[] parents = new Parent[] { };
+        public Parent[] Parents = new Parent[] { };
 
     }
 }

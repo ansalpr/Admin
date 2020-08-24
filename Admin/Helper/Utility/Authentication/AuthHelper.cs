@@ -23,27 +23,27 @@ namespace Admin.Helper.Utility.Authentication
             {
                 message = ResponseConstants.InvalidRequest;
             }
-            else if (reqObject.name == null || reqObject.name == "")
+            else if (reqObject.Name == null || reqObject.Name == "")
             {
                 message = "Name " + ResponseConstants.Mandatory;
             }
-            else if (reqObject.password == null || reqObject.password == "")
+            else if (reqObject.Password == null || reqObject.Password == "")
             {
                 message = "Password " + ResponseConstants.Mandatory;
             }
-            response.message = message;
-            response.tui = reqObject.tui;
+            response.Message = message;
+            response.Tui = reqObject.Tui;
             if (message == "")
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
-        public authResponse processResponseToProxy(DataSet ds, string tui, string signature)
+        public authResponse processResponseToProxy(DataSet ds, string Tui, string signature)
         {
 
             authResponse response = new authResponse();
@@ -51,28 +51,28 @@ namespace Admin.Helper.Utility.Authentication
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    if (tui == null || tui == "")
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    if (Tui == null || Tui == "")
                     {
-                        tui = Guid.NewGuid().ToString();
+                        Tui = Guid.NewGuid().ToString();
                     }
-                    response.tui = tui;
-                    response.signature = signature;
+                    response.Tui = Tui;
+                    response.Signature = signature;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
-                    response.message = "Login " + ResponseConstants.Fail;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.NotOK.ToString();
+                    response.Message = "Login " + ResponseConstants.Fail;
+                    response.Tui = Tui;
                 }
 
             }
             catch (Exception)
             {
-                response.code = ResponseConstants.NotOK.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
-                response.tui = tui;
+                response.Code = ResponseConstants.NotOK.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
+                response.Tui = Tui;
             }
             return response;
         }     

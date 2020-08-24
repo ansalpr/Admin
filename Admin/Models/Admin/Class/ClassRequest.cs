@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class ClassRequest : BaseRequest
     {
 
-        public Classe[] classes = new Classe[] { };
+        public Classe[] Classes = new Classe[] { };
 
     }
 }

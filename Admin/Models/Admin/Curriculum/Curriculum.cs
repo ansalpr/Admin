@@ -29,17 +29,17 @@ namespace Admin.Models.Admin
             get { return _curriculumName; }
             set { _curriculumName = value; }
         }
-        public string action
+        public string Action
         {
             get { return _action; }
             set { _action = value; }
         }
-        public string status
+        public string Status
         {
             get { return _status; }
             set { _status = value; }
         }
-        public string message
+        public string Message
         {
             get { return _message; }
             set { _message = value; }

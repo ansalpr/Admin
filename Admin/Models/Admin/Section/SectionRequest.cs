@@ -4,7 +4,7 @@ namespace Admin.Models.Admin
     public class SectionRequest : BaseRequest
     {
 
-        public Section[] sections = new Section[] { };
+        public Section[] Sections = new Section[] { };
 
     }
 }

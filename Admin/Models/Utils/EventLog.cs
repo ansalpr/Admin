@@ -10,24 +10,24 @@ namespace Admin.Models.Utils
         private string _remarks;
         private string _methodName;
         private string _className;
-        private string _tui;
+        private string _Tui;
         private string _ip;
         private string _action;
         private string _status;
         private string _message;
 
 
-        public string action
+        public string Action
         {
             get { return _action; }
             set { _action = value; }
         }
-        public string status
+        public string Status
         {
             get { return _status; }
             set { _status = value; }
         }
-        public string message
+        public string Message
         {
             get { return _message; }
             set { _message = value; }
@@ -47,12 +47,12 @@ namespace Admin.Models.Utils
             get { return _className; }
             set { _className = value; }
         }
-        public string TUI
+        public string Tui
         {
-            get { return _tui; }
-            set { _tui = value; }
+            get { return _Tui; }
+            set { _Tui = value; }
         }
-        public string IP
+        public string Ip
         {
             get { return _ip; }
             set { _ip = value; }

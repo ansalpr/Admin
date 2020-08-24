@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class ModuleRequest :BaseRequest
     {
 
-        public Module[] modules = new Module[] { };
+        public Module[] Modules = new Module[] { };
 
     }
 }

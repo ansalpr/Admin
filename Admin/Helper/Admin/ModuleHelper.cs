@@ -18,61 +18,61 @@ namespace Admin.Helper.Admin
         public ModuleResponse ValidateRequest(ModuleRequest reqObjects)
         {
             ModuleResponse response = new ModuleResponse();
-            response.modules = new Module[reqObjects.modules.Length];
+            response.Modules = new Module[reqObjects.Modules.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.modules.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Modules.Length; idx++)
             {
-                if (reqObjects.modules == null)
+                if (reqObjects.Modules == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.modules[idx].Code == null || reqObjects.modules[idx].Code == "") && (reqObjects.modules[idx].action.ToUpper() == "A" || reqObjects.modules[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Modules[idx].Code == null || reqObjects.Modules[idx].Code == "") && (reqObjects.Modules[idx].Action.ToUpper() == "A" || reqObjects.Modules[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstModule.ModuleCode + " " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.modules[idx].Name == null || reqObjects.modules[idx].Name == "") && (reqObjects.modules[idx].action.ToUpper() == "A" || reqObjects.modules[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Modules[idx].Name == null || reqObjects.Modules[idx].Name == "") && (reqObjects.Modules[idx].Action.ToUpper() == "A" || reqObjects.Modules[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstModule.ModuleName + " " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.modules[idx].Id == null || reqObjects.modules[idx].Id == "") && (reqObjects.modules[idx].action.ToUpper() == "E" || reqObjects.modules[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Modules[idx].Id == null || reqObjects.Modules[idx].Id == "") && (reqObjects.Modules[idx].Action.ToUpper() == "E" || reqObjects.Modules[idx].Action.ToUpper() == "D"))
                 {
                     message = CnstModule.ModuleId + " " + ResponseConstants.Mandatory;
                 }
                 Module proxyResponse = new Module();
-                proxyResponse = reqObjects.modules[idx];
-                proxyResponse.message = message;
-                response.modules[idx] = proxyResponse;
+                proxyResponse = reqObjects.Modules[idx];
+                proxyResponse.Message = message;
+                response.Modules[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public module[] ProcessProxyToEntity(ModuleRequest reqObjects, int UserId)
         {
-            module[] entityObects = new module[reqObjects.modules.Length];
+            module[] entityObects = new module[reqObjects.Modules.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.modules.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Modules.Length; idx++)
                 {
                     module entityObect = new module();
-                    entityObect.ModuleCode = reqObjects.modules[idx].Code == null ? "" : reqObjects.modules[idx].Code.Trim();
-                    entityObect.ModuleName = reqObjects.modules[idx].Name == null ? "" : reqObjects.modules[idx].Name.Trim();
-                    entityObect.ModuleId = reqObjects.modules[idx].Id == null ? 0 : reqObjects.modules[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.modules[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.ModuleCode = reqObjects.Modules[idx].Code == null ? "" : reqObjects.Modules[idx].Code.Trim();
+                    entityObect.ModuleName = reqObjects.Modules[idx].Name == null ? "" : reqObjects.Modules[idx].Name.Trim();
+                    entityObect.ModuleId = reqObjects.Modules[idx].Id == null ? 0 : reqObjects.Modules[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Modules[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.modules[idx].action == "D")
+                    if (reqObjects.Modules[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -261,17 +261,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public ModuleResponse processResponseToProxy(ModuleResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public ModuleResponse processResponseToProxy(ModuleResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -284,27 +284,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ModuleResponse processResponseToProxy(ModuleResponse response, string tui, string signature, string message, string action)
+        private ModuleResponse processResponseToProxy(ModuleResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Module modt in response.modules)
+                foreach (Module modt in response.Modules)
                 {
-                    if (modt.message != "")
+                    if (modt.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -317,41 +317,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ModuleResponse processResponseToProxy(ModuleResponse response, DataSet ds, string tui, string signature, string message)
+        private ModuleResponse processResponseToProxy(ModuleResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.modules = new Module[ds.Tables[0].Rows.Count];
+                    response.Modules = new Module[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Module DD = new Module();
                         DD.Name = dr[CnstModule.ModuleName].ToString();
                         DD.Code = dr[CnstModule.ModuleCode].ToString();
                         DD.Id = getEncryptData(dr[CnstModule.ModuleId].ToString(), DBConstants.PrimaryKey);
-                        response.modules[idx] = DD;
+                        response.Modules[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Module has " + ResponseConstants.Fail;
+                        response.Message = "Getting Module has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

@@ -9,24 +9,24 @@ namespace API.Base
     {
         private string _code;
         private string _message;
-        private string _tui;
+        private string _Tui;
         private string _signature;
-        public string code
+        public string Code
         {
             get { return _code; }
             set { _code = value; }
         }
-        public string message
+        public string Message
         {
             get { return _message; }
             set { _message = value; }
         }
-        public string tui
+        public string Tui
         {
-            get { return _tui; }
-            set { _tui = value; }
+            get { return _Tui; }
+            set { _Tui = value; }
         }
-        public string signature
+        public string Signature
         {
             get { return _signature; }
             set { _signature = value; }

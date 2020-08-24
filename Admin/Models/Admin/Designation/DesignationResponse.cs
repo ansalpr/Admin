@@ -3,6 +3,6 @@ namespace Admin.Models.Admin
 {
     public class DesignationResponse : BaseResponse
     {
-        public Designation[] designations = new Designation[] { };
+        public Designation[] Designations = new Designation[] { };
     }   
 }

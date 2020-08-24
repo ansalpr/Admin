@@ -19,61 +19,61 @@ namespace Admin.Helper.Admin
         public DesignationResponse ValidateRequest(DesignationRequest reqObjects)
         {
             DesignationResponse response = new DesignationResponse();
-            response.designations = new Designation[reqObjects.designations.Length];
+            response.Designations = new Designation[reqObjects.Designations.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.designations.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Designations.Length; idx++)
             {
-                if (reqObjects.designations == null)
+                if (reqObjects.Designations == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.designations[idx].Code == null || reqObjects.designations[idx].Code == "") && (reqObjects.designations[idx].action.ToUpper() == "A" || reqObjects.designations[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Designations[idx].Code == null || reqObjects.Designations[idx].Code == "") && (reqObjects.Designations[idx].Action.ToUpper() == "A" || reqObjects.Designations[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstDesignation.DesignationCode + " " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.designations[idx].Name == null || reqObjects.designations[idx].Name == "") && (reqObjects.designations[idx].action.ToUpper() == "A" || reqObjects.designations[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Designations[idx].Name == null || reqObjects.Designations[idx].Name == "") && (reqObjects.Designations[idx].Action.ToUpper() == "A" || reqObjects.Designations[idx].Action.ToUpper() == "E"))
                 {
                     message = CnstDesignation.DesignationName + " " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.designations[idx].Id == null || reqObjects.designations[idx].Id == "") && (reqObjects.designations[idx].action.ToUpper() == "E" || reqObjects.designations[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Designations[idx].Id == null || reqObjects.Designations[idx].Id == "") && (reqObjects.Designations[idx].Action.ToUpper() == "E" || reqObjects.Designations[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Designation proxyResponse = new Designation();
-                proxyResponse = reqObjects.designations[idx];
-                proxyResponse.message = message;
-                response.designations[idx] = proxyResponse;
+                proxyResponse = reqObjects.Designations[idx];
+                proxyResponse.Message = message;
+                response.Designations[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public designation[] ProcessProxyToEntity(DesignationRequest reqObjects, int UserId)
         {
-            designation[] entityObects = new designation[reqObjects.designations.Length];
+            designation[] entityObects = new designation[reqObjects.Designations.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.designations.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Designations.Length; idx++)
                 {
                     designation entityObect = new designation();
-                    entityObect.DesignationCode = reqObjects.designations[idx].Code == null ? "" : reqObjects.designations[idx].Code.Trim();
-                    entityObect.DesignationName = reqObjects.designations[idx].Name == null ? "" : reqObjects.designations[idx].Name.Trim();
-                    entityObect.DesignationId = reqObjects.designations[idx].Id == null ? 0 : reqObjects.designations[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.designations[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.DesignationCode = reqObjects.Designations[idx].Code == null ? "" : reqObjects.Designations[idx].Code.Trim();
+                    entityObect.DesignationName = reqObjects.Designations[idx].Name == null ? "" : reqObjects.Designations[idx].Name.Trim();
+                    entityObect.DesignationId = reqObjects.Designations[idx].Id == null ? 0 : reqObjects.Designations[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Designations[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.designations[idx].action == "D")
+                    if (reqObjects.Designations[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -262,17 +262,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DesignationResponse processResponseToProxy(DesignationResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public DesignationResponse processResponseToProxy(DesignationResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -285,27 +285,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DesignationResponse processResponseToProxy(DesignationResponse response, string tui, string signature, string message, string action)
+        private DesignationResponse processResponseToProxy(DesignationResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Designation dest in response.designations)
+                foreach (Designation dest in response.Designations)
                 {
-                    if (dest.message != "")
+                    if (dest.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -318,41 +318,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DesignationResponse processResponseToProxy(DesignationResponse response, DataSet ds, string tui, string signature, string message)
+        private DesignationResponse processResponseToProxy(DesignationResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.designations = new Designation[ds.Tables[0].Rows.Count];
+                    response.Designations = new Designation[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Designation DD = new Designation();
                         DD.Name = dr[CnstDesignation.DesignationName].ToString();
                         DD.Code = dr[CnstDesignation.DesignationCode].ToString();
                         DD.Id = getEncryptData(dr[CnstDesignation.DesignationId].ToString(), DBConstants.PrimaryKey);
-                        response.designations[idx] = DD;
+                        response.Designations[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Designation has " + ResponseConstants.Fail;
+                        response.Message = "Getting Designation has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

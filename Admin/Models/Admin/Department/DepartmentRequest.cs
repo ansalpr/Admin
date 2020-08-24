@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class DepartmentRequest :BaseRequest
     {
 
-        public Department[] departments = new Department[] { };
+        public Department[] Departments = new Department[] { };
 
     }
 }

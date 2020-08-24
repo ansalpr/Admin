@@ -4,7 +4,7 @@ namespace Admin.Models.Admin
     public class DivisionRequest : BaseRequest
     {
 
-        public Division[] divisions = new Division[] { };
+        public Division[] Divisions = new Division[] { };
 
     }
 }

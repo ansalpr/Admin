@@ -73,26 +73,26 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NStudent, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NStudent, reqObj.Tui);
                 // Procees Reference Settings
                 reqObj = helperObj.ProxyRequestReferenceSettings(reqObj);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Get Logined User Id
                     UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);                    
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToJsonEntity(reqObj, UserId);
                     //Insert Entity Details
-                    json = helperObj.ProcessObjectstoJson(entityObjects, reqObj.tui);
+                    json = helperObj.ProcessObjectstoJson(entityObjects, reqObj.Tui);
                     //Process Proxy to JSON
                     ds = helperObj.ProcessInsertJsonEntity(json, UserId.ToString());
                 }
                 //Response Processing
-                response = helperObj.processJsonResponseToProxy(response, ds, reqObj.tui, Request.Headers.Authorization.Parameter, response.message, reqObj.students[0].action);
+                response = helperObj.processJsonResponseToProxy(response, ds, reqObj.Tui, Request.Headers.Authorization.Parameter, response.Message, reqObj.Students[0].Action);
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NStudent, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NStudent, response.Tui);
             }
             catch (Exception ex)
             {
@@ -100,14 +100,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui == null ? "" : reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
 
             msg = Request.CreateResponse(HttpStatusCode.OK, response);

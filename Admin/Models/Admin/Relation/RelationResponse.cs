@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class RelationResponse : BaseResponse
     {
-        public Relation[] relations = new Relation[] { };
+        public Relation[] Relations = new Relation[] { };
     }   
 }

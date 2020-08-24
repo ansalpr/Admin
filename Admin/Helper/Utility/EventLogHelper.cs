@@ -21,46 +21,46 @@ namespace Admin.Helper.Utility
         public EventLogResponse ValidateRequest(EventLogRequest reqObjects)
         {
             EventLogResponse response = new EventLogResponse();
-            response.eventlogs = new EventLogs[reqObjects.eventlogs.Length];
+            response.EventLogs = new EventLogs[reqObjects.EventLogs.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.eventlogs.Length; idx++)
+            for (int idx = 0; idx < reqObjects.EventLogs.Length; idx++)
             {
-                if (reqObjects.eventlogs == null)
+                if (reqObjects.EventLogs == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.eventlogs[idx].action.ToUpper() == "A" || reqObjects.eventlogs[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.EventLogs[idx].Action.ToUpper() == "A" || reqObjects.EventLogs[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.eventlogs[idx].ClassName == null || reqObjects.eventlogs[idx].ClassName == ""))
+                    if ((reqObjects.EventLogs[idx].ClassName == null || reqObjects.EventLogs[idx].ClassName == ""))
                     {
                         message = "ClassName " + ResponseConstants.Mandatory;
                     }                   
-                    else if ((reqObjects.eventlogs[idx].MethodName == null || reqObjects.eventlogs[idx].MethodName == ""))
+                    else if ((reqObjects.EventLogs[idx].MethodName == null || reqObjects.EventLogs[idx].MethodName == ""))
                     {
                         message = "MethodName " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.eventlogs[idx].Remarks == null || reqObjects.eventlogs[idx].Remarks  == ""))
+                    else if ((reqObjects.EventLogs[idx].Remarks == null || reqObjects.EventLogs[idx].Remarks  == ""))
                     {
                         message = "Remarks " + ResponseConstants.Mandatory;
                     }
                 }                
                 EventLogs proxyResponse = new EventLogs();
-                proxyResponse = reqObjects.eventlogs[idx];
-                proxyResponse.message = message;
-                response.eventlogs[idx] = proxyResponse;
+                proxyResponse = reqObjects.EventLogs[idx];
+                proxyResponse.Message = message;
+                response.EventLogs[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
@@ -68,14 +68,14 @@ namespace Admin.Helper.Utility
         {
             eventlogs entityObects = new eventlogs();
             try            {
-                for (int idx = 0; idx < reqObjects.eventlogs.Length; idx++)
+                for (int idx = 0; idx < reqObjects.EventLogs.Length; idx++)
                 {
                     eventlogs entityObect = new eventlogs();
-                    entityObect.ClassName = reqObjects.eventlogs[idx].ClassName == null ? "" : reqObjects.eventlogs[idx].ClassName.Trim();
+                    entityObect.ClassName = reqObjects.EventLogs[idx].ClassName == null ? "" : reqObjects.EventLogs[idx].ClassName.Trim();
                     entityObect.IP = IP;
-                    entityObect.MethodName = reqObjects.eventlogs[idx].MethodName == null ? "" : reqObjects.eventlogs[idx].MethodName.Trim();
-                    entityObect.Remarks = reqObjects.eventlogs[idx].Remarks == null ? "" : reqObjects.eventlogs[idx].Remarks.Trim();
-                    entityObect.TUI = reqObjects.eventlogs[idx].TUI == null ? "" : reqObjects.eventlogs[idx].TUI.Trim();                                                            
+                    entityObect.MethodName = reqObjects.EventLogs[idx].MethodName == null ? "" : reqObjects.EventLogs[idx].MethodName.Trim();
+                    entityObect.Remarks = reqObjects.EventLogs[idx].Remarks == null ? "" : reqObjects.EventLogs[idx].Remarks.Trim();
+                    entityObect.TUI = reqObjects.EventLogs[idx].Tui == null ? "" : reqObjects.EventLogs[idx].Tui.Trim();                                                            
                     entityObects = entityObect;
                 }
 
@@ -123,13 +123,13 @@ namespace Admin.Helper.Utility
             }
             return result;
         }
-        public EventLogResponse processResponseToProxy(EventLogResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public EventLogResponse processResponseToProxy(EventLogResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
             }
             catch (Exception ex)
@@ -142,27 +142,27 @@ namespace Admin.Helper.Utility
             }
             return response;
         }
-        private EventLogResponse processResponseToProxy(EventLogResponse response, string tui, string signature, string message, string action)
+        private EventLogResponse processResponseToProxy(EventLogResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (EventLogs dept in response.eventlogs)
+                foreach (EventLogs dept in response.EventLogs)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
