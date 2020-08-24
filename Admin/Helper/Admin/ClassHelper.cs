@@ -18,74 +18,74 @@ namespace Admin.Helper.Admin
         public ClassResponse ValidateRequest(ClassRequest reqObjects)
         {
             ClassResponse response = new ClassResponse();
-            response.classes = new Classe[reqObjects.classes.Length];
+            response.Classes = new Classe[reqObjects.Classes.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.classes.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Classes.Length; idx++)
             {
-                if (reqObjects.classes == null)
+                if (reqObjects.Classes == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.classes[idx].action.ToUpper() == "A" || reqObjects.classes[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Classes[idx].Action.ToUpper() == "A" || reqObjects.Classes[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.classes[idx].Code == null || reqObjects.classes[idx].Code == ""))
+                    if ((reqObjects.Classes[idx].Code == null || reqObjects.Classes[idx].Code == ""))
                     {
                         message = CnstClass.ClassCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.classes[idx].Name == null || reqObjects.classes[idx].Name == ""))
+                    else if ((reqObjects.Classes[idx].Name == null || reqObjects.Classes[idx].Name == ""))
                     {
                         message = CnstClass.ClassName + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.classes[idx].Sort == null || reqObjects.classes[idx].Sort == ""))
+                    else if ((reqObjects.Classes[idx].Sort == null || reqObjects.Classes[idx].Sort == ""))
                     {
                         message = CnstClass.Sort + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.classes[idx].CurriculumCode == null || reqObjects.classes[idx].CurriculumCode == ""))
+                    else if ((reqObjects.Classes[idx].CurriculumCode == null || reqObjects.Classes[idx].CurriculumCode == ""))
                     {
                         message = CnstClass.CurriculumCode + " " + ResponseConstants.Mandatory;
                     }
                 }
-                else if ((reqObjects.classes[idx].Id == null || reqObjects.classes[idx].Id == "") && (reqObjects.classes[idx].action.ToUpper() == "E" || reqObjects.classes[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Classes[idx].Id == null || reqObjects.Classes[idx].Id == "") && (reqObjects.Classes[idx].Action.ToUpper() == "E" || reqObjects.Classes[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Classe proxyResponse = new Classe();
-                proxyResponse = reqObjects.classes[idx];
-                proxyResponse.message = message;
-                response.classes[idx] = proxyResponse;
+                proxyResponse = reqObjects.Classes[idx];
+                proxyResponse.Message = message;
+                response.Classes[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public classe[] ProcessProxyToEntity(ClassRequest reqObjects, int UserId)
         {
-            classe[] entityObects = new classe[reqObjects.classes.Length];
+            classe[] entityObects = new classe[reqObjects.Classes.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.classes.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Classes.Length; idx++)
                 {
                     classe entityObect = new classe();
-                    entityObect.ClassCode = reqObjects.classes[idx].Code == null ? "" : reqObjects.classes[idx].Code.Trim();
-                    entityObect.ClassName = reqObjects.classes[idx].Name == null ? "" : reqObjects.classes[idx].Name.Trim();
-                    entityObect.Sort = reqObjects.classes[idx].Sort == null ? "" : reqObjects.classes[idx].Sort.Trim();
-                    entityObect.CurriculumCode = reqObjects.classes[idx].CurriculumCode == null ? "" : reqObjects.classes[idx].CurriculumCode.Trim();
-                    entityObect.ClassId = reqObjects.classes[idx].Id == null ? 0 : reqObjects.classes[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.classes[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.ClassCode = reqObjects.Classes[idx].Code == null ? "" : reqObjects.Classes[idx].Code.Trim();
+                    entityObect.ClassName = reqObjects.Classes[idx].Name == null ? "" : reqObjects.Classes[idx].Name.Trim();
+                    entityObect.Sort = reqObjects.Classes[idx].Sort == null ? "" : reqObjects.Classes[idx].Sort.Trim();
+                    entityObect.CurriculumCode = reqObjects.Classes[idx].CurriculumCode == null ? "" : reqObjects.Classes[idx].CurriculumCode.Trim();
+                    entityObect.ClassId = reqObjects.Classes[idx].Id == null ? 0 : reqObjects.Classes[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Classes[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.classes[idx].action == "D")
+                    if (reqObjects.Classes[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -282,17 +282,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -305,27 +305,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ClassResponse processResponseToProxy(ClassResponse response, string tui, string signature, string message, string action)
+        private ClassResponse processResponseToProxy(ClassResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Classe dept in response.classes)
+                foreach (Classe dept in response.Classes)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -338,14 +338,14 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string tui, string signature, string message)
+        private ClassResponse processResponseToProxy(ClassResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.classes = new Classe[ds.Tables[0].Rows.Count];
+                    response.Classes = new Classe[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Classe DD = new Classe();
@@ -354,27 +354,27 @@ namespace Admin.Helper.Admin
                         DD.Sort = dr[CnstClass.Sort].ToString();
                         DD.CurriculumCode = dr[CnstClass.CurriculumCode].ToString();
                         DD.Id = getEncryptData(dr[CnstClass.ClassId].ToString(), DBConstants.PrimaryKey);
-                        response.classes[idx] = DD;
+                        response.Classes[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Class has " + ResponseConstants.Fail;
+                        response.Message = "Getting Class has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

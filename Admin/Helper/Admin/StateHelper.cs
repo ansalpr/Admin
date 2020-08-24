@@ -17,70 +17,70 @@ namespace Admin.Helper.Admin
         public StateResponse ValidateRequest(StateRequest reqObjects)
         {
             StateResponse response = new StateResponse();
-            response.states = new State[reqObjects.states.Length];
+            response.States = new State[reqObjects.States.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.states.Length; idx++)
+            for (int idx = 0; idx < reqObjects.States.Length; idx++)
             {
-                if (reqObjects.states == null)
+                if (reqObjects.States == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.states[idx].action.ToUpper() == "A" || reqObjects.states[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.States[idx].Action.ToUpper() == "A" || reqObjects.States[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.states[idx].Code == null || reqObjects.states[idx].Code == ""))
+                    if ((reqObjects.States[idx].Code == null || reqObjects.States[idx].Code == ""))
                     {
                         message = "Code " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.states[idx].Name == null || reqObjects.states[idx].Name == ""))
+                    else if ((reqObjects.States[idx].Name == null || reqObjects.States[idx].Name == ""))
                     {
                         message = "Name " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.states[idx].CountryCode == null || reqObjects.states[idx].CountryCode == ""))
+                    else if ((reqObjects.States[idx].CountryCode == null || reqObjects.States[idx].CountryCode == ""))
                     {
                         message = "CountryCode " + ResponseConstants.Mandatory;
                     }                 
                     
                 }
-                else if ((reqObjects.states[idx].Id == null || reqObjects.states[idx].Id == "") && (reqObjects.states[idx].action.ToUpper() == "E" || reqObjects.states[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.States[idx].Id == null || reqObjects.States[idx].Id == "") && (reqObjects.States[idx].Action.ToUpper() == "E" || reqObjects.States[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 State proxyResponse = new State();
-                proxyResponse = reqObjects.states[idx];
-                proxyResponse.message = message;
-                response.states[idx] = proxyResponse;
+                proxyResponse = reqObjects.States[idx];
+                proxyResponse.Message = message;
+                response.States[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public state[] ProcessProxyToEntity(StateRequest reqObjects, int UserId)
         {
-            state[] entityObects = new state[reqObjects.states.Length];
+            state[] entityObects = new state[reqObjects.States.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.states.Length; idx++)
+                for (int idx = 0; idx < reqObjects.States.Length; idx++)
                 {
                     state entityObect = new state();
-                    entityObect.StateCode = reqObjects.states[idx].Code == null ? "" : reqObjects.states[idx].Code.Trim();
-                    entityObect.StateName = reqObjects.states[idx].Name == null ? "" : reqObjects.states[idx].Name.Trim();
-                    entityObect.CountryCode = reqObjects.states[idx].CountryCode.Trim();                    
-                    entityObect.StateId = reqObjects.states[idx].Id == null ? 0 : reqObjects.states[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.states[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.StateCode = reqObjects.States[idx].Code == null ? "" : reqObjects.States[idx].Code.Trim();
+                    entityObect.StateName = reqObjects.States[idx].Name == null ? "" : reqObjects.States[idx].Name.Trim();
+                    entityObect.CountryCode = reqObjects.States[idx].CountryCode.Trim();                    
+                    entityObect.StateId = reqObjects.States[idx].Id == null ? 0 : reqObjects.States[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.States[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.states[idx].action == "D")
+                    if (reqObjects.States[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -273,17 +273,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public StateResponse processResponseToProxy(StateResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public StateResponse processResponseToProxy(StateResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -296,27 +296,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private StateResponse processResponseToProxy(StateResponse response, string tui, string signature, string message, string action)
+        private StateResponse processResponseToProxy(StateResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (State dept in response.states)
+                foreach (State dept in response.States)
                 {
-                    if (dept.message != "")
+                    if (dept.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -329,14 +329,14 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private StateResponse processResponseToProxy(StateResponse response, DataSet ds, string tui, string signature, string message)
+        private StateResponse processResponseToProxy(StateResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.states = new State[ds.Tables[0].Rows.Count];
+                    response.States = new State[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         State DD = new State();
@@ -344,27 +344,27 @@ namespace Admin.Helper.Admin
                         DD.CountryCode = dr[CnstState.CountryCode].ToString();
                         DD.Name = dr[CnstState.StateName].ToString();
                         DD.Id = getEncryptData(dr[CnstState.StateId].ToString(), DBConstants.PrimaryKey);
-                        response.states[idx] = DD;
+                        response.States[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting State has " + ResponseConstants.Fail;
+                        response.Message = "Getting State has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

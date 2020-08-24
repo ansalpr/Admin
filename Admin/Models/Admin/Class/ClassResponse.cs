@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class ClassResponse : BaseResponse
     {
-        public Classe[] classes = new Classe[] { };
+        public Classe[] Classes = new Classe[] { };
     }
 }

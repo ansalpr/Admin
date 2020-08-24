@@ -18,95 +18,95 @@ namespace Admin.Helper.Admin
         public ModuleControlResponse ValidateRequest(ModuleControlRequest reqObjects)
         {
             ModuleControlResponse response = new ModuleControlResponse();
-            response.modulecontrols = new ModuleControl[reqObjects.modulecontrols.Length];
+            response.ModuleControls = new ModuleControl[reqObjects.ModuleControls.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.modulecontrols.Length; idx++)
+            for (int idx = 0; idx < reqObjects.ModuleControls.Length; idx++)
             {
-                if (reqObjects.modulecontrols == null)
+                if (reqObjects.ModuleControls == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.modulecontrols[idx].action.ToUpper() == "A" || reqObjects.modulecontrols[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.ModuleControls[idx].Action.ToUpper() == "A" || reqObjects.ModuleControls[idx].Action.ToUpper() == "E"))
                 {
-                    if ((reqObjects.modulecontrols[idx].ModuleCode == null || reqObjects.modulecontrols[idx].ModuleCode == ""))
+                    if ((reqObjects.ModuleControls[idx].ModuleCode == null || reqObjects.ModuleControls[idx].ModuleCode == ""))
                     {
                         message = CnstModuleControl.ModuleCode + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.modulecontrols[idx].BackDate == null || reqObjects.modulecontrols[idx].BackDate == ""))
+                    else if ((reqObjects.ModuleControls[idx].BackDate == null || reqObjects.ModuleControls[idx].BackDate == ""))
                     {
                         message = CnstModuleControl.BackDate + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.modulecontrols[idx].From == null || reqObjects.modulecontrols[idx].From == ""))
+                    else if ((reqObjects.ModuleControls[idx].From == null || reqObjects.ModuleControls[idx].From == ""))
                     {
                         message = CnstModuleControl.From + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.modulecontrols[idx].FutureDate == null || reqObjects.modulecontrols[idx].FutureDate == ""))
+                    else if ((reqObjects.ModuleControls[idx].FutureDate == null || reqObjects.ModuleControls[idx].FutureDate == ""))
                     {
                         message = CnstModuleControl.FutureDate + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.modulecontrols[idx].Stats == null || reqObjects.modulecontrols[idx].Stats == ""))
+                    else if ((reqObjects.ModuleControls[idx].Stats == null || reqObjects.ModuleControls[idx].Stats == ""))
                     {
                         message = CnstModuleControl.Stats + " " + ResponseConstants.Mandatory;
                     }
-                    else if ((reqObjects.modulecontrols[idx].TO == null || reqObjects.modulecontrols[idx].TO == ""))
+                    else if ((reqObjects.ModuleControls[idx].TO == null || reqObjects.ModuleControls[idx].TO == ""))
                     {
                         message = CnstModuleControl.Stats + " " + ResponseConstants.Mandatory;
                     }
                     else
                     {
-                        if (!validateDateFormat(reqObjects.modulecontrols[idx].From))
+                        if (!validateDateFormat(reqObjects.ModuleControls[idx].From))
                         {
                             message = ResponseConstants.InValid + " " + CnstModuleControl.From;
                         }
-                        else if (!validateDateFormat(reqObjects.modulecontrols[idx].TO))
+                        else if (!validateDateFormat(reqObjects.ModuleControls[idx].TO))
                         {
                             message = ResponseConstants.InValid + " " + CnstModuleControl.TO;
                         }
                     }
                 }
-                else if ((reqObjects.modulecontrols[idx].Id == null || reqObjects.modulecontrols[idx].Id == "") && (reqObjects.modulecontrols[idx].action.ToUpper() == "E" || reqObjects.modulecontrols[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.ModuleControls[idx].Id == null || reqObjects.ModuleControls[idx].Id == "") && (reqObjects.ModuleControls[idx].Action.ToUpper() == "E" || reqObjects.ModuleControls[idx].Action.ToUpper() == "D"))
                 {
                     message = CnstModuleControl.ModuleControlId + " " + ResponseConstants.Mandatory;
                 }
                 ModuleControl proxyResponse = new ModuleControl();
-                proxyResponse = reqObjects.modulecontrols[idx];
-                proxyResponse.message = message;
-                response.modulecontrols[idx] = proxyResponse;
+                proxyResponse = reqObjects.ModuleControls[idx];
+                proxyResponse.Message = message;
+                response.ModuleControls[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public modulecontrol[] ProcessProxyToEntity(ModuleControlRequest reqObjects, int UserId)
         {
-            modulecontrol[] entityObects = new modulecontrol[reqObjects.modulecontrols.Length];
+            modulecontrol[] entityObects = new modulecontrol[reqObjects.ModuleControls.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.modulecontrols.Length; idx++)
+                for (int idx = 0; idx < reqObjects.ModuleControls.Length; idx++)
                 {
                     modulecontrol entityObect = new modulecontrol();
-                    entityObect.ModuleCode = reqObjects.modulecontrols[idx].ModuleCode == null ? "" : reqObjects.modulecontrols[idx].ModuleCode.Trim();
-                    entityObect.BackDate = reqObjects.modulecontrols[idx].BackDate == null ? 0 : Convert.ToInt32(reqObjects.modulecontrols[idx].BackDate.Trim());
-                    entityObect.From = reqObjects.modulecontrols[idx].From == null ? DateTime.Now : Convert.ToDateTime(reqObjects.modulecontrols[idx].From.Trim());
-                    entityObect.FutureDate = reqObjects.modulecontrols[idx].FutureDate == null ? 0 : Convert.ToInt32(reqObjects.modulecontrols[idx].FutureDate.Trim());
-                    entityObect.Stats = reqObjects.modulecontrols[idx].Stats == null ? 0 : Convert.ToInt32(reqObjects.modulecontrols[idx].Stats.Trim());
-                    entityObect.TO = reqObjects.modulecontrols[idx].TO == null ? DateTime.Now : Convert.ToDateTime(reqObjects.modulecontrols[idx].TO.Trim());
-                    entityObect.ModuleControlId = reqObjects.modulecontrols[idx].Id == null ? 0 : reqObjects.modulecontrols[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.modulecontrols[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.ModuleCode = reqObjects.ModuleControls[idx].ModuleCode == null ? "" : reqObjects.ModuleControls[idx].ModuleCode.Trim();
+                    entityObect.BackDate = reqObjects.ModuleControls[idx].BackDate == null ? 0 : Convert.ToInt32(reqObjects.ModuleControls[idx].BackDate.Trim());
+                    entityObect.From = reqObjects.ModuleControls[idx].From == null ? DateTime.Now : Convert.ToDateTime(reqObjects.ModuleControls[idx].From.Trim());
+                    entityObect.FutureDate = reqObjects.ModuleControls[idx].FutureDate == null ? 0 : Convert.ToInt32(reqObjects.ModuleControls[idx].FutureDate.Trim());
+                    entityObect.Stats = reqObjects.ModuleControls[idx].Stats == null ? 0 : Convert.ToInt32(reqObjects.ModuleControls[idx].Stats.Trim());
+                    entityObect.TO = reqObjects.ModuleControls[idx].TO == null ? DateTime.Now : Convert.ToDateTime(reqObjects.ModuleControls[idx].TO.Trim());
+                    entityObect.ModuleControlId = reqObjects.ModuleControls[idx].Id == null ? 0 : reqObjects.ModuleControls[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.ModuleControls[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.modulecontrols[idx].action == "D")
+                    if (reqObjects.ModuleControls[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -311,17 +311,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public ModuleControlResponse processResponseToProxy(ModuleControlResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public ModuleControlResponse processResponseToProxy(ModuleControlResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -334,27 +334,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ModuleControlResponse processResponseToProxy(ModuleControlResponse response, string tui, string signature, string message, string action)
+        private ModuleControlResponse processResponseToProxy(ModuleControlResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (ModuleControl modt in response.modulecontrols)
+                foreach (ModuleControl modt in response.ModuleControls)
                 {
-                    if (modt.message != "")
+                    if (modt.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -367,14 +367,14 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private ModuleControlResponse processResponseToProxy(ModuleControlResponse response, DataSet ds, string tui, string signature, string message)
+        private ModuleControlResponse processResponseToProxy(ModuleControlResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.modulecontrols = new ModuleControl[ds.Tables[0].Rows.Count];
+                    response.ModuleControls = new ModuleControl[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         ModuleControl DD = new ModuleControl();
@@ -385,27 +385,27 @@ namespace Admin.Helper.Admin
                         DD.Stats = dr[CnstModuleControl.Stats].ToString();
                         DD.TO = dr[CnstModuleControl.TO].ToString();
                         DD.Id = getEncryptData(dr[CnstModuleControl.ModuleControlId].ToString(), DBConstants.PrimaryKey);
-                        response.modulecontrols[idx] = DD;
+                        response.ModuleControls[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting ModuleControl has " + ResponseConstants.Fail;
+                        response.Message = "Getting ModuleControl has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

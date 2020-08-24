@@ -10,12 +10,12 @@ namespace AdminAPI.Models
     {
         private string _name;
         private string _password;
-        public string name
+        public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
-        public string password
+        public string Password
         {
             get { return _password; }
             set { _password = value; }

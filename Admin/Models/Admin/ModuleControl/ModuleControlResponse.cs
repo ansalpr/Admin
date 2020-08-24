@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class ModuleControlResponse :BaseResponse
     {
-        public ModuleControl[] modulecontrols = new ModuleControl[] { };
+        public ModuleControl[] ModuleControls = new ModuleControl[] { };
     }   
 }

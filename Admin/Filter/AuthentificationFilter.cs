@@ -16,10 +16,10 @@ namespace AdminAPI
         public override void OnAuthorization(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             BaseResponse resObj = new BaseResponse();
-            resObj.code = "401";
-            resObj.message = "Un-Authorized";
-            resObj.tui = "";
-            resObj.signature = "";
+            resObj.Code = "401";
+            resObj.Message = "Un-Authorized";
+            resObj.Tui = "";
+            resObj.Signature = "";
             try
             {
                 if (actionContext.Request.Headers.Authorization != null)

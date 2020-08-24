@@ -42,22 +42,22 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.Login, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.Login, reqObj.Tui);
                 //Validate Request
                 response = helperObj.VaidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Check Login
                     ds = GH.getAuthData(reqObj);
                     if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                     {
-                        encCredentials = GH.getSignature(reqObj.name + "|" + reqObj.password + "|" + DateTime.Now.ToString() + "|" + ds.Tables[0].Rows[0]["UserId"].ToString());
+                        encCredentials = GH.getSignature(reqObj.Name + "|" + reqObj.Password + "|" + DateTime.Now.ToString() + "|" + ds.Tables[0].Rows[0]["UserId"].ToString());
                     }
                     //Response Processing
-                    response = helperObj.processResponseToProxy(ds, reqObj.tui, encCredentials);
+                    response = helperObj.processResponseToProxy(ds, reqObj.Tui, encCredentials);
                 }
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.Tui);
             }
             catch (Exception ex)
             {
@@ -65,14 +65,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 0 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -100,10 +100,10 @@ namespace Admin.Controllers
             try
             {
                 //Log Request
-                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.Login, reqObj.tui);
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.Login, reqObj.Tui);
                 //Validate Request
                 response = helperObj.ValidateRequest(reqObj);
-                if (response != null && response.code == ResponseConstants.OK.ToString())
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
                 {
                     //Process Proxy to Entity
                     entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId,IP);
@@ -114,13 +114,13 @@ namespace Admin.Controllers
                     }
                     else
                     {
-                        response.eventlogs[0].message = entityObjects.ClassName + " Insertion " + ResponseConstants.Fail;
+                        response.EventLogs[0].Message = entityObjects.ClassName + " Insertion " + ResponseConstants.Fail;
                     }
                     //Response Processing
-                    response = helperObj.processResponseToProxy(response, ds, reqObj.tui, "", response.message, reqObj.eventlogs[0].action);
+                    response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, "", response.Message, reqObj.EventLogs[0].Action);
                 }
                 //Log Response
-                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.tui);
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.Login, response.Tui);
             }
             catch (Exception ex)
             {
@@ -128,14 +128,14 @@ namespace Admin.Controllers
                 {
                     currentMethodName = ex.Message.ToString().Split('|').Count() > 0 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
                     currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
-                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.tui);
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui);
                 }
                 catch (Exception)
                 {
                 }
 
-                response.code = ResponseConstants.Exception.ToString();
-                response.message = ResponseConstants.SomeErrorOccoured;
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
             }
             msg = Request.CreateResponse(HttpStatusCode.OK, response);
             return msg;
@@ -150,7 +150,7 @@ namespace Admin.Controllers
             try
             {
                 
-                    resultString = GH.getEntityStructure(DP.name, DP.conName, DP.type);
+                    resultString = GH.getEntityStructure(DP.Name, DP.ConName, DP.Type);
             }
             catch (Exception ex)
             {

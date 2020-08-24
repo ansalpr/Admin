@@ -21,8 +21,8 @@ namespace Admin.Helper.General
                 string dbCon = PF.getDatabaseConnectionString(DBConstants.MainDB);
                 DataOperation DO = new DataOperation(dbCon);
                 sp_AuthCheck authCheck = new sp_AuthCheck();
-                authCheck.uName = authObj.name;
-                authCheck.pwd = authObj.password;
+                authCheck.uName = authObj.Name;
+                authCheck.pwd = authObj.Password;
                 authCheck.action = "select";
                 DO.BeginTRansaction();
                 ds = DO.iteratePropertyObjectsSP(authCheck, "sp_AuthCheck");

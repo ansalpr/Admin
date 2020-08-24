@@ -10,17 +10,17 @@ namespace Admin.Models.Other
         private string _name;
         private string _conName;
         private string _type;
-        public string name
+        public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
-        public string conName
+        public string ConName
         {
             get { return _conName; }
             set { _conName = value; }
         }
-        public string type
+        public string Type
         {
             get { return _type; }
             set { _type = value; }

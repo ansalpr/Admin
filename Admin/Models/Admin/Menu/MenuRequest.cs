@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class MenuRequest :BaseRequest
     {
 
-        public Menu[] menus = new Menu[] { };
+        public Menu[] Menus = new Menu[] { };
 
     }
 }

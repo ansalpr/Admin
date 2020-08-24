@@ -24,108 +24,108 @@ namespace Admin.Helper
         public StudentResponse ValidateRequest(StudentRequest reqObjects)
         {
             StudentResponse response = new StudentResponse();
-            response.students = new Student[reqObjects.students.Length];
+            response.Students = new Student[reqObjects.Students.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.students.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Students.Length; idx++)
             {
-                reqObjects.students[idx].SiNo = (idx + 1).ToString();
+                reqObjects.Students[idx].SiNo = (idx + 1).ToString();
                 message = "";
-                if (reqObjects.students == null)
+                if (reqObjects.Students == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
                 else
                 {
-                    if ((reqObjects.students[idx].action.ToUpper() == "A" || reqObjects.students[idx].action.ToUpper() == "E"))
+                    if ((reqObjects.Students[idx].Action.ToUpper() == "A" || reqObjects.Students[idx].Action.ToUpper() == "E"))
                     {
-                        if ((reqObjects.students[idx].Address1 == null || reqObjects.students[idx].Address1 == ""))
+                        if ((reqObjects.Students[idx].Address1 == null || reqObjects.Students[idx].Address1 == ""))
                         {
                             message = CnstStudent.Address1 + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].BloodGroupCode == null || reqObjects.students[idx].BloodGroupCode == ""))
+                        else if ((reqObjects.Students[idx].BloodGroupCode == null || reqObjects.Students[idx].BloodGroupCode == ""))
                         {
                             message = CnstStudent.BloodGroupCode + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].CountryCode == null || reqObjects.students[idx].CountryCode == ""))
+                        else if ((reqObjects.Students[idx].CountryCode == null || reqObjects.Students[idx].CountryCode == ""))
                         {
                             message = CnstStudent.CountryCode + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].DOB == null || reqObjects.students[idx].DOB == ""))
+                        else if ((reqObjects.Students[idx].DOB == null || reqObjects.Students[idx].DOB == ""))
                         {
                             message = CnstStudent.DOB + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].FirstName == null || reqObjects.students[idx].FirstName == ""))
+                        else if ((reqObjects.Students[idx].FirstName == null || reqObjects.Students[idx].FirstName == ""))
                         {
                             message = CnstStudent.FirstName + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].Gender == null || reqObjects.students[idx].Gender == ""))
+                        else if ((reqObjects.Students[idx].Gender == null || reqObjects.Students[idx].Gender == ""))
                         {
                             message = CnstStudent.Gender + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].LastName == null || reqObjects.students[idx].LastName == ""))
+                        else if ((reqObjects.Students[idx].LastName == null || reqObjects.Students[idx].LastName == ""))
                         {
                             message = CnstStudent.LastName + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].MotherTongue == null || reqObjects.students[idx].MotherTongue == ""))
+                        else if ((reqObjects.Students[idx].MotherTongue == null || reqObjects.Students[idx].MotherTongue == ""))
                         {
                             message = CnstStudent.MotherTongue + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].POB == null || reqObjects.students[idx].POB == ""))
+                        else if ((reqObjects.Students[idx].POB == null || reqObjects.Students[idx].POB == ""))
                         {
                             message = CnstStudent.POB + " " + ResponseConstants.Mandatory;
                         }
-                        else if ((reqObjects.students[idx].StateCode == null || reqObjects.students[idx].StateCode == ""))
+                        else if ((reqObjects.Students[idx].StateCode == null || reqObjects.Students[idx].StateCode == ""))
                         {
                             message = CnstStudent.StateCode + " " + ResponseConstants.Mandatory;
                         }
                         else
                         {
-                            if (!validateDateFormat(reqObjects.students[idx].DOB))
+                            if (!validateDateFormat(reqObjects.Students[idx].DOB))
                             {
                                 message = ResponseConstants.InValid + " " + CnstStudent.DOB;
                             }
                         }
-                        if (reqObjects.students[idx].parents != null)
+                        if (reqObjects.Students[idx].parents != null)
                         {
                             string childMsg = "";
-                            for (int parCount = 0; parCount < reqObjects.students[idx].parents.Length; parCount++)
+                            for (int parCount = 0; parCount < reqObjects.Students[idx].parents.Length; parCount++)
                             {
-                                reqObjects.students[idx].parents[parCount].StudentRef = reqObjects.students[idx].SiNo;
-                                if ((reqObjects.students[idx].parents[parCount].MotherTongue == null || reqObjects.students[idx].parents[parCount].MotherTongue == ""))
+                                reqObjects.Students[idx].parents[parCount].StudentRef = reqObjects.Students[idx].SiNo;
+                                if ((reqObjects.Students[idx].parents[parCount].MotherTongue == null || reqObjects.Students[idx].parents[parCount].MotherTongue == ""))
                                 {
                                     childMsg = CnstParent.MotherTongue + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].Name == null || reqObjects.students[idx].parents[parCount].Name == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].Name == null || reqObjects.Students[idx].parents[parCount].Name == ""))
                                 {
                                     childMsg = CnstParent.ParentName + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].POB == null || reqObjects.students[idx].parents[parCount].POB == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].POB == null || reqObjects.Students[idx].parents[parCount].POB == ""))
                                 {
                                     childMsg = CnstParent.POB + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].StateCode == null || reqObjects.students[idx].parents[parCount].StateCode == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].StateCode == null || reqObjects.Students[idx].parents[parCount].StateCode == ""))
                                 {
                                     childMsg = CnstParent.StateCode + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].Address1 == null || reqObjects.students[idx].parents[parCount].Address1 == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].Address1 == null || reqObjects.Students[idx].parents[parCount].Address1 == ""))
                                 {
                                     childMsg = CnstParent.Address1 + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].BloodGroupCode == null || reqObjects.students[idx].parents[parCount].BloodGroupCode == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].BloodGroupCode == null || reqObjects.Students[idx].parents[parCount].BloodGroupCode == ""))
                                 {
                                     childMsg = CnstParent.BloodGroupCode + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].CountryCode == null || reqObjects.students[idx].parents[parCount].CountryCode == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].CountryCode == null || reqObjects.Students[idx].parents[parCount].CountryCode == ""))
                                 {
                                     childMsg = CnstParent.CountryCode + " " + ResponseConstants.Mandatory;
                                 }
-                                else if ((reqObjects.students[idx].parents[parCount].DOB == null || reqObjects.students[idx].parents[parCount].DOB == ""))
+                                else if ((reqObjects.Students[idx].parents[parCount].DOB == null || reqObjects.Students[idx].parents[parCount].DOB == ""))
                                 {
                                     childMsg = CnstParent.DOB + " " + ResponseConstants.Mandatory;
                                 }
                                 else
                                 {
-                                    if (!validateDateFormat(reqObjects.students[idx].parents[parCount].DOB))
+                                    if (!validateDateFormat(reqObjects.Students[idx].parents[parCount].DOB))
                                     {
                                         childMsg = ResponseConstants.InValid + " " + CnstParent.DOB;
                                     }
@@ -135,72 +135,72 @@ namespace Admin.Helper
                                 {
                                     if (message == "")
                                     {
-                                        reqObjects.students[idx].message = "Invalid Request";
+                                        reqObjects.Students[idx].Message = "Invalid Request";
                                     }
-                                    reqObjects.students[idx].status = "F";
-                                    reqObjects.students[idx].parents[parCount].status = "F";
-                                    reqObjects.students[idx].parents[parCount].message = childMsg;
+                                    reqObjects.Students[idx].Status = "F";
+                                    reqObjects.Students[idx].parents[parCount].Status = "F";
+                                    reqObjects.Students[idx].parents[parCount].Message = childMsg;
                                     childMsg = "";
                                 }
                             }
                         }
                         if (message != "")
                         {
-                            reqObjects.students[idx].status = "F";
-                            reqObjects.students[idx].message = message;
+                            reqObjects.Students[idx].Status = "F";
+                            reqObjects.Students[idx].Message = message;
                             message = "";
                         }
 
                     }
 
-                    if ((reqObjects.students[idx].Id == null || reqObjects.students[idx].Id == "") && (reqObjects.students[idx].action.ToUpper() == "E" || reqObjects.students[idx].action.ToUpper() == "D"))
+                    if ((reqObjects.Students[idx].Id == null || reqObjects.Students[idx].Id == "") && (reqObjects.Students[idx].Action.ToUpper() == "E" || reqObjects.Students[idx].Action.ToUpper() == "D"))
                     {
                         message = "Id " + ResponseConstants.Mandatory;
                     }
                 }
 
                 Student proxyResponse = new Student();
-                proxyResponse = reqObjects.students[idx];
+                proxyResponse = reqObjects.Students[idx];
                 if (message != "")
                 {
-                    proxyResponse.message = message;
+                    proxyResponse.Message = message;
                 }
-                response.students[idx] = proxyResponse;
+                response.Students[idx] = proxyResponse;
             }
-            response.tui = reqObjects.tui;
-            if (response.students.Where(x => x.status != "F").ToArray().Length > 0)
+            response.Tui = reqObjects.Tui;
+            if (response.Students.Where(x => x.Status != "F").ToArray().Length > 0)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public StudentRequest ProxyRequestReferenceSettings(StudentRequest reqObjects)
         {
 
-            for (int idx = 0; idx < reqObjects.students.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Students.Length; idx++)
             {
-                reqObjects.students[idx].SiNo = (idx + 1).ToString();
-                foreach(Parent pr in reqObjects.students[idx].parents)
+                reqObjects.Students[idx].SiNo = (idx + 1).ToString();
+                foreach(Parent pr in reqObjects.Students[idx].parents)
                 {
-                    pr.StudentRef = reqObjects.students[idx].SiNo;
+                    pr.StudentRef = reqObjects.Students[idx].SiNo;
                 }
             }
             return reqObjects;
         }      
         public JStudents[] ProcessProxyToJsonEntity(StudentRequest reqObjects, int UserId)
         {
-            JStudents[] entityObects = new JStudents[reqObjects.students.Where(x => x.status != "F").ToArray().Length];
-            Student[] objStudent = reqObjects.students.Where(x => x.status != "F").ToArray();
+            JStudents[] entityObects = new JStudents[reqObjects.Students.Where(x => x.Status != "F").ToArray().Length];
+            Student[] objStudent = reqObjects.Students.Where(x => x.Status != "F").ToArray();
             try
             {
                 for (int idx = 0; idx < objStudent.Length; idx++)
                 {
                     JStudents entityObect = new JStudents();
-                    entityObect.action = objStudent[idx].action;
+                    entityObect.action = objStudent[idx].Action;
                     entityObect.SiNo = Convert.ToInt32(objStudent[idx].SiNo);
                     entityObect.Address1 = objStudent[idx].Address1 == null ? "" : objStudent[idx].Address1.Trim();
                     entityObect.Address2 = objStudent[idx].Address2 == null ? "" : objStudent[idx].Address2.Trim();
@@ -220,12 +220,12 @@ namespace Admin.Helper
                     entityObect.StateCode = objStudent[idx].StateCode == null ? "" : objStudent[idx].StateCode.Trim();
                     entityObect.Stats = objStudent[idx].Stats == null ? "" : objStudent[idx].Stats.Trim();
                     entityObect.StudentId = objStudent[idx].Id == null ? "0" : objStudent[idx].Id == "" ? "0" : (getDecryptData(objStudent[idx].Id, DBConstants.PrimaryKey));
-                    JParents[] centityObects = new JParents[objStudent[idx].parents.Where(x => x.status != "F").ToArray().Length];
-                    Parent[] ObjParents = objStudent[idx].parents.Where(x => x.status != "F").ToArray();
+                    JParents[] centityObects = new JParents[objStudent[idx].parents.Where(x => x.Status != "F").ToArray().Length];
+                    Parent[] ObjParents = objStudent[idx].parents.Where(x => x.Status != "F").ToArray();
                     for (int cidx = 0; cidx < (ObjParents == null ? 0 : ObjParents.Length); cidx++)
                     {
                         JParents centityObect = new JParents();
-                        centityObect.action = ObjParents[cidx].action;
+                        centityObect.action = ObjParents[cidx].Action;
                         centityObect.StudentRef = entityObect.SiNo;
                         centityObect.Address1 = ObjParents[cidx].Address1 == null ? "" : ObjParents[cidx].Address1.Trim();
                         centityObect.Address2 = ObjParents[cidx].Address2 == null ? "" : ObjParents[cidx].Address2.Trim();
@@ -236,7 +236,7 @@ namespace Admin.Helper
                         centityObect.DOB = ObjParents[cidx].DOB == null ? "" : (ObjParents[cidx].DOB.Trim());
                         centityObect.ParentName = ObjParents[cidx].Name == null ? "" : ObjParents[cidx].Name.Trim();
                         centityObect.MotherTongue = ObjParents[cidx].MotherTongue == null ? "" : ObjParents[cidx].MotherTongue.Trim();
-                        centityObect.Stats = ObjParents[cidx].status == null ? "" : ObjParents[cidx].status.Trim();
+                        centityObect.Stats = ObjParents[cidx].Status == null ? "" : ObjParents[cidx].Status.Trim();
                         centityObect.POB = ObjParents[cidx].POB == null ? "" : ObjParents[cidx].POB.Trim();
                         centityObect.ParentId = ObjParents[cidx].Id == null ? "0" : ObjParents[cidx].Id == "" ? "0" : (getDecryptData(ObjParents[cidx].Id, DBConstants.PrimaryKey));
                         centityObects[cidx] = centityObect;
@@ -481,17 +481,17 @@ namespace Admin.Helper
             }
             return ds;
         }
-        public StudentResponse processResponseToProxy(StudentResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public StudentResponse processResponseToProxy(StudentResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -504,17 +504,17 @@ namespace Admin.Helper
             }
             return response;
         }
-        public StudentResponse processJsonResponseToProxy(StudentResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public StudentResponse processJsonResponseToProxy(StudentResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processJsonResponseToProxy(response, ds, tui, signature, message);
+                    response = processJsonResponseToProxy(response, ds, Tui, signature, message);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -527,27 +527,27 @@ namespace Admin.Helper
             }
             return response;
         }
-        private StudentResponse processResponseToProxy(StudentResponse response, string tui, string signature, string message, string action)
+        private StudentResponse processResponseToProxy(StudentResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (Student bldt in response.students)
+                foreach (Student bldt in response.Students)
                 {
-                    if (bldt.message != "")
+                    if (bldt.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -560,41 +560,41 @@ namespace Admin.Helper
             }
             return response;
         }
-        private StudentResponse processResponseToProxy(StudentResponse response, DataSet ds, string tui, string signature, string message)
+        private StudentResponse processResponseToProxy(StudentResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.students = new Student[ds.Tables[0].Rows.Count];
+                    response.Students = new Student[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Student DD = new Student();
                         //DD.Name = dr[CnstStudent.StudentName].ToString();
                         //DD.Code = dr[CnstStudent.StudentCode].ToString();
                         DD.Id = getEncryptData(dr[CnstStudent.StudentId].ToString(), DBConstants.PrimaryKey);
-                        response.students[idx] = DD;
+                        response.Students[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Student has " + ResponseConstants.Fail;
+                        response.Message = "Getting Student has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)
@@ -607,15 +607,15 @@ namespace Admin.Helper
             }
             return response;
         }
-        private StudentResponse processJsonResponseToProxy(StudentResponse response, DataSet ds, string tui, string signature, string message)
+        private StudentResponse processJsonResponseToProxy(StudentResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 int studentCount = 0;
                 int parentCount = 0;
-                if (response.students.Where(x => x.status != "F").ToArray().Length > 0 && ds != null && ds.Tables != null && ds.Tables.Count > 0)
+                if (response.Students.Where(x => x.Status != "F").ToArray().Length > 0 && ds != null && ds.Tables != null && ds.Tables.Count > 0)
                 {
-                    foreach (Student std in response.students.Where(x => x.status != "F"))
+                    foreach (Student std in response.Students.Where(x => x.Status != "F"))
                     {
                        
                         DataRow[] drStudent = ds.Tables[0].Select(" SiNo = " + std.SiNo);
@@ -626,23 +626,23 @@ namespace Admin.Helper
                                 parentCount = 0;
                                 foreach (DataRow drParent in ds.Tables[1].Select(" StudentRef = " + drStudent[0]["SiNo"].ToString()))
                                 {
-                                    std.parents[parentCount].status = drParent["State"].ToString();
-                                    std.parents[parentCount].message = drParent["Remarks"].ToString();
+                                    std.parents[parentCount].Status = drParent["State"].ToString();
+                                    std.parents[parentCount].Message = drParent["Remarks"].ToString();
                                     std.parents[parentCount].Id = (getEncryptData(drParent["ParentId"].ToString(), DBConstants.PrimaryKey)); 
                                     parentCount += 1;
                                 }
                             }
                             std.Id = (getEncryptData(drStudent[0]["StudentId"].ToString(), DBConstants.PrimaryKey));
                             std.AdmissionNo = drStudent[0]["AdmissionNo"].ToString();
-                            std.status = drStudent[0]["State"].ToString();
-                            std.message = drStudent[0]["Remarks"].ToString();
+                            std.Status = drStudent[0]["State"].ToString();
+                            std.Message = drStudent[0]["Remarks"].ToString();
                         }                       
 
                         studentCount += 1;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
             }
             catch (Exception ex)
             {

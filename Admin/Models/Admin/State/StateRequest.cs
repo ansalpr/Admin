@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class StateRequest :BaseRequest
     {
 
-        public State[] states = new State[] { };
+        public State[] States = new State[] { };
 
     }
 }

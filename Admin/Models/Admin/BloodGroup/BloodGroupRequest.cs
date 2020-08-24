@@ -9,7 +9,7 @@ namespace Admin.Models.Admin
     public class BloodGroupRequest :BaseRequest
     {
 
-        public BloodGroup[] bloodgroups = new BloodGroup[] { };
+        public BloodGroup[] BloodGroups = new BloodGroup[] { };
 
     }
 }

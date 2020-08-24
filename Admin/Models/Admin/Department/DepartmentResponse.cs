@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class DepartmentResponse :BaseResponse
     {
-        public Department[] departments = new Department[] { };
+        public Department[] Departments = new Department[] { };
     }   
 }

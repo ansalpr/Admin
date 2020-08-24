@@ -10,7 +10,7 @@ namespace Admin.Models.Utils
     public class EventLogResponse : BaseResponse
     {
 
-        public EventLogs[] eventlogs = new EventLogs[] { };
+        public EventLogs[] EventLogs = new EventLogs[] { };
 
     }
 }

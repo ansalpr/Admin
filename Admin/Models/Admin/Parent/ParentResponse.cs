@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class ParentResponse :BaseResponse
     {
-        public Parent[] parents = new Parent[] { };
+        public Parent[] Parents = new Parent[] { };
     }   
 }

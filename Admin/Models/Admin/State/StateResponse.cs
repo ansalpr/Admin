@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class StateResponse :BaseResponse
     {
-        public State[] states = new State[] { };
+        public State[] States = new State[] { };
     }   
 }

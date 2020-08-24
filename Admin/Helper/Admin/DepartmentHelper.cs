@@ -20,61 +20,61 @@ namespace Admin.Helper.Admin
         public DepartmentResponse ValidateRequest(DepartmentRequest reqObjects)
         {
             DepartmentResponse response = new DepartmentResponse();
-            response.departments = new Department[reqObjects.departments.Length];
+            response.Departments = new Department[reqObjects.Departments.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.departments.Length; idx++)
+            for (int idx = 0; idx < reqObjects.Departments.Length; idx++)
             {
-                if (reqObjects.departments == null)
+                if (reqObjects.Departments == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.departments[idx].Code == null || reqObjects.departments[idx].Code == "") && (reqObjects.departments[idx].action.ToUpper() == "A" || reqObjects.departments[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Departments[idx].Code == null || reqObjects.Departments[idx].Code == "") && (reqObjects.Departments[idx].Action.ToUpper() == "A" || reqObjects.Departments[idx].Action.ToUpper() == "E"))
                 {
                     message = "Code " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.departments[idx].Name == null || reqObjects.departments[idx].Name == "") && (reqObjects.departments[idx].action.ToUpper() == "A" || reqObjects.departments[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.Departments[idx].Name == null || reqObjects.Departments[idx].Name == "") && (reqObjects.Departments[idx].Action.ToUpper() == "A" || reqObjects.Departments[idx].Action.ToUpper() == "E"))
                 {
                     message = "Name " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.departments[idx].Id == null || reqObjects.departments[idx].Id == "") && (reqObjects.departments[idx].action.ToUpper() == "E" || reqObjects.departments[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.Departments[idx].Id == null || reqObjects.Departments[idx].Id == "") && (reqObjects.Departments[idx].Action.ToUpper() == "E" || reqObjects.Departments[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 Department proxyResponse = new Department();
-                proxyResponse = reqObjects.departments[idx];
-                proxyResponse.message = message;
-                response.departments[idx] = proxyResponse;
+                proxyResponse = reqObjects.Departments[idx];
+                proxyResponse.Message = message;
+                response.Departments[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public department[] ProcessProxyToEntity(DepartmentRequest reqObjects, int UserId)
         {
-            department[] entityObects = new department[reqObjects.departments.Length];
+            department[] entityObects = new department[reqObjects.Departments.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.departments.Length; idx++)
+                for (int idx = 0; idx < reqObjects.Departments.Length; idx++)
                 {
                     department entityObect = new department();
-                    entityObect.DepartmentCode = reqObjects.departments[idx].Code == null ? "" : reqObjects.departments[idx].Code.Trim();
-                    entityObect.DepartmentName = reqObjects.departments[idx].Name == null ? "" : reqObjects.departments[idx].Name.Trim();
-                    entityObect.DepartmentId = reqObjects.departments[idx].Id == null ? 0 : reqObjects.departments[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.departments[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.DepartmentCode = reqObjects.Departments[idx].Code == null ? "" : reqObjects.Departments[idx].Code.Trim();
+                    entityObect.DepartmentName = reqObjects.Departments[idx].Name == null ? "" : reqObjects.Departments[idx].Name.Trim();
+                    entityObect.DepartmentId = reqObjects.Departments[idx].Id == null ? 0 : reqObjects.Departments[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.Departments[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.departments[idx].action == "D")
+                    if (reqObjects.Departments[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -263,17 +263,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public DepartmentResponse processResponseToProxy(DepartmentResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public DepartmentResponse processResponseToProxy(DepartmentResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response,  tui, signature, message, action);
+                    response = processResponseToProxy(response,  Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -286,27 +286,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DepartmentResponse processResponseToProxy(DepartmentResponse response,  string tui, string signature, string message, string action)
+        private DepartmentResponse processResponseToProxy(DepartmentResponse response,  string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach(Department dept in response.departments)
+                foreach(Department dept in response.Departments)
                 {
-                    if(dept.message!="")
+                    if(dept.Message!="")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message= ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message= ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -319,41 +319,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private DepartmentResponse processResponseToProxy(DepartmentResponse response, DataSet ds, string tui, string signature, string message)
+        private DepartmentResponse processResponseToProxy(DepartmentResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.departments = new Department[ds.Tables[0].Rows.Count];
+                    response.Departments = new Department[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         Department DD = new Department();
                         DD.Name = dr[CnstDepartment.DepartmentName].ToString();
                         DD.Code = dr[CnstDepartment.DepartmentCode].ToString();
                         DD.Id = getEncryptData(dr[CnstDepartment.DepartmentId].ToString(), DBConstants.PrimaryKey);
-                        response.departments[idx] = DD;
+                        response.Departments[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting Department has " + ResponseConstants.Fail;
+                        response.Message = "Getting Department has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

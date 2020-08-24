@@ -8,6 +8,6 @@ namespace Admin.Models.Admin
 {
     public class MenuResponse :BaseResponse
     {
-        public Menu[] menus = new Menu[] { };
+        public Menu[] Menus = new Menu[] { };
     }   
 }

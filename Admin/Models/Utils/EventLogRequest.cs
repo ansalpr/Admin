@@ -9,7 +9,7 @@ namespace Admin.Models.Utils
     public class EventLogRequest : BaseRequest
     {
 
-        public EventLogs[] eventlogs = new EventLogs[] { };
+        public EventLogs[] EventLogs = new EventLogs[] { };
 
     }
 }

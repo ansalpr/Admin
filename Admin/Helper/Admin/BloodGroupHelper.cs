@@ -17,61 +17,61 @@ namespace Admin.Helper.Admin
         public BloodGroupResponse ValidateRequest(BloodGroupRequest reqObjects)
         {
             BloodGroupResponse response = new BloodGroupResponse();
-            response.bloodgroups = new BloodGroup[reqObjects.bloodgroups.Length];
+            response.BloodGroups = new BloodGroup[reqObjects.BloodGroups.Length];
             string message = "";
-            for (int idx = 0; idx < reqObjects.bloodgroups.Length; idx++)
+            for (int idx = 0; idx < reqObjects.BloodGroups.Length; idx++)
             {
-                if (reqObjects.bloodgroups == null)
+                if (reqObjects.BloodGroups == null)
                 {
                     message = ResponseConstants.InvalidRequest;
                 }
-                else if ((reqObjects.bloodgroups[idx].Code == null || reqObjects.bloodgroups[idx].Code == "") && (reqObjects.bloodgroups[idx].action.ToUpper() == "A" || reqObjects.bloodgroups[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.BloodGroups[idx].Code == null || reqObjects.BloodGroups[idx].Code == "") && (reqObjects.BloodGroups[idx].Action.ToUpper() == "A" || reqObjects.BloodGroups[idx].Action.ToUpper() == "E"))
                 {
                     message = "Code " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.bloodgroups[idx].Name == null || reqObjects.bloodgroups[idx].Name == "") && (reqObjects.bloodgroups[idx].action.ToUpper() == "A" || reqObjects.bloodgroups[idx].action.ToUpper() == "E"))
+                else if ((reqObjects.BloodGroups[idx].Name == null || reqObjects.BloodGroups[idx].Name == "") && (reqObjects.BloodGroups[idx].Action.ToUpper() == "A" || reqObjects.BloodGroups[idx].Action.ToUpper() == "E"))
                 {
                     message = "Name " + ResponseConstants.Mandatory;
                 }
-                else if ((reqObjects.bloodgroups[idx].Id == null || reqObjects.bloodgroups[idx].Id == "") && (reqObjects.bloodgroups[idx].action.ToUpper() == "E" || reqObjects.bloodgroups[idx].action.ToUpper() == "D"))
+                else if ((reqObjects.BloodGroups[idx].Id == null || reqObjects.BloodGroups[idx].Id == "") && (reqObjects.BloodGroups[idx].Action.ToUpper() == "E" || reqObjects.BloodGroups[idx].Action.ToUpper() == "D"))
                 {
                     message = "Id " + ResponseConstants.Mandatory;
                 }
                 BloodGroup proxyResponse = new BloodGroup();
-                proxyResponse = reqObjects.bloodgroups[idx];
-                proxyResponse.message = message;
-                response.bloodgroups[idx] = proxyResponse;
+                proxyResponse = reqObjects.BloodGroups[idx];
+                proxyResponse.Message = message;
+                response.BloodGroups[idx] = proxyResponse;
                 if (message != "")
                 {
-                    response.message = "Invalid Request";
+                    response.Message = "Invalid Request";
                 }
             }
-            response.tui = reqObjects.tui;
-            if (response.message == "" || response.message == null)
+            response.Tui = reqObjects.Tui;
+            if (response.Message == "" || response.Message == null)
             {
-                response.code = ResponseConstants.OK.ToString();
+                response.Code = ResponseConstants.OK.ToString();
             }
             else
             {
-                response.code = ResponseConstants.NotOK.ToString();
+                response.Code = ResponseConstants.NotOK.ToString();
             }
             return response;
         }
         public bloodgroup[] ProcessProxyToEntity(BloodGroupRequest reqObjects, int UserId)
         {
-            bloodgroup[] entityObects = new bloodgroup[reqObjects.bloodgroups.Length];
+            bloodgroup[] entityObects = new bloodgroup[reqObjects.BloodGroups.Length];
             try
             {
-                for (int idx = 0; idx < reqObjects.bloodgroups.Length; idx++)
+                for (int idx = 0; idx < reqObjects.BloodGroups.Length; idx++)
                 {
                     bloodgroup entityObect = new bloodgroup();
-                    entityObect.BloodGroupCode = reqObjects.bloodgroups[idx].Code == null ? "" : reqObjects.bloodgroups[idx].Code.Trim();
-                    entityObect.BloodGroupName = reqObjects.bloodgroups[idx].Name == null ? "" : reqObjects.bloodgroups[idx].Name.Trim();
-                    entityObect.BloodGroupId = reqObjects.bloodgroups[idx].Id == null ? 0 : reqObjects.bloodgroups[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.bloodgroups[idx].Id, DBConstants.PrimaryKey));
+                    entityObect.BloodGroupCode = reqObjects.BloodGroups[idx].Code == null ? "" : reqObjects.BloodGroups[idx].Code.Trim();
+                    entityObect.BloodGroupName = reqObjects.BloodGroups[idx].Name == null ? "" : reqObjects.BloodGroups[idx].Name.Trim();
+                    entityObect.BloodGroupId = reqObjects.BloodGroups[idx].Id == null ? 0 : reqObjects.BloodGroups[idx].Id == "" ? 0 : Convert.ToInt32(getDecryptData(reqObjects.BloodGroups[idx].Id, DBConstants.PrimaryKey));
                     entityObect.CreatedUser = UserId;
                     entityObect.ModifiedUser = 0;
                     entityObect.RecordStatus = 0;
-                    if (reqObjects.bloodgroups[idx].action == "D")
+                    if (reqObjects.BloodGroups[idx].Action == "D")
                     {
                         entityObect.RecordStatus = 1;
                     }
@@ -260,17 +260,17 @@ namespace Admin.Helper.Admin
             }
             return result;
         }
-        public BloodGroupResponse processResponseToProxy(BloodGroupResponse response, DataSet ds, string tui, string signature, string message, string action)
+        public BloodGroupResponse processResponseToProxy(BloodGroupResponse response, DataSet ds, string Tui, string signature, string message, string action)
         {
             try
             {
                 if (action != "S")
                 {
-                    response = processResponseToProxy(response, tui, signature, message, action);
+                    response = processResponseToProxy(response, Tui, signature, message, action);
                 }
                 else
                 {
-                    response = processResponseToProxy(response, ds, tui, signature, message);
+                    response = processResponseToProxy(response, ds, Tui, signature, message);
                 }
             }
             catch (Exception ex)
@@ -283,27 +283,27 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private BloodGroupResponse processResponseToProxy(BloodGroupResponse response, string tui, string signature, string message, string action)
+        private BloodGroupResponse processResponseToProxy(BloodGroupResponse response, string Tui, string signature, string message, string action)
         {
             try
             {
 
-                foreach (BloodGroup bldt in response.bloodgroups)
+                foreach (BloodGroup bldt in response.BloodGroups)
                 {
-                    if (bldt.message != "")
+                    if (bldt.Message != "")
                     {
-                        response.code = ResponseConstants.NotOK.ToString();
-                        response.message = ResponseConstants.Fail;
+                        response.Code = ResponseConstants.NotOK.ToString();
+                        response.Message = ResponseConstants.Fail;
                         break;
                     }
                     else
                     {
-                        response.code = ResponseConstants.OK.ToString();
-                        response.message = ResponseConstants.Success;
+                        response.Code = ResponseConstants.OK.ToString();
+                        response.Message = ResponseConstants.Success;
                     }
                 }
-                response.signature = signature;
-                response.tui = tui;
+                response.Signature = signature;
+                response.Tui = Tui;
 
             }
             catch (Exception ex)
@@ -316,41 +316,41 @@ namespace Admin.Helper.Admin
             }
             return response;
         }
-        private BloodGroupResponse processResponseToProxy(BloodGroupResponse response, DataSet ds, string tui, string signature, string message)
+        private BloodGroupResponse processResponseToProxy(BloodGroupResponse response, DataSet ds, string Tui, string signature, string message)
         {
             try
             {
                 if (ds != null && ds.Tables != null && ds.Tables.Count != 0 && ds.Tables[0].Rows.Count != 0)
                 {
                     int idx = 0;
-                    response.bloodgroups = new BloodGroup[ds.Tables[0].Rows.Count];
+                    response.BloodGroups = new BloodGroup[ds.Tables[0].Rows.Count];
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         BloodGroup DD = new BloodGroup();
                         DD.Name = dr[CnstBloodGroup.BloodGroupName].ToString();
                         DD.Code = dr[CnstBloodGroup.BloodGroupCode].ToString();
                         DD.Id = getEncryptData(dr[CnstBloodGroup.BloodGroupId].ToString(), DBConstants.PrimaryKey);
-                        response.bloodgroups[idx] = DD;
+                        response.BloodGroups[idx] = DD;
                         idx++;
                     }
-                    response.code = ResponseConstants.OK.ToString();
-                    response.message = ResponseConstants.Success;
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Code = ResponseConstants.OK.ToString();
+                    response.Message = ResponseConstants.Success;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
                 else
                 {
-                    response.code = ResponseConstants.NotOK.ToString();
+                    response.Code = ResponseConstants.NotOK.ToString();
                     if (message == null || message == "")
                     {
-                        response.message = "Getting BloodGroup has " + ResponseConstants.Fail;
+                        response.Message = "Getting BloodGroup has " + ResponseConstants.Fail;
                     }
                     else
                     {
-                        response.message = message;
+                        response.Message = message;
                     }
-                    response.signature = signature;
-                    response.tui = tui;
+                    response.Signature = signature;
+                    response.Tui = Tui;
                 }
             }
             catch (Exception ex)

@@ -7,11 +7,11 @@ namespace Admin.Base
 {
     public class BaseRequest
     {
-        private string _tui;
-        public string tui
+        private string _Tui;
+        public string Tui
         {
-            get { return _tui; }
-            set { _tui = value; }
+            get { return _Tui; }
+            set { _Tui = value; }
         }
     }
 }
