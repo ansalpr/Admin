@@ -196,7 +196,7 @@ namespace Admin.Helper.Admin
                 spParams.curPrecision = entityObject.Precisions;
                 spParams.baseCur = entityObject.BaseCurrency;
                 spParams.curStatus = entityObject.Stats;
-                spParams.curId = 0;
+                spParams.curId = entityObject.CurrencyId;
                 spParams.action = "select";
                 spParams.operation = "S";
                 DO.BeginTRansaction();
@@ -231,7 +231,7 @@ namespace Admin.Helper.Admin
                 spParams.curPrecision = entityObject.Precisions;
                 spParams.baseCur = entityObject.BaseCurrency;
                 spParams.curStatus = entityObject.Stats;
-                spParams.curId = 0;
+                spParams.curId = entityObject.CurrencyId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Edit";
                 spParams.operation = "E";
@@ -267,7 +267,7 @@ namespace Admin.Helper.Admin
                 spParams.curPrecision = entityObject.Precisions;
                 spParams.baseCur = entityObject.BaseCurrency;
                 spParams.curStatus = entityObject.Stats;
-                spParams.curId = 0;
+                spParams.curId = entityObject.CurrencyId;
                 spParams.userID = entityObject.CreatedUser;
                 spParams.action = "Delete";
                 spParams.operation = "D";
