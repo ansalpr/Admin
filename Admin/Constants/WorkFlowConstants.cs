@@ -101,6 +101,11 @@ namespace API.Base
         public const string EStudent = "EDIT-STUDENT";
         public const string DStudent = "DELETE-STUDENT";
         public const string VStudent = "VIEW-STUDENT";
+
+        public const string NSchool = "NEW-SCHOOL";
+        public const string ESchool = "EDIT-SCHOOL";
+        public const string DSchool = "DELETE-SCHOOL";
+        public const string VSchool = "VIEW-SCHOOL";
         #endregion
     }
 }

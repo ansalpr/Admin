@@ -26,6 +26,129 @@ namespace Admin.Controllers
 {
     public class StudentController : BaseAdminController
     {
+      
+        public HttpResponseMessage ManageSchool([FromBody] SchoolRequest reqObj)
+        {
+            #region variable
+            int result = 0;
+            var st = new StackTrace();
+            var sf = st.GetFrame(0);
+            currentMethodName = sf.GetMethod().Name;
+            currentControllerName = this.GetType().Name;
+            string signature = "";
+            #endregion
+
+            #region objects
+            //Helper Classes
+            GeneralHelper GH = new GeneralHelper();
+            SchoolHelper helperObj = new SchoolHelper();
+            //DataOperation
+            DataSet ds = new DataSet();
+            //Entity Objects
+            school[] entityObjects = new school[] { };
+            //Proxy Objects
+            SchoolResponse response = new SchoolResponse();
+            #endregion
+
+            try
+            {
+                //Log Request
+                LogRequest(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(reqObj), WorkFlowConstants.NSchool, reqObj.Tui);
+                //Validate Request
+                response = helperObj.ValidateRequest(reqObj);
+                if (response != null && response.Code == ResponseConstants.OK.ToString())
+                {
+                    //Get Logined User Id
+                    if (Request.Headers.Authorization != null)
+                    {
+                        UserId = GH.GetUserId(Request.Headers.Authorization.Parameter);
+                        signature = Request.Headers.Authorization.Parameter;
+                    }
+                    else
+                    {
+                        UserId = 0;
+                    }
+                    //Process Proxy to Entity
+                    entityObjects = helperObj.ProcessProxyToEntity(reqObj, UserId);
+
+                    for (int idx = 0; idx < reqObj.School.Length; idx++)
+                    {
+                        if (reqObj.School[idx].Action.ToUpper() == "A")
+                        {
+                            //Check The Existance Of New Request
+                            if (!helperObj.CheckTheDataExistance(entityObjects[idx]))
+                            {
+                                //Insert Entity Details
+                                result = helperObj.ProcessInsertEntity(entityObjects[idx]);
+                                if (result > 0)
+                                {
+                                    response.School[idx].Id = getEncryptData(result.ToString(), DBConstants.PrimaryKey);
+                                }
+                                else
+                                {
+                                    response.School[idx].Message = entityObjects[idx].SchoolName + " Insertion " + ResponseConstants.Fail;
+                                }
+                            }
+                            else
+                            {
+                                response.School[idx].Message = ResponseConstants.Exist;
+                            }
+                        }
+                        else if (reqObj.School[idx].Action.ToUpper() == "S")
+                        {
+                            //Get The Data
+                            ds = helperObj.GetTheData(entityObjects[idx]);
+                        }
+                        else if (reqObj.School[idx].Action.ToUpper() == "E")
+                        {
+                            //Update The Data
+                            result = helperObj.UpdateTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.School[idx].Message = entityObjects[idx].SchoolName + " Update " + ResponseConstants.Fail;
+                            }
+                        }
+                        else if (reqObj.School[idx].Action.ToUpper() == "D")
+                        {
+                            //Delete The Data
+                            result = helperObj.DeleteTheData(entityObjects[idx]);
+                            if (result > 0)
+                            {
+                            }
+                            else
+                            {
+                                response.School[idx].Message = entityObjects[idx].SchoolName + " Deletion " + ResponseConstants.Fail;
+                            }
+                        }
+
+                    }
+                }
+                //Response Processing
+                response = helperObj.processResponseToProxy(response, ds, reqObj.Tui, signature, response.Message, reqObj.School[0].Action);
+                //Log Response
+                LogResponse(currentControllerName, currentMethodName, new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response), WorkFlowConstants.NSchool, response.Tui);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    currentMethodName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[0] : currentMethodName;
+                    currentControllerName = ex.Message.ToString().Split('|').Count() > 1 ? ex.Message.ToString().Split('|')[1] : this.GetType().Name;
+                    LogError(currentControllerName, currentMethodName, ex.Message, reqObj.Tui == null ? "" : reqObj.Tui);
+                }
+                catch (Exception)
+                {
+                }
+
+                response.Code = ResponseConstants.Exception.ToString();
+                response.Message = ResponseConstants.SomeErrorOccoured;
+            }
+            msg = Request.CreateResponse(HttpStatusCode.OK, response);
+            return msg;
+        }
         [AuthentificationFilter]
         public HttpResponseMessage ManageStudentEntry([FromBody] StudentRequest reqObj)
         {
